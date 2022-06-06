@@ -1,6 +1,6 @@
 import { Link } from "react-router-dom"
 
-import "./Sidebar.css"
+import style from "./style.module.css"
 
 import app_icon from "../../assets/img/app_icon.svg"
 import dashboard_icon from "../../assets/img/dashboard_icon.svg"
@@ -12,8 +12,8 @@ import logout_icon from "../../assets/img/logout_icon.svg"
 
 const Sidebar = () => {
     return(
-        <div className="container">
-            <div className="icon">
+        <div className={style.container}>
+            <div className={style.icon}>
                 <img src={app_icon} alt="" />
                 <div>
                     <span style={{color: "#358C56"}}>Puskesmas </span>
@@ -22,7 +22,7 @@ const Sidebar = () => {
 
                 <p>JAWA BARAT</p>
             </div>
-            <div className="navigation_container">
+            <div className={style.navigation_container}>
                 <ul>
                     <Link to="/">
                         <img src={dashboard_icon} alt="" />
