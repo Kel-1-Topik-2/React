@@ -9,6 +9,7 @@ const SecondaryButton = ({ children, onClick }) => {
 		color: '#EC0000',
 		fontSize: '18px',
 		backgroundColor: '#EEEEEE',
+		borderRadius: '20px'
 	});
 	return (
 		<ButtonSecondary variant="outlined" color="error" onClick={onClick}>
