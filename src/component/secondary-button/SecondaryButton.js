@@ -2,7 +2,7 @@ import React from 'react';
 import { Button } from '@mui/material';
 import styled from '@emotion/styled';
 
-const SecondaryButton = ({ children, onClick }) => {
+const SecondaryButton = ({ title, onClick }) => {
 	const ButtonSecondary = styled(Button)({
 		height: '56px',
 		width: '206px',
@@ -13,7 +13,7 @@ const SecondaryButton = ({ children, onClick }) => {
 	});
 	return (
 		<ButtonSecondary variant="outlined" color="error" onClick={onClick}>
-			{children}
+			{title}
 		</ButtonSecondary>
 	);
 };
