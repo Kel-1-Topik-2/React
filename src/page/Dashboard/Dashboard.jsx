@@ -1,9 +1,9 @@
-import Sidebar from "../../component/Sidebar/Sidebar";
+import Sidebar from '../../component/Sidebar/Sidebar';
 
 export default function Dashboard() {
-  return (
-    <div>
-      <Sidebar/>
-    </div>
-  );
+	return (
+		<div>
+			<Sidebar />
+		</div>
+	);
 }
