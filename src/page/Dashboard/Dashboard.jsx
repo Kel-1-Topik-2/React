@@ -1,3 +1,11 @@
+import Sidebar from '../../component/Sidebar/Sidebar';
+
+export default function Dashboard() {
+	return (
+		<div>
+			<Sidebar />
+		</div>
+	);
 import style from "./style.module.css"
 
 import Sidebar from "../../component/Sidebar/Sidebar";
