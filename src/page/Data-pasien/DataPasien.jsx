@@ -11,10 +11,9 @@ const DataPasien = () => {
 
 	useEffect(() => {
 		axios.get(endPoint).then((res) => {
-			console.log(res.data);
 			setDataPasien(res.data);
 		});
-	}, [dataPasien]);
+	}, []);
 
 	return (
 		<>

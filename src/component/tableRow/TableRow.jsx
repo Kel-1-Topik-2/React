@@ -2,14 +2,7 @@ import React from 'react';
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 
-const TableRow = ({
-	colSatu,
-	colDua,
-	colTiga,
-	colEmpat,
-	onClickDetail,
-	onClickDelete,
-}) => {
+const TableRow = ({ colSatu, colDua, colTiga, colEmpat, onDelete }) => {
 	return (
 		<tr>
 			<td>{colSatu}</td>
@@ -22,10 +15,20 @@ const TableRow = ({
 					gap: '2px',
 				}}
 			>
-				<div onClick={onClickDetail}>
+				<div
+					onClick={() => {}}
+					style={{
+						cursor: 'pointer',
+					}}
+				>
 					<img src={detailIcon} alt="detail-icon" />
 				</div>
-				<div onClick={onClickDelete}>
+				<div
+					onClick={onDelete}
+					style={{
+						cursor: 'pointer',
+					}}
+				>
 					<img src={deleteIcon} alt="delete-icon" />
 				</div>
 			</td>
