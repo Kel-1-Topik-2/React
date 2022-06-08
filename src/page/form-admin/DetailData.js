@@ -22,6 +22,10 @@ export default function DetailData() {
     navigate(-1);
   };
 
+  const handleEdit = () => {
+    navigate("/DetailData/EditData");
+  };
+
   const paperStyle = {
     padding: "30px 30px",
     margin: "50px auto",
@@ -96,6 +100,7 @@ export default function DetailData() {
                     fontSize: "14px",
                     height: "40px",
                   }}
+                  onClick={handleEdit}
                 >
                   <strong>Edit Profil</strong>
                 </Button>
