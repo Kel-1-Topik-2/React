@@ -1,20 +1,30 @@
 import React, { useState, useEffect } from 'react';
 import Sidebar from '../../component/Sidebar/Sidebar';
 import TableRow from '../../component/tableRow/TableRow';
-import axios from '../../dummy-api/api';
+import api from '../../dummy-api/api';
 import './style.css';
 import TableHeader from '../../component/tableHeader/TableHeader';
+import axios from 'axios';
 
 const DataPasien = () => {
-	const endPoint = 'Pasien';
+	const URL = 'Pasien';
 	const [dataPasien, setDataPasien] = useState([]);
 
 	useEffect(() => {
-		axios.get(endPoint).then((res) => {
-			console.log(res.data);
+		api.get(URL).then((res) => {
 			setDataPasien(res.data);
 		});
 	}, [dataPasien]);
+
+	const deletePatient = (idPasien) => {
+		axios
+			.delete(`https://629759e28d77ad6f7500a6e6.mockapi.io/Pasien/${idPasien}`)
+			.then((res) => {
+				console.log(res.data);
+				alert('delete');
+			})
+			.catch((err) => alert(err));
+	};
 
 	return (
 		<>
@@ -47,9 +57,10 @@ const DataPasien = () => {
 										colSatu={pasien.idPasien}
 										colDua={pasien.nama}
 										colTiga={pasien.nik}
-										colEmpat={pasien.umur}
-										onClickDelete={() => {}}
-										onClickDetail={() => {}}
+										colEmpat={pasien.usia}
+										onDelete={() => {
+											deletePatient(pasien.idPasien);
+										}}
 									/>
 								);
 							})}
