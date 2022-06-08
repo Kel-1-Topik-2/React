@@ -45,3 +45,12 @@
     align-items: center;
     column-gap: 1rem;
 }
+
+.aksi img{
+    transition: 0.3s;
+}
+
+.aksi img:hover{
+    opacity: 0.6;
+    cursor: pointer;
+}
