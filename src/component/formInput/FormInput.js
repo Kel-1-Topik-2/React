@@ -7,7 +7,7 @@ const TextForm = ({
   multiline,
   rows,
   disable,
-  defaultValue,
+  value,
   onChange,
 }) => {
   return (
@@ -23,7 +23,7 @@ const TextForm = ({
         type={type}
         multiline={multiline}
         rows={rows}
-        defaultValue={defaultValue}
+        value={value}
         onChange={onChange}
       />
     </FormControl>
