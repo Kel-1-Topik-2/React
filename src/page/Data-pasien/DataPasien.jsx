@@ -11,9 +11,12 @@ const DataPasien = () => {
 	const [dataPasien, setDataPasien] = useState([]);
 
 	useEffect(() => {
-		api.get(URL).then((res) => {
-			setDataPasien(res.data);
-		});
+		api
+			.get(URL)
+			.then((res) => {
+				setDataPasien(res.data);
+			})
+			.catch((err) => console.log(err));
 	}, [dataPasien]);
 
 	const deletePatient = (idPasien) => {
@@ -23,7 +26,7 @@ const DataPasien = () => {
 				console.log(res.data);
 				alert('delete');
 			})
-			.catch((err) => alert(err));
+			.catch((err) => console.log(err));
 	};
 
 	return (
