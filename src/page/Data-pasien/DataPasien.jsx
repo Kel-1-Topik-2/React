@@ -15,21 +15,33 @@ const DataPasien = () => {
 		axios.get(endPoint).then((res) => {
 			setDataPasien(res.data);
 		});
-	}, [dataPasien]);
+	}, []);
 
 	const handleDelete = (idPasien) => {
-		axios
+
+		const answer = window.confirm("Anda yakin untuk menghapus data?")
+
+		if(answer){
+			axios
 			.delete(endPoint + `/${idPasien}`)
 			.then((res) => {
-				console.log(res.data);
-				alert('Deleted!');
+				alert('Data berhasil dihapus!');
+				navigate(0)
 			})
 			.catch((err) => console.log(err));
+		}
 	};
 
 	const detailClick = (idPasien) => {
 		navigate(`/DetailData/${idPasien}`);
 	};
+
+	const column = [
+		{field: "idPasien", header: "ID"},
+		{field: "nama", header: "NAMA LENGKAP"},
+		{field: "nik", header: "NIK"},
+		{field: "usia", header: "USIA"},
+	]
 
 	return (
 		<div>
@@ -44,7 +56,7 @@ const DataPasien = () => {
 					/>
 				</div>
 				<Table
-					column={['ID', 'NAMA LENGKAP', 'NIK', 'USIA']}
+					column={column}
 					data={dataPasien}
 					onDelete={handleDelete}
 					detailClick={detailClick}
