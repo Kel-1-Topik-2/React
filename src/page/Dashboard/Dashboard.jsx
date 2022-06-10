@@ -26,16 +26,20 @@ const Dashboard = () => {
 		axios.get(endPoint).then((res) => {
 			setDataPasien(res.data);
 		});
-	}, [dataPasien]);
+	}, []);
 
 	const handleDelete = (idPasien) => {
-		axios
+		const answer = window.confirm("Anda yakin untuk menghapus data?")
+
+		if(answer){
+			axios
 			.delete(endPoint + `/${idPasien}`)
 			.then((res) => {
-				console.log(res.data);
-				alert('Deleted!');
+				alert('Data berhasil dihapus!');
+				navigate(0)
 			})
 			.catch((err) => console.log(err));
+		}
 	};
 
 	const detailClick = (idPasien) => {
