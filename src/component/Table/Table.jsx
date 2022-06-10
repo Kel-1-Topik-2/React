@@ -20,7 +20,7 @@ const Table = ({ column, data, onDelete, detailClick }) => {
 					{data.map((row, rowIdx) => (
 						<tr key={rowIdx}>
 							{column.map((col, colIdx) => (
-								<td>{row[col.field]}</td>
+								<td key={colIdx}>{row[col.field]}</td>
 							))}
 							<td>
 								<div className={style.aksi}>
