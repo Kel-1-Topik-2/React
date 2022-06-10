@@ -9,6 +9,7 @@ const TextForm = ({
   disable,
   value,
   onChange,
+  name,
 }) => {
   return (
     <FormControl fullWidth disabled={disable}>
@@ -25,6 +26,7 @@ const TextForm = ({
         rows={rows}
         value={value}
         onChange={onChange}
+        name={name}
       />
     </FormControl>
   );
