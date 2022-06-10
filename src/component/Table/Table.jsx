@@ -10,7 +10,7 @@ const Table = ({ column, data, onDelete, detailClick }) => {
 				<thead>
 					<tr>
 						{column.map((col, colIdx) => (
-							<td key={colIdx}>{col}</td>
+							<td key={colIdx}>{col.header}</td>
 						))}
 
 						<td>AKSI</td>
@@ -19,10 +19,9 @@ const Table = ({ column, data, onDelete, detailClick }) => {
 				<tbody>
 					{data.map((row, rowIdx) => (
 						<tr key={rowIdx}>
-							<td>{row.idPasien}</td>
-							<td>{row.nama}</td>
-							<td>{row.nik}</td>
-							<td>{row.usia}</td>
+							{column.map((col, colIdx) => (
+								<td>{row[col.field]}</td>
+							))}
 							<td>
 								<div className={style.aksi}>
 									<img

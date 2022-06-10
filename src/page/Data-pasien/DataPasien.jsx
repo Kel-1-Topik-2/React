@@ -31,6 +31,13 @@ const DataPasien = () => {
 		navigate(`/DetailData/${idPasien}`);
 	};
 
+	const column = [
+		{field: "idPasien", header: "ID"},
+		{field: "nama", header: "NAMA LENGKAP"},
+		{field: "nik", header: "NIK"},
+		{field: "usia", header: "USIA"},
+	]
+
 	return (
 		<div>
 			<Sidebar />
@@ -44,7 +51,7 @@ const DataPasien = () => {
 					/>
 				</div>
 				<Table
-					column={['ID', 'NAMA LENGKAP', 'NIK', 'USIA']}
+					column={column}
 					data={dataPasien}
 					onDelete={handleDelete}
 					detailClick={detailClick}

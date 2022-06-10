@@ -1,5 +1,7 @@
 import { useState, useEffect } from 'react';
 
+import { useNavigate } from 'react-router-dom';
+
 import axios from '../../dummy-api/api';
 
 import style from './style.module.css';
@@ -14,6 +16,9 @@ import suster_icon from '../../assets/img/suster_icon.svg';
 import pertemuan_icon from '../../assets/img/pertemuan_icon.svg';
 
 const Dashboard = () => {
+
+	const navigate = useNavigate()
+
 	const endPoint = 'Pasien';
 	const [dataPasien, setDataPasien] = useState([]);
 
@@ -22,6 +27,27 @@ const Dashboard = () => {
 			setDataPasien(res.data);
 		});
 	}, [dataPasien]);
+
+	const handleDelete = (idPasien) => {
+		axios
+			.delete(endPoint + `/${idPasien}`)
+			.then((res) => {
+				console.log(res.data);
+				alert('Deleted!');
+			})
+			.catch((err) => console.log(err));
+	};
+
+	const detailClick = (idPasien) => {
+		navigate(`/DetailData/${idPasien}`);
+	};
+
+	const column = [
+		{field: "idPasien", header: "ID"},
+		{field: "nama", header: "NAMA LENGKAP"},
+		{field: "nik", header: "NIK"},
+		{field: "usia", header: "USIA"},
+	]
 
 	return (
 		<div>
@@ -43,8 +69,10 @@ const Dashboard = () => {
 
 				<p className={style.header}>Data Pasien Terkini</p>
 				<Table
-					column={['ID', 'NAMA LENGKAP', 'NIK', 'USIA']}
+					column={column}
 					data={dataPasien.slice(0, 9)}
+					onDelete={handleDelete}
+					detailClick={detailClick}
 				/>
 			</div>
 		</div>
