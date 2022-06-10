@@ -1,16 +1,17 @@
-import style from "./style.module.css"
+import React from "react";
+import style from "./style.module.css";
 
-const OverviewCard = ({amount, type, icon}) => {
-    return(
-        <div className={style.container}>
-            <div>
-                <p>{amount}</p>
-                <span>{type}</span>
-            </div>
+const OverviewCard = ({ amount, type, icon }) => {
+  return (
+    <div className={style.container}>
+      <div>
+        <p>{amount}</p>
+        <span>{type}</span>
+      </div>
 
-            <img src={icon} alt="" />
-        </div>
-    )
-}
+      <img src={icon} alt="" />
+    </div>
+  );
+};
 
-export default OverviewCard
+export default OverviewCard;

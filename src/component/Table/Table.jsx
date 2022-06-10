@@ -1,7 +1,7 @@
-import style from './style.module.css';
-
-import detailIcon from '../../assets/img/detail_icon.svg';
-import deleteIcon from '../../assets/img/delete_icon.svg';
+import style from "./style.module.css";
+import React from "react";
+import detailIcon from "../../assets/img/detail_icon.svg";
+import deleteIcon from "../../assets/img/delete_icon.svg";
 
 const Table = ({ column, data, onDelete, detailClick }) => {
 	return (

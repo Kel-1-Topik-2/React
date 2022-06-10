@@ -53,23 +53,23 @@ const Dashboard = () => {
 		{field: "usia", header: "USIA"},
 	]
 
-	return (
-		<div>
-			<Sidebar />
-			<div className={style.container}>
-				<div className={style.overview_container}>
-					<p className={style.header}>Overview</p>
-					<div className={style.overview}>
-						<OverviewCard amount={478} type={'Pasien'} icon={pasien_icon} />
-						<OverviewCard amount={272} type={'Dokter'} icon={dokter_icon} />
-						<OverviewCard amount={67} type={'Suster'} icon={suster_icon} />
-						<OverviewCard
-							amount={78}
-							type={'Pertemuan hari ini'}
-							icon={pertemuan_icon}
-						/>
-					</div>
-				</div>
+  return (
+    <div>
+      <Sidebar />
+      <div className={style.container}>
+        <div className={style.overview_container}>
+          <p className={style.header}>Overview</p>
+          <div className={style.overview}>
+            <OverviewCard amount={478} type={"Pasien"} icon={pasien_icon} />
+            <OverviewCard amount={272} type={"Dokter"} icon={dokter_icon} />
+            <OverviewCard amount={67} type={"Suster"} icon={suster_icon} />
+            <OverviewCard
+              amount={78}
+              type={"Pertemuan hari ini"}
+              icon={pertemuan_icon}
+            />
+          </div>
+        </div>
 
 				<p className={style.header}>Data Pasien Terkini</p>
 				<Table
