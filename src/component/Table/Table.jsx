@@ -3,7 +3,7 @@ import React from "react";
 import detailIcon from "../../assets/img/detail_icon.svg";
 import deleteIcon from "../../assets/img/delete_icon.svg";
 
-const Table = ({ column, data, onDelete, detailClick }) => {
+const Table = ({ column, data, primaryKey ,onDelete, detailClick }) => {
 	return (
 		<div className={style.container}>
 			<table>
@@ -13,7 +13,7 @@ const Table = ({ column, data, onDelete, detailClick }) => {
 							<td key={colIdx}>{col.header}</td>
 						))}
 
-						<td>AKSI</td>
+						<td>Aksi</td>
 					</tr>
 				</thead>
 				<tbody>
@@ -28,14 +28,14 @@ const Table = ({ column, data, onDelete, detailClick }) => {
 										src={detailIcon}
 										alt=""
 										onClick={() => {
-											detailClick(row.idPasien);
+											detailClick(row[primaryKey]);
 										}}
 									/>
 									<img
 										src={deleteIcon}
 										alt=""
 										onClick={() => {
-											onDelete(row.idPasien);
+											onDelete(row[primaryKey]);
 										}}
 									/>
 								</div>
