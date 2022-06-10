@@ -48,9 +48,9 @@ const Dashboard = () => {
 
 	const column = [
 		{field: "idPasien", header: "ID"},
-		{field: "nama", header: "NAMA LENGKAP"},
+		{field: "nama", header: "Nama Lengkap"},
 		{field: "nik", header: "NIK"},
-		{field: "usia", header: "USIA"},
+		{field: "usia", header: "Usia"},
 	]
 
   return (
@@ -75,6 +75,7 @@ const Dashboard = () => {
 				<Table
 					column={column}
 					data={dataPasien.slice(0, 9)}
+					primaryKey={"idPasien"}
 					onDelete={handleDelete}
 					detailClick={detailClick}
 				/>

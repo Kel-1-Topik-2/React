@@ -35,17 +35,17 @@ const Sidebar = () => {
             <li>Data Pasien</li>
           </Link>
 
-          <Link to="/data_dokter">
+          <Link to="/data-dokter">
             <img src={data_dokter_icon} alt="" />
             <li>Data Dokter</li>
           </Link>
 
-          <Link to="/kelola_jadwal">
+          <Link to="/kelola-jadwal">
             <img src={kelola_jadwal_icon} alt="" />
             <li>Kelola Jadwal</li>
           </Link>
 
-          <Link to="/arsip_jadwal">
+          <Link to="/arsip-jadwal">
             <img src={arsip_jadwal_icon} alt="" />
             <li>Arsip Jadwal</li>
           </Link>

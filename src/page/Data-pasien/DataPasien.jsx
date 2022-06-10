@@ -38,9 +38,9 @@ const DataPasien = () => {
 
 	const column = [
 		{field: "idPasien", header: "ID"},
-		{field: "nama", header: "NAMA LENGKAP"},
+		{field: "nama", header: "Nama Lengkap"},
 		{field: "nik", header: "NIK"},
-		{field: "usia", header: "USIA"},
+		{field: "usia", header: "Usia"},
 	]
 
 	return (
@@ -58,6 +58,7 @@ const DataPasien = () => {
 				<Table
 					column={column}
 					data={dataPasien}
+					primaryKey={"idPasien"}
 					onDelete={handleDelete}
 					detailClick={detailClick}
 				/>
