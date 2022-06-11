@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useState } from 'react';
 import {
 	Box,
 	Button,
@@ -17,15 +17,46 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
 import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
+import axios from '../../dummy-api/api';
 
 export default function Form() {
 	let navigate = useNavigate();
+	const location = useLocation();
+
+	const [editPasien, setEditPasien] = useState({
+		nama: location.state.nama,
+		nik: location.state.nik,
+		telp: location.state.telp,
+		usia: location.state.usia,
+		jk: location.state.jk,
+		alamat: location.state.alamat,
+	});
 
 	const handleBack = () => {
 		navigate(-1);
 	};
 	const handleSubmit = (e) => {
 		e.preventDefault();
+		const newData = {
+			nama: editPasien.nama,
+			nik: editPasien.nik,
+			telp: editPasien.telp,
+			usia: editPasien.usia,
+			jk: editPasien.jk,
+			alamat: editPasien.alamat,
+		};
+		axios.put(`Pasien/${location.state.idPasien}`, newData).then((res) => {
+			console.log(res.data);
+			alert('Perubahan di simpan');
+		});
+	};
+
+	const handleChange = (e) => {
+		setEditPasien({
+			...editPasien,
+			[e.target.name]: e.target.value,
+		});
 	};
 
 	const paperStyle = {
@@ -89,16 +120,40 @@ export default function Form() {
 						>
 							<Grid container spacing={2}>
 								<Grid item xs={7}>
-									<FormInput title="Nama lengkap*" type="text" />
+									<FormInput
+										name={'nama'}
+										title="Nama lengkap*"
+										type="text"
+										onChange={handleChange}
+										value={editPasien.nama}
+									/>
 								</Grid>
 								<Grid item xs={5}>
-									<FormInput title="Nomor Handphone*" type="text" />
+									<FormInput
+										name={'telp'}
+										title="Nomor Handphone*"
+										type="text"
+										onChange={handleChange}
+										value={editPasien.telp}
+									/>
 								</Grid>
 								<Grid item xs={6}>
-									<FormInput title="NIK*" type="text" />
+									<FormInput
+										name={'nik'}
+										title="NIK*"
+										type="text"
+										onChange={handleChange}
+										value={editPasien.nik}
+									/>
 								</Grid>
 								<Grid item xs={2}>
-									<FormInput title="Usia*" type="number" />
+									<FormInput
+										name={'usia'}
+										title="Usia*"
+										type="number"
+										onChange={handleChange}
+										value={editPasien.usia}
+									/>
 								</Grid>
 								<Grid item xs={4}>
 									<FormControl>
@@ -112,26 +167,36 @@ export default function Form() {
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
 											name="row-radio-buttons-group"
+											
 										>
 											<FormControlLabel
+												name="jk"
 												value="Laki-Laki"
 												control={<Radio />}
 												label="L"
+												checked={editPasien.jk === 'Laki-Laki'}
+												onChange={handleChange}
 											/>
 											<FormControlLabel
+												nama="jk"
 												value="Perempuan"
 												control={<Radio />}
+												checked={editPasien.jk === 'Perempuan'}
 												label="P"
+												onChange={handleChange}
 											/>
 										</RadioGroup>
 									</FormControl>
 								</Grid>
 								<Grid item xs={12}>
 									<FormInput
+										name={'alamat'}
 										title="Alamat Rumah*"
 										type="text"
 										multiline
 										rows={3}
+										onChange={handleChange}
+										value={editPasien.alamat}
 									/>
 								</Grid>
 							</Grid>
@@ -144,6 +209,9 @@ export default function Form() {
 									<Button
 										variant="outlined"
 										color="error"
+										onClick={() => {
+											navigate(-2);
+										}}
 										sx={{
 											width: '160px',
 											height: '50px',
@@ -158,6 +226,7 @@ export default function Form() {
 									<Button
 										variant="contained"
 										type="submit"
+										onClick={handleSubmit}
 										sx={{
 											width: '160px',
 											height: '50px',

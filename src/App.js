@@ -16,7 +16,7 @@ function App() {
       <Route path="/data-dokter" element={<DataDokter />} />
       <Route path="/AddData" element={<AddData />} />
       <Route path="/DetailData/:id" element={<DetailData />} />
-      <Route path="/DetailData/EditData" element={<EditData />} />
+      <Route path="/DetailData/EditData/:id" element={<EditData />} />
     </Routes>
   );
 }
