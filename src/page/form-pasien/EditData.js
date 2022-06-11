@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import {
   Box,
   Button,
@@ -8,60 +8,29 @@ import {
   Tooltip,
   Typography,
   FormControl,
+  RadioGroup,
   FormLabel,
   FormControlLabel,
-  RadioGroup,
   Radio,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "../../dummy-api/api";
 
 export default function Form() {
-  const formData = {
-    nama: "",
-    nik: "",
-    usia: 0,
-    telp: "",
-    alamat: "",
-  };
-
   let navigate = useNavigate();
-
-  const [data, setData] = useState(formData);
-  const [radio, setRadio] = useState("");
 
   const handleBack = () => {
     navigate(-1);
   };
 
-  const endPoint = `Pasien`;
-
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setData({ ...data, [name]: value });
+  const handleCancel = () => {
+    navigate("/");
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(endPoint, {
-        nama: data.nama,
-        nik: data.nik,
-        usia: data.usia,
-        jk: radio,
-        telp: data.telp,
-        alamat: data.alamat,
-      })
-      .then((res) => {
-        alert("Data telah ditambah");
-        navigate("/data-pasien");
-      })
-      .catch((error) => {
-        console.log(error);
-      });
   };
 
   const paperStyle = {
@@ -100,11 +69,7 @@ export default function Form() {
         </Grid>
         <Grid>
           <Typography variant="h3" component="div">
-            <strong>Tambah Data Pasien</strong>
-          </Typography>
-
-          <Typography variant="h6" component="div">
-            Registrasi untuk pasien baru.
+            <strong>Edit Data Pasien</strong>
           </Typography>
         </Grid>
       </Grid>
@@ -129,42 +94,17 @@ export default function Form() {
             >
               <Grid container spacing={2}>
                 <Grid item xs={7}>
-                  <FormInput
-                    title="Nama lengkap*"
-                    type="text"
-                    value={data.nama}
-                    name="nama"
-                    onChange={handleChange}
-                  />
+                  <FormInput title="Nama lengkap*" type="text" />
                 </Grid>
                 <Grid item xs={5}>
-                  <FormInput
-                    title="Nomor Handphone*"
-                    type="text"
-                    value={data.telp}
-                    name="telp"
-                    onChange={handleChange}
-                  />
+                  <FormInput title="Nomor Handphone*" type="text" />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormInput
-                    title="NIK*"
-                    type="text"
-                    value={data.nik}
-                    name="nik"
-                    onChange={handleChange}
-                  />
+                  <FormInput title="NIK*" type="text" />
                 </Grid>
                 <Grid item xs={2}>
-                  <FormInput
-                    title="Usia*"
-                    type="number"
-                    value={data.usia}
-                    name="usia"
-                    onChange={handleChange}
-                  />
+                  <FormInput title="Usia*" type="number" />
                 </Grid>
-                {/* Radio */}
                 <Grid item xs={4}>
                   <FormControl>
                     <FormLabel
@@ -182,17 +122,11 @@ export default function Form() {
                         value="Laki-Laki"
                         control={<Radio />}
                         label="L"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                       <FormControlLabel
                         value="Perempuan"
                         control={<Radio />}
                         label="P"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                     </RadioGroup>
                   </FormControl>
@@ -203,9 +137,6 @@ export default function Form() {
                     type="text"
                     multiline
                     rows={3}
-                    value={data.alamat}
-                    name="alamat"
-                    onChange={handleChange}
                   />
                 </Grid>
               </Grid>
@@ -224,6 +155,7 @@ export default function Form() {
                       borderRadius: "20px",
                       fontSize: "16px",
                     }}
+                    onClick={handleCancel}
                   >
                     <strong>BATAL</strong>
                   </Button>

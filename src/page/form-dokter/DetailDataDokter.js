@@ -7,40 +7,36 @@ import {
   Paper,
   Tooltip,
   Typography,
-  FormControl,
-  RadioGroup,
-  FormLabel,
-  FormControlLabel,
-  Radio,
 } from "@mui/material";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
-import image from "../../assets/sideFoto/foto.png";
+import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
 import axios from "../../dummy-api/api";
+
 export default function DetailData() {
   let navigate = useNavigate();
-  const [detailPasien, setDetailPasien] = useState([]);
+  const [detailDokter, setDetailDokter] = useState([]);
 
   const params = useParams();
 
-  const endPoint = `Pasien/${params.id}`;
+  const endPoint = `Dokter/${params.id}`;
 
   useEffect(() => {
     axios.get(endPoint).then((res) => {
-      setDetailPasien(res.data);
+      setDetailDokter(res.data);
     });
   }, []);
 
-  console.log(detailPasien);
+  console.log(detailDokter);
   const handleBack = () => {
     navigate(-1);
   };
 
   const handleEdit = () => {
-    navigate("/DetailData/EditData");
+    navigate("/detail-data-dokter/edit-data-dokter");
   };
 
   const paperStyle = {
@@ -79,7 +75,7 @@ export default function DetailData() {
         </Grid>
         <Grid>
           <Typography variant="h3" component="div">
-            <strong>Detail Data Pasien</strong>
+            <strong>Detail Data Dokter</strong>
           </Typography>
         </Grid>
       </Grid>
@@ -123,75 +119,44 @@ export default function DetailData() {
                 </Button>
               </Grid>
               <Grid container spacing={2}>
-                <Grid item xs={7}>
+                <Grid item xs={12}>
                   <FormInput
                     title="Nama lengkap"
                     type="text"
                     disable
-                    value={detailPasien.nama}
-                  />
-                </Grid>
-                <Grid item xs={5}>
-                  <FormInput
-                    title="Nomor Handphone"
-                    type="text"
-                    disable
-                    value={detailPasien.telp}
+                    value={detailDokter.nama}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="NIK"
+                    title="NPA IDI"
                     type="text"
                     disable
-                    value={detailPasien.nik}
+                    value={detailDokter.npa}
                   />
                 </Grid>
-                <Grid item xs={2}>
+                <Grid item xs={6}>
                   <FormInput
-                    title="Usia"
-                    type="number"
-                    disable
-                    value={detailPasien.usia}
-                  />
-                </Grid>
-                {/* Radio */}
-                <Grid item xs={4}>
-                  <FormControl disabled>
-                    <FormLabel
-                      id="demo-row-radio-buttons-group-label"
-                      sx={{ color: "#358C56" }}
-                    >
-                      <strong>Jenis Kelamin</strong>
-                    </FormLabel>
-                    <RadioGroup
-                      row
-                      aria-labelledby="demo-row-radio-buttons-group-label"
-                      name="row-radio-buttons-group"
-                    >
-                      <FormControlLabel
-                        value="Laki-Laki"
-                        control={<Radio />}
-                        label="L"
-                        checked={detailPasien.jk === "Laki-Laki"}
-                      />
-                      <FormControlLabel
-                        value="Perempuan"
-                        control={<Radio />}
-                        label="P"
-                        checked={detailPasien.jk === "Perempuan"}
-                      />
-                    </RadioGroup>
-                  </FormControl>
-                </Grid>
-                <Grid item xs={12}>
-                  <FormInput
-                    title="Alamat Rumah"
+                    title="Spesialis"
                     type="text"
-                    multiline
-                    rows={3}
                     disable
-                    value={detailPasien.alamat}
+                    value={detailDokter.spesialis}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormInput
+                    title="Username"
+                    type="text"
+                    disable
+                    value={detailDokter.userName}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormInput
+                    title="Password"
+                    type="text"
+                    disable
+                    value={detailDokter.password}
                   />
                 </Grid>
               </Grid>
