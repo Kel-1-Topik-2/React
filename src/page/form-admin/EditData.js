@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -29,9 +29,17 @@ export default function Form() {
 		nik: location.state.nik,
 		telp: location.state.telp,
 		usia: location.state.usia,
-		jk: location.state.jk,
 		alamat: location.state.alamat,
 	});
+
+	const [radioValue, setRadioValue] = useState(location.state.jk);
+	const handleRadioEdit = (e) => {
+		setRadioValue(e.target.value);
+	};
+
+	useEffect(() => {
+		console.log(radioValue);
+	}, [radioValue])
 
 	const handleBack = () => {
 		navigate(-1);
@@ -43,7 +51,7 @@ export default function Form() {
 			nik: editPasien.nik,
 			telp: editPasien.telp,
 			usia: editPasien.usia,
-			jk: editPasien.jk,
+			jk: radioValue,
 			alamat: editPasien.alamat,
 		};
 		axios.put(`Pasien/${location.state.idPasien}`, newData).then((res) => {
@@ -167,23 +175,18 @@ export default function Form() {
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
 											name="row-radio-buttons-group"
-											
+											value={radioValue}
+											onChange={handleRadioEdit}
 										>
 											<FormControlLabel
-												name="jk"
 												value="Laki-Laki"
 												control={<Radio />}
 												label="L"
-												checked={editPasien.jk === 'Laki-Laki'}
-												onChange={handleChange}
 											/>
 											<FormControlLabel
-												nama="jk"
 												value="Perempuan"
 												control={<Radio />}
-												checked={editPasien.jk === 'Perempuan'}
 												label="P"
-												onChange={handleChange}
 											/>
 										</RadioGroup>
 									</FormControl>
