@@ -61,7 +61,7 @@ export default function Form() {
       })
       .then((res) => {
         alert("Data telah ditambah");
-        navigate("/data-pasien");
+        navigate(0);
       })
       .catch((error) => {
         console.log(error);

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import {
 	Box,
 	Button,
@@ -16,14 +16,15 @@ import {
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
-import { useNavigate, useLocation } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
+import { useLocation } from 'react-router-dom';
 import axios from '../../dummy-api/api';
 
 export default function Form() {
 	let navigate = useNavigate();
 	const location = useLocation();
 
-	const [editDataPasien, setEditDataPasien] = useState({
+	const [editPasien, setEditPasien] = useState({
 		nama: location.state.nama,
 		nik: location.state.nik,
 		telp: location.state.telp,
@@ -31,39 +32,38 @@ export default function Form() {
 		alamat: location.state.alamat,
 	});
 
-	const [editRadio, setEditRadio] = useState(location.state.jk);
-
-	const handleChangeRadio = (e) => {
-		setEditRadio(e.target.value);
+	const [radioValue, setRadioValue] = useState(location.state.jk);
+	const handleRadioEdit = (e) => {
+		setRadioValue(e.target.value);
 	};
 
-	const handleChange = (e) => {
-		setEditDataPasien({
-			...editDataPasien,
-			[e.target.name]: e.target.value,
-		});
-	};
+	useEffect(() => {
+		console.log(radioValue);
+	}, [radioValue])
 
 	const handleBack = () => {
 		navigate(-1);
 	};
-
-	const handleCancel = () => {
-		navigate('/');
-	};
-
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const newData = {
-			nama: editDataPasien.nama,
-			telp: editDataPasien.telp,
-			nik: editDataPasien.nik,
-			usia: editDataPasien.usia,
-			alamat: editDataPasien.alamat,
+			nama: editPasien.nama,
+			nik: editPasien.nik,
+			telp: editPasien.telp,
+			usia: editPasien.usia,
+			jk: radioValue,
+			alamat: editPasien.alamat,
 		};
-		axios.put(`/Pasien/${location.state.idPasien}`, newData).then((res) => {
+		axios.put(`Pasien/${location.state.idPasien}`, newData).then((res) => {
 			console.log(res.data);
-			alert('data telah diubah');
+			alert('Perubahan di simpan');
+		});
+	};
+
+	const handleChange = (e) => {
+		setEditPasien({
+			...editPasien,
+			[e.target.name]: e.target.value,
 		});
 	};
 
@@ -129,38 +129,38 @@ export default function Form() {
 							<Grid container spacing={2}>
 								<Grid item xs={7}>
 									<FormInput
+										name={'nama'}
 										title="Nama lengkap*"
 										type="text"
-										name="nama"
-										value={editDataPasien.nama}
 										onChange={handleChange}
+										value={editPasien.nama}
 									/>
 								</Grid>
 								<Grid item xs={5}>
 									<FormInput
+										name={'telp'}
 										title="Nomor Handphone*"
 										type="text"
-										name="telp"
-										value={editDataPasien.telp}
 										onChange={handleChange}
+										value={editPasien.telp}
 									/>
 								</Grid>
 								<Grid item xs={6}>
 									<FormInput
+										name={'nik'}
 										title="NIK*"
 										type="text"
-										name="nik"
-										value={editDataPasien.nik}
 										onChange={handleChange}
+										value={editPasien.nik}
 									/>
 								</Grid>
 								<Grid item xs={2}>
 									<FormInput
+										name={'usia'}
 										title="Usia*"
 										type="number"
-										name="usia"
-										value={editDataPasien.usia}
 										onChange={handleChange}
+										value={editPasien.usia}
 									/>
 								</Grid>
 								<Grid item xs={4}>
@@ -175,8 +175,8 @@ export default function Form() {
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
 											name="row-radio-buttons-group"
-                      value={editRadio}
-                      onChange={handleChangeRadio}
+											value={radioValue}
+											onChange={handleRadioEdit}
 										>
 											<FormControlLabel
 												value="Laki-Laki"
@@ -193,13 +193,13 @@ export default function Form() {
 								</Grid>
 								<Grid item xs={12}>
 									<FormInput
+										name={'alamat'}
 										title="Alamat Rumah*"
 										type="text"
 										multiline
 										rows={3}
-										name="alamat"
-										value={editDataPasien.alamat}
 										onChange={handleChange}
+										value={editPasien.alamat}
 									/>
 								</Grid>
 							</Grid>
@@ -212,13 +212,15 @@ export default function Form() {
 									<Button
 										variant="outlined"
 										color="error"
+										onClick={() => {
+											navigate(-2);
+										}}
 										sx={{
 											width: '160px',
 											height: '50px',
 											borderRadius: '20px',
 											fontSize: '16px',
 										}}
-										onClick={handleCancel}
 									>
 										<strong>BATAL</strong>
 									</Button>
@@ -227,6 +229,7 @@ export default function Form() {
 									<Button
 										variant="contained"
 										type="submit"
+										onClick={handleSubmit}
 										sx={{
 											width: '160px',
 											height: '50px',
