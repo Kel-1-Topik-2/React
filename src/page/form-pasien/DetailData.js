@@ -25,7 +25,7 @@ export default function DetailData() {
 	const [detailPasien, setDetailPasien] = useState([]);
 	const params = useParams();
 	const handleEdit = useLinkClickHandler(
-		`/DetailData/EditData/${detailPasien.idPasien}`,
+		`/detail-data-pasien/edit-data-pasien/${detailPasien.idPasien}`,
 		{
 			state: detailPasien,
 		}
