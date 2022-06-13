@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect} from 'react';
 import {
 	Box,
 	Button,
@@ -37,6 +37,10 @@ export default function Form() {
 		setEditRadio(e.target.value);
 	};
 
+	useEffect(() => {
+		console.log(editRadio);
+	}, [editRadio])
+
 	const handleChange = (e) => {
 		setEditDataPasien({
 			...editDataPasien,
@@ -59,6 +63,7 @@ export default function Form() {
 			telp: editDataPasien.telp,
 			nik: editDataPasien.nik,
 			usia: editDataPasien.usia,
+			jk: editRadio,
 			alamat: editDataPasien.alamat,
 		};
 		axios.put(`/Pasien/${location.state.idPasien}`, newData).then((res) => {
@@ -179,7 +184,7 @@ export default function Form() {
                       onChange={handleChangeRadio}
 										>
 											<FormControlLabel
-												value="Laki-Laki"
+												value="Laki Laki"
 												control={<Radio />}
 												label="L"
 											/>
