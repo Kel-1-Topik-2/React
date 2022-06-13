@@ -10,6 +10,7 @@ import EditData from "./page/form-pasien/EditData";
 import AddDataDokter from "./page/form-dokter/AddDataDokter";
 import DetailDataDokter from "./page/form-dokter/DetailDataDokter";
 import EditDataDokter from "./page/form-dokter/EditDataDokter";
+import KelolaJadwal from "./page/Kelola-jadwal/KelolaJadwal";
 
 function App() {
   return (
@@ -30,6 +31,8 @@ function App() {
         path="/detail-data-dokter/edit-data-dokter/:id"
         element={<EditDataDokter />}
       />
+
+      <Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
     </Routes>
   );
 }
