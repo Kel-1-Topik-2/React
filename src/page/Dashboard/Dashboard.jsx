@@ -42,7 +42,7 @@ const Dashboard = () => {
   };
 
   const detailClick = (idPasien) => {
-    navigate(`/DetailData/${idPasien}`);
+    navigate(`/detail-data-pasien/${idPasien}`);
   };
 
   const column = [
