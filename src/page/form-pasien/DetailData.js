@@ -170,10 +170,10 @@ export default function DetailData() {
 											name="row-radio-buttons-group"
 										>
 											<FormControlLabel
-												value="Laki-Laki"
+												value="Laki Laki"
 												control={<Radio />}
 												label="L"
-												checked={detailPasien.jk === 'Laki-Laki'}
+												checked={detailPasien.jk === 'Laki Laki'}
 											/>
 											<FormControlLabel
 												value="Perempuan"

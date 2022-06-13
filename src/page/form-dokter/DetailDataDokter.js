@@ -11,7 +11,7 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
-import { useNavigate } from "react-router-dom";
+import { useLinkClickHandler, useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
 import axios from "../../dummy-api/api";
@@ -22,6 +22,12 @@ export default function DetailData() {
 
   const params = useParams();
 
+  const handleEdit = useLinkClickHandler(
+    `/detail-data-dokter/edit-data-dokter/${detailDokter.idDokter}`,
+    {
+      state: detailDokter,
+    }
+  );
   const endPoint = `Dokter/${params.id}`;
 
   useEffect(() => {
@@ -33,10 +39,6 @@ export default function DetailData() {
   console.log(detailDokter);
   const handleBack = () => {
     navigate(-1);
-  };
-
-  const handleEdit = () => {
-    navigate("/detail-data-dokter/edit-data-dokter");
   };
 
   const paperStyle = {

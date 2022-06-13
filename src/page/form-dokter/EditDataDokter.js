@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import {
   Box,
   Button,
@@ -11,10 +11,28 @@ import {
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
+import axios from "../../dummy-api/api";
 
 export default function Form() {
   let navigate = useNavigate();
+
+  const location = useLocation();
+
+  const [editDataDokter, setEditDataDokter] = useState({
+    nama: location.state.nama,
+    npa: location.state.npa,
+    spesialis: location.state.spesialis,
+    userName: location.state.userName,
+    password: location.state.password,
+  });
+
+  const handleChange = (e) => {
+    setEditDataDokter({
+      ...editDataDokter,
+      [e.target.name]: e.target.value,
+    });
+  };
 
   const handleBack = () => {
     navigate(-1);
@@ -26,6 +44,17 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    const newData = {
+      nama: editDataDokter.nama,
+      npa: editDataDokter.npa,
+      spesialis: editDataDokter.spesialis,
+      userName: editDataDokter.userName,
+      password: editDataDokter.password,
+    };
+    axios.put(`/Dokter/${location.state.idDokter}`, newData).then((res) => {
+      console.log(res.data);
+      alert("data telah diubah");
+    });
   };
 
   const paperStyle = {
@@ -89,19 +118,49 @@ export default function Form() {
             >
               <Grid container spacing={2}>
                 <Grid item xs={12}>
-                  <FormInput title="Nama lengkap*" type="text" />
+                  <FormInput
+                    title="Nama lengkap*"
+                    type="text"
+                    name="nama"
+                    value={editDataDokter.nama}
+                    onChange={handleChange}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormInput title="NPA IDI*" type="text" />
+                  <FormInput
+                    title="NPA IDI*"
+                    type="text"
+                    name="npa"
+                    value={editDataDokter.npa}
+                    onChange={handleChange}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormInput title="Spesialis*" type="text" />
+                  <FormInput
+                    title="Spesialis*"
+                    type="text"
+                    name="spesialis"
+                    value={editDataDokter.spesialis}
+                    onChange={handleChange}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormInput title="Username*" type="text" />
+                  <FormInput
+                    title="Username*"
+                    type="text"
+                    name="userName"
+                    value={editDataDokter.userName}
+                    onChange={handleChange}
+                  />
                 </Grid>
                 <Grid item xs={6}>
-                  <FormInput title="Password*" type="text" />
+                  <FormInput
+                    title="Password*"
+                    type="text"
+                    name="password"
+                    value={editDataDokter.password}
+                    onChange={handleChange}
+                  />
                 </Grid>
               </Grid>
               <Grid
