@@ -1,5 +1,5 @@
 import React from "react";
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 
 import style from "./style.module.css";
 
@@ -25,37 +25,62 @@ const Sidebar = () => {
       </div>
       <div className={style.navigation_container}>
         <ul>
-          <Link to="/">
+          <NavLink to="/"
+            style={({isActive}) => (
+              isActive ? {
+                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+              } : {}
+            )}>
             <img src={dashboard_icon} alt="" />
             <li>Dashboard</li>
-          </Link>
+          </NavLink>
 
-          <Link to="/data-pasien">
+          <NavLink to="/data-pasien"
+            style={({isActive}) => (
+              isActive ? {
+                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+              } : {}
+            )}>
             <img src={data_pasien_icon} alt="" />
             <li>Data Pasien</li>
-          </Link>
+          </NavLink>
 
-          <Link to="/data-dokter">
+          <NavLink to="/data-dokter"
+            style={({isActive}) => (
+              isActive ? {
+                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+              } : {}
+            )}>
             <img src={data_dokter_icon} alt="" />
             <li>Data Dokter</li>
-          </Link>
+          </NavLink>
 
-          <Link to="/kelola-jadwal">
+          <NavLink to="/kelola-jadwal"
+            style={({isActive}) => (
+              isActive ? {
+                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+              } : {}
+            )}>
             <img src={kelola_jadwal_icon} alt="" />
             <li>Kelola Jadwal</li>
-          </Link>
+          </NavLink>
 
-          <Link to="/arsip-jadwal">
+          <NavLink to="/arsip-jadwal"
+            style={({isActive}) => (
+              isActive ? {
+                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+              } : {}
+            )}>
             <img src={arsip_jadwal_icon} alt="" />
             <li>Arsip Jadwal</li>
-          </Link>
+          </NavLink>
 
           <hr />
 
-          <Link to={"#"}>
+          <NavLink to={"#"}>
             <img src={logout_icon} alt="" />
             <li>Logout</li>
-          </Link>
+          </NavLink>
         </ul>
       </div>
     </div>

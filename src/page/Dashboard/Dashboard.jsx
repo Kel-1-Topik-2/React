@@ -14,6 +14,8 @@ import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
 import suster_icon from "../../assets/img/suster_icon.svg";
 import pertemuan_icon from "../../assets/img/pertemuan_icon.svg";
+import detailIcon from "../../assets/img/detail_icon.svg";
+import deleteIcon from "../../assets/img/delete_icon.svg";
 
 const Dashboard = () => {
   const navigate = useNavigate();
@@ -42,7 +44,7 @@ const Dashboard = () => {
   };
 
   const detailClick = (idPasien) => {
-    navigate(`/DetailData/${idPasien}`);
+    navigate(`/detail-data-pasien/${idPasien}`);
   };
 
   const column = [
@@ -51,6 +53,17 @@ const Dashboard = () => {
     { field: "nik", header: "NIK" },
     { field: "usia", header: "Usia" },
   ];
+
+  const aksi = [
+    {
+      click: (idPasien) => detailClick(idPasien),
+      icon: detailIcon
+    },
+    {
+      click: (idPasien) => handleDelete(idPasien),
+      icon: deleteIcon
+    }
+  ]
 
   return (
     <div>
@@ -75,8 +88,7 @@ const Dashboard = () => {
           column={column}
           data={dataPasien.slice(0, 9)}
           primaryKey={"idPasien"}
-          onDelete={handleDelete}
-          detailClick={detailClick}
+          aksi={aksi}
         />
       </div>
     </div>

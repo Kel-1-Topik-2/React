@@ -1,9 +1,7 @@
 import style from "./style.module.css";
 import React from "react";
-import detailIcon from "../../assets/img/detail_icon.svg";
-import deleteIcon from "../../assets/img/delete_icon.svg";
 
-const Table = ({ column, data, primaryKey ,onDelete, detailClick }) => {
+const Table = ({ column, data, primaryKey ,aksi }) => {
 	return (
 		<div className={style.container}>
 			<table>
@@ -13,7 +11,9 @@ const Table = ({ column, data, primaryKey ,onDelete, detailClick }) => {
 							<td key={colIdx}>{col.header}</td>
 						))}
 
-						<td>Aksi</td>
+						{aksi.length !== 0 && (
+							<td>Aksi</td>
+						)}
 					</tr>
 				</thead>
 				<tbody>
@@ -22,24 +22,22 @@ const Table = ({ column, data, primaryKey ,onDelete, detailClick }) => {
 							{column.map((col, colIdx) => (
 								<td key={colIdx}>{row[col.field]}</td>
 							))}
-							<td>
-								<div className={style.aksi}>
-									<img
-										src={detailIcon}
-										alt=""
-										onClick={() => {
-											detailClick(row[primaryKey]);
-										}}
-									/>
-									<img
-										src={deleteIcon}
-										alt=""
-										onClick={() => {
-											onDelete(row[primaryKey]);
-										}}
-									/>
-								</div>
-							</td>
+							{aksi.length !== 0 && (
+								<td>
+									<div className={style.aksi}>
+										{aksi.map((aksi, aksiIdx) => (
+											<img
+												key={aksiIdx}
+												src={aksi.icon}
+												alt=""
+												onClick={() => {
+													aksi.click(row[primaryKey])
+												}}
+											/>
+										))}
+									</div>
+								</td>
+							)}
 						</tr>
 					))}
 				</tbody>
