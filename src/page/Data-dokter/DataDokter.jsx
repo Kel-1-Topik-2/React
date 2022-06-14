@@ -10,6 +10,9 @@ import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import Table from "../../component/Table/Table";
 
+import detailIcon from "../../assets/img/detail_icon.svg";
+import deleteIcon from "../../assets/img/delete_icon.svg";
+
 const DataDokter = () => {
   const endPoint = "Dokter";
   const [dataDokter, setDataDokter] = useState([]);
@@ -35,8 +38,8 @@ const DataDokter = () => {
     }
   };
 
-  const detailClick = (dataDokter) => {
-    navigate(`/detail-data-dokter/${dataDokter}`);
+  const detailClick = (idDokter) => {
+    navigate(`/detail-data-dokter/${idDokter}`);
   };
 
   const column = [
@@ -45,6 +48,17 @@ const DataDokter = () => {
     { field: "userName", header: "Username" },
     { field: "spesialis", header: "Spesialis" },
   ];
+
+  const aksi = [
+    {
+      click: (idDokter) => detailClick(idDokter),
+      icon: detailIcon
+    },
+    {
+      click: (idDokter) => handleDelete(idDokter),
+      icon: deleteIcon
+    }
+  ]
 
   return (
     <div>
@@ -62,8 +76,7 @@ const DataDokter = () => {
           column={column}
           data={dataDokter}
           primaryKey={"idDokter"}
-          onDelete={handleDelete}
-          detailClick={detailClick}
+          aksi={aksi}
         />
       </div>
     </div>

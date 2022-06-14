@@ -20,7 +20,6 @@ const KelolaJadwal = () => {
     useEffect(() => {
         axios.get(endPoint).then((res) => {
           setJadwal(res.data);
-          console.log(res.data)
         });
       }, []);
 
@@ -48,6 +47,7 @@ const KelolaJadwal = () => {
                 <Table
                     column={column}
                     data={jadwal}
+                    aksi={[]}
                 />
             </div>
         </div>
