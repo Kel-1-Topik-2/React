@@ -34,25 +34,9 @@ function App() {
 				path="/detail-data-dokter/edit-data-dokter/:id"
 				element={<EditDataDokter />}
 			/>
+			<Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
 		</Routes>
 	);
-
-      <Route path="/add-data-pasien" element={<AddData />} />
-      <Route path="/detail-data-pasien/:id" element={<DetailData />} />
-      <Route
-        path="/detail-data-pasien/edit-data-pasien/:id"
-        element={<EditData />}
-      />
-      <Route path="/add-data-dokter" element={<AddDataDokter />} />
-      <Route path="/detail-data-dokter/:id" element={<DetailDataDokter />} />
-      <Route
-        path="/detail-data-dokter/edit-data-dokter/:id"
-        element={<EditDataDokter />}
-      />
-
-      <Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
-    </Routes>
-  );
 }
 
 export default App;
