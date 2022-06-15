@@ -29,21 +29,10 @@ body {
 	background-color: white;
 }
 
-.input {
-	width: 435px;
-	height: 50px;
-	border-radius: 20px;
-	padding-left: 26px;
-	font-size: 18px;
-	box-sizing: border-box;
-	border: 1px solid #000000;
-	margin-bottom: 12px;
-}
-
 .title {
-	margin-top: 120px;
+	margin-top: 50px;
 	text-align: center;
-	margin-bottom: 120px;
+	margin-bottom: 70px;
 }
 
 .title p {
@@ -54,4 +43,40 @@ body {
 	width: 100%;
 	display: flex;
 	justify-content: center;
+}
+
+.form {
+	max-width: 435px;
+}
+
+input {
+	height: 50px;
+	width: 435px;
+	outline: 0;
+	border: none;
+	font-size: 18px;
+	position: relative;
+	border: 2px solid rgb(44, 44, 44);
+	border-radius: 20px;
+	padding: 0 20px;
+}
+
+.icon {
+	height: 100%;
+	display: flex;
+	align-items: center;
+	position: absolute;
+	right: 20px;
+}
+
+.formInput {
+	display: flex;
+	align-items: center;
+	margin-bottom: 12px;
+	border-radius: 20px;
+	position: relative;
+}
+
+input:focus {
+	border: 3px solid #4b00ff;
 }

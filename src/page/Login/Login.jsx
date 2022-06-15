@@ -1,8 +1,18 @@
-import React from 'react';
+import React, { useState } from 'react';
 import banner from '../../assets/sideFoto/banner.png';
 import style from './style.module.css';
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
+import Checkbox from '@mui/material/Checkbox';
+import showOff from '../../assets/img/showOff.svg';
+import showOn from '../../assets/img/showOn.svg';
+
 const Login = () => {
+	const [show, setShow] = useState(false);
+
+	const handleClickShow = () => {
+		setShow((prevValue) => !prevValue);
+	};
+
 	return (
 		<div className={style.container}>
 			<div className={style.banner}>
@@ -25,19 +35,31 @@ const Login = () => {
 							Dokter
 						</option>
 					</select>
-					<div>
-						<input type="text" placeholder="Username" className={style.input} />
+					<div className="form">
+						<div className={style.formInput}>
+							<input type="text" name="username" placeholder="Username" />
+						</div>
+						<div className={style.formInput}>
+							<input
+								type={show ? 'text' : 'password'}
+								name="password"
+								placeholder="Password"
+							/>
+							<div className={style.icon} onClick={handleClickShow}>
+								<img src={show ? showOff : showOn} alt="" width={'30px'} />
+							</div>
+						</div>
 					</div>
 					<div>
-						<input
-							type="password"
-							placeholder="Password"
-							className={style.input}
-						/>
+						<label htmlFor="">
+							<Checkbox />
+							Remember me
+						</label>
 					</div>
 					<div
 						style={{
 							textAlign: 'center',
+							marginTop: '70px',
 						}}
 					>
 						<ButtonPrimary title={'Login'} />
