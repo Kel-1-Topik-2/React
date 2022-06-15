@@ -74,5 +74,5 @@ input {
 }
 
 input:focus {
-	border: 3px solid black;
+	border: 3px solid #4b00ff;
 }

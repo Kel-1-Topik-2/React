@@ -46,7 +46,7 @@ const Login = () => {
 								placeholder="Password"
 							/>
 							<div className={style.icon} onClick={handleClickShow}>
-								<img src={show ? showOn : showOff} alt="" width={'30px'} />
+								<img src={show ? showOff : showOn} alt="" width={'30px'} />
 							</div>
 						</div>
 					</div>
