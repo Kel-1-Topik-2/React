@@ -1,10 +1,13 @@
 import React, { useState, useEffect } from "react";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import axios from "../../dummy-api/api";
-import Table from "../../component/Table/Table";
-import style from "./style.module.css";
-import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
 import { useNavigate } from "react-router-dom";
+import Table from "../../component/Table/Table";
+import ButtonPrimary from "../../component/button-primary/ButtonPrimary";
+import style from "./style.module.css";
+
+import detailIcon from "../../assets/img/detail_icon.svg";
+import deleteIcon from "../../assets/img/delete_icon.svg";
 
 const DataPasien = () => {
   const endPoint = "Pasien";
@@ -42,6 +45,17 @@ const DataPasien = () => {
     { field: "usia", header: "Usia" },
   ];
 
+  const aksi = [
+    {
+      click: (idPasien) => detailClick(idPasien),
+      icon: detailIcon
+    },
+    {
+      click: (idPasien) => handleDelete(idPasien),
+      icon: deleteIcon
+    }
+  ]
+
   return (
     <div>
       <Sidebar />
@@ -58,8 +72,7 @@ const DataPasien = () => {
           column={column}
           data={dataPasien}
           primaryKey={"idPasien"}
-          onDelete={handleDelete}
-          detailClick={detailClick}
+          aksi={aksi}
         />
       </div>
     </div>
