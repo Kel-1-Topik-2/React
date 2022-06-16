@@ -9,28 +9,6 @@
 
 .icon{
     margin: 3rem auto;
-
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-
-    text-align: center;
-}
-
-.icon img{
-    width: 80px;
-    height: 80px;
-}
-
-.icon span{
-    font-weight: 700;
-    font-size: 1.25rem;
-}
-
-.icon p{
-    font-weight: 400;
-    font-size: 0.875rem;
-    letter-spacing: 0.2em;
 }
 
 .navigation_container ul{
