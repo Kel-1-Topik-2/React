@@ -3,7 +3,8 @@ import { NavLink } from "react-router-dom";
 
 import style from "./style.module.css";
 
-import app_icon from "../../assets/img/app_icon.svg";
+import AppLogo from "../AppLogo/AppLogo";
+
 import dashboard_icon from "../../assets/img/dashboard_icon.svg";
 import data_pasien_icon from "../../assets/img/data_pasien_icon.svg";
 import data_dokter_icon from "../../assets/img/data_dokter_icon.svg";
@@ -15,13 +16,7 @@ const Sidebar = () => {
   return (
     <div className={style.container}>
       <div className={style.icon}>
-        <img src={app_icon} alt="" />
-        <div>
-          <span style={{ color: "#358C56" }}>Puskesmas </span>
-          <span style={{ color: "#4CA9EE" }}>Malaka</span>
-        </div>
-
-        <p>JAWA BARAT</p>
+        <AppLogo/>
       </div>
       <div className={style.navigation_container}>
         <ul>
