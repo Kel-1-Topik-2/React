@@ -1,0 +1,14 @@
+.header_container{
+    display: flex;
+    align-items: center;
+}
+
+.icon{
+    transform: scale(0.6);
+}
+
+.header{
+    font-weight: 700;
+    font-size: 2rem;
+    color: #358C56;
+}

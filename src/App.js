@@ -11,6 +11,7 @@ import AddDataDokter from "./page/form-dokter/AddDataDokter";
 import DetailDataDokter from "./page/form-dokter/DetailDataDokter";
 import EditDataDokter from "./page/form-dokter/EditDataDokter";
 import KelolaJadwal from "./page/Kelola-jadwal/KelolaJadwal";
+import TambahJadwal from "./page/Tambah-jadwal/TambahJadwal";
 import Login from './page/Login/Login';
 
 function App() {
@@ -35,6 +36,7 @@ function App() {
 				element={<EditDataDokter />}
 			/>
 			<Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
+			<Route path="tambah-jadwal" element={<TambahJadwal/>}/>
 		</Routes>
 	);
 }
