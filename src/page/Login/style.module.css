@@ -45,7 +45,7 @@
 	max-width: 435px;
 }
 
-input {
+.input {
 	height: 50px;
 	width: 435px;
 	outline: 0;
@@ -73,6 +73,6 @@ input {
 	position: relative;
 }
 
-input:focus {
+.input:focus {
 	border: 3px solid #4b00ff;
 }
