@@ -13,12 +13,21 @@
 }
 
 .containerDropdown {
+	-webkit-appearance: none;
+   	-moz-appearance: none;
+   	appearance: none;       
+   	background-image: url(../../assets/img/select_arrow.svg);
+	background-repeat: no-repeat;
+	background-position: 94.5% center;
+
 	background-color: #53cd81;
 	width: 435px;
 	height: 50px;
 	font-size: 18px;
 	border-radius: 20px;
 	margin-bottom: 48px;
+
+	padding: 0 1.25rem;
 }
 
 .dropdown {
