@@ -8,6 +8,7 @@ import style from './style.module.css';
 
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
+import Searchbar from '../../component/Searchbar/Searchbar';
 
 const DataPasien = () => {
 	const endPoint = 'Pasien';
@@ -41,7 +42,6 @@ const DataPasien = () => {
 
 	const [key, setKey] = useState('nama');
 
-	console.log(key);
 	const handleSearch = (data) => {
 		return data.filter((item) => item[key].toLowerCase().includes(query));
 	};
@@ -64,6 +64,17 @@ const DataPasien = () => {
 		},
 	];
 
+	const dataOption = [
+		{ value: 'nama', label: 'semua kategori' },
+		{ value: 'idPasien', label: 'ID' },
+		{ value: 'nama', label: 'Nama Lengkap' },
+		{ value: 'nik', label: 'NIK' },
+	];
+
+	useEffect(() => {
+		console.log(key);
+	}, [key]);
+
 	return (
 		<div>
 			<Sidebar />
@@ -82,25 +93,11 @@ const DataPasien = () => {
 							<option value="">All</option>
 						</select>
 					</div>
-					<div className={style.searchbar}>
-						<select
-							name="filter"
-							id="filter"
-							onChange={(e) => setKey(e.target.value)}
-						>
-							<option value={'nama'} selected>
-								Pilih kategori
-							</option>
-							<option value={'idPasien'}>ID</option>
-							<option value={'nama'}>Nama Lengkap</option>
-							<option value={'nik'}>NIK</option>
-						</select>
-						<input
-							type="text"
-							onChange={(e) => setQuery(e.target.value)}
-							placeholder="search"
-						/>
-					</div>
+					<Searchbar
+						dataOption={dataOption}
+						onChangeQuery={(e) => setQuery(e.target.value)}
+						onChangeSelect={(e) => setKey(e.target.value)}
+					/>
 				</div>
 				<Table
 					column={column}
