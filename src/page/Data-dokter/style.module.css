@@ -6,3 +6,10 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.outer {
+	display: flex;
+	justify-content: end;
+	margin-top: 32px;
+	margin-bottom: 75px;
+}

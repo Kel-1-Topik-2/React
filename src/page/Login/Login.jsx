@@ -37,13 +37,19 @@ const Login = () => {
 					</select>
 					<div className="form">
 						<div className={style.formInput}>
-							<input type="text" name="username" placeholder="Username" />
+							<input
+								type="text"
+								name="username"
+								placeholder="Username"
+								className={style.input}
+							/>
 						</div>
 						<div className={style.formInput}>
 							<input
 								type={show ? 'text' : 'password'}
 								name="password"
 								placeholder="Password"
+								className={style.input}
 							/>
 							<div className={style.icon} onClick={handleClickShow}>
 								<img src={show ? showOn : showOff} alt="" width={'30px'} />
