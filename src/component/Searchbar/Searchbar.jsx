@@ -1,18 +1,40 @@
 import React from 'react';
+import style from './style.module.css';
+import searchIcon from '../../assets/img/search_icon.svg';
 
-const Searchbar = ({ onChangeSelect, onChangeQuery, dataOption }) => {
+const Searchbar = ({
+	onChangeSelect,
+	onChangeQuery,
+	dataOption,
+	placeholder,
+}) => {
 	return (
-		<div>
-			<select name="filter" id="filter" onChange={onChangeSelect}>
+		<div className={style.searchbar}>
+			<select
+				className={style.containerDropdown}
+				name="filter"
+				id="filter"
+				onChange={onChangeSelect}
+			>
 				{dataOption.map((item, i) => {
 					return (
-						<option value={item.value} key={i}>
+						<option value={item.value} key={i} className={style.dropdown}>
 							{item.label}
 						</option>
 					);
 				})}
 			</select>
-			<input type="text" onChange={onChangeQuery} placeholder="search" />
+			<div className={style.containerSearch}>
+				<div className={style.icon}>
+					<img src={searchIcon} alt="search icon" />
+				</div>
+				<input
+					type="text"
+					onChange={onChangeQuery}
+					placeholder={placeholder}
+					className={style.search}
+				/>
+			</div>
 		</div>
 	);
 };

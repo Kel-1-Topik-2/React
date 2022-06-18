@@ -87,11 +87,12 @@ const DataDokter = () => {
 						}}
 					/>
 				</div>
-				<div>
+				<div className={style.outer}>
 					<Searchbar
 						onChangeQuery={(e) => setQuery(e.target.value)}
 						onChangeSelect={(e) => setKey(e.target.value)}
 						dataOption={dataOption}
+						placeholder={'Cari Data Dokter'}
 					/>
 				</div>
 				<Table

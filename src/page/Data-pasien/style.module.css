@@ -15,7 +15,7 @@
 .outer {
 	display: flex;
 	align-items: center;
-	justify-content: space-between;
-	margin-top: 50px;
-	margin-bottom: 50px;
+	justify-content: end;
+	margin-top: 32px;
+	margin-bottom: 75px;
 }

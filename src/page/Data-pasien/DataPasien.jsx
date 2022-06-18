@@ -65,7 +65,7 @@ const DataPasien = () => {
 	];
 
 	const dataOption = [
-		{ value: 'nama', label: 'semua kategori' },
+		{ value: 'nama', label: 'Semua Kategori' },
 		{ value: 'idPasien', label: 'ID' },
 		{ value: 'nama', label: 'Nama Lengkap' },
 		{ value: 'nik', label: 'NIK' },
@@ -88,15 +88,11 @@ const DataPasien = () => {
 					/>
 				</div>
 				<div className={style.outer}>
-					<div>
-						<select name="" id="">
-							<option value="">All</option>
-						</select>
-					</div>
 					<Searchbar
 						dataOption={dataOption}
 						onChangeQuery={(e) => setQuery(e.target.value)}
 						onChangeSelect={(e) => setKey(e.target.value)}
+						placeholder={'Cari Data Pasien'}
 					/>
 				</div>
 				<Table
