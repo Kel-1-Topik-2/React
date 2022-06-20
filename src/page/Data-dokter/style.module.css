@@ -9,7 +9,7 @@
 
 .outer {
 	display: flex;
-	justify-content: end;
+	justify-content: flex-end;
 	margin-top: 32px;
 	margin-bottom: 75px;
 }
