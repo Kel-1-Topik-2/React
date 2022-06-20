@@ -54,3 +54,26 @@
     opacity: 0.6;
     cursor: pointer;
 }
+
+.pagination{
+    list-style: none;
+    display: flex;
+    justify-content: right;
+    align-items: center;
+    gap: 5px;
+}
+
+.pagination .pageNum{
+    padding: 8px 15px;
+    cursor: pointer;
+    border-radius: 3px;
+    font-weight: 400;
+}
+
+.pagination .pageNum:hover{
+    color: #358C56;
+}
+
+.pagination .active{
+    color: #358C56;
+}
