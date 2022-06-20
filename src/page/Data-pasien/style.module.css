@@ -6,3 +6,16 @@
 	display: flex;
 	justify-content: flex-end;
 }
+
+.searchbar {
+	display: flex;
+	justify-content: flex-end;
+}
+
+.outer {
+	display: flex;
+	align-items: center;
+	justify-content: end;
+	margin-top: 32px;
+	margin-bottom: 75px;
+}
