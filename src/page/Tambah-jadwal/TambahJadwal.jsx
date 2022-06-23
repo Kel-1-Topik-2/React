@@ -11,6 +11,7 @@ import style from "./style.module.css"
 import AppLogo from "../../component/AppLogo/AppLogo"
 import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
+import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -108,7 +109,7 @@ const TambahJadwal = () => {
             </div>
             
             {step === "step1" && (
-                <div className={style.aksi_container}>
+                <div className={style.table_container}>
                     <Table
                         column={column_step1}
                         data={dataPasien}
@@ -116,12 +117,15 @@ const TambahJadwal = () => {
                         aksi={aksi_step1}
                     />
 
-                    <button onClick={() => navigate(-1)}>KEMBALI</button>
+                    <ButtonPrimary
+                        title={"KEMBALI"}
+                        onClick={() => {navigate(-1)}}
+                    />
                 </div>
             )}
 
             {step === "step2" && (
-                <div className={style.aksi_container}>
+                <div className={style.table_container}>
                     <Table
                         column={column_step2}
                         data={dataDokter}
@@ -129,20 +133,41 @@ const TambahJadwal = () => {
                         aksi={aksi_step2}
                     />
 
-                    <button onClick={() => setStep("step1")}>KEMBALI</button>
+                    <ButtonPrimary
+                        title={"KEMBALI"}
+                        onClick={() => {setStep("step1")}}
+                    />
                 </div>
             )}
 
             {step === "step3" && (
-                <form className={style.aksi_container}>
-                    <input type="date" />
-                    <select>
-                        <option value="">perawatan biasa</option>
-                        <option value="">rawat jalan</option>
-                    </select>
+                <div className={style.form_container}>
+                    <form>
+                        <div className={style.input_container}>
+                            <p>Pilih Tanggal<span style={{color: "#EC0000"}}>*</span></p>
+                            <input type="date" />
+                        </div>
+                        <div className={style.input_container}>
+                            <p>Jenis Perawatan<span style={{color: "#EC0000"}}>*</span></p>
+                            <select defaultValue={""}>
+                                <option value="" disabled>Pilih jenis perawatan</option>
+                                <option value="Rawat_biasa">perawatan biasa</option>
+                                <option value="Rawat_jalan">rawat jalan</option>
+                            </select>
+                        </div>
 
-                    <button type="reset" onClick={() => setStep("step2")}>KEMBALI</button>
-                </form>
+                        <div className={style.button_container}>
+                            <ButtonPrimary
+                                title={"KEMBALI"}
+                                onClick={() => {setStep("step2")}}
+                            />
+                            <ButtonPrimary
+                                title={"SIMPAN"}
+                                onClick={() => {}}
+                            />
+                        </div>
+                    </form>
+                </div>
             )}
         </div>
     )
