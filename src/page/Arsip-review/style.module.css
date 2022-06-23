@@ -1,0 +1,92 @@
+.container {
+	padding: 50px 80px 78px 80px;
+}
+.head {
+	display: flex;
+	align-items: center;
+	gap: 48px;
+}
+
+.head > .title {
+	font-size: 32px;
+	font-weight: 700;
+	color: #358c56;
+	line-height: 48px;
+}
+
+.form {
+	display: flex;
+	margin-top: 30px;
+	gap: 20px;
+}
+
+.form > .leftBox {
+	padding: 60px 64px;
+	width: 662px;
+	height: 648px;
+	background-color: white;
+	border-radius: 35px;
+	box-sizing: border-box;
+	box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.08);
+}
+.form > .rightBox {
+	width: 637px;
+	height: 610px;
+	background-color: white;
+	border-radius: 35px;
+	box-sizing: border-box;
+	box-shadow: 0px 15px 40px rgba(0, 0, 0, 0.08);
+}
+
+.label {
+	font-size: 20px;
+	font-weight: 600;
+	line-height: 30px;
+	color: #358c56;
+	display: block;
+	margin-bottom: 12px;
+}
+
+.rowDua {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	margin-top: 32px;
+	gap: 20px;
+}
+
+.rowTiga,
+.rowEmpat {
+	margin-top: 32px;
+}
+
+.rightBox {
+	padding: 60px 48px;
+	box-sizing: border-box;
+}
+
+.catatan {
+	padding: 22px;
+	width: 341px;
+	height: 288px;
+	background: #f0f4f9;
+	border: 2px solid #000000;
+	border-radius: 20px;
+	overflow: auto;
+	font-family: 'Poppins', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 30px;
+	box-sizing: border-box;
+}
+
+.icon {
+	width: 50px;
+	height: 50px;
+	border-radius: 100%;
+}
+
+.icon:hover {
+	background-color: #0000001f;
+}
