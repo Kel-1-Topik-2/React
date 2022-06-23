@@ -1,0 +1,14 @@
+.input {
+	padding: 15px 25px;
+	height: 64px;
+	border-radius: 20px;
+	background: #f0f4f9;
+	outline: 0;
+	border: 2px solid #000000;
+	font-family: 'Poppins', sans-serif;
+	font-style: normal;
+	font-weight: 400;
+	font-size: 20px;
+	line-height: 30px;
+	box-sizing: border-box;
+}

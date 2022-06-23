@@ -9,7 +9,6 @@ import { useNavigate } from 'react-router-dom';
 const ArsipJadwal = () => {
 	const [dataArsip, setDataArsip] = useState([]);
 	const navigate = useNavigate();
-
 	useEffect(() => {
 		axios.get('Jadwal').then((res) => {
 			setDataArsip(res.data);

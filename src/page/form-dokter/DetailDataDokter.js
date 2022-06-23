@@ -69,7 +69,7 @@ export default function DetailData() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
