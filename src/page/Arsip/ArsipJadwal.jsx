@@ -57,7 +57,7 @@ const ArsipJadwal = () => {
 		<div>
 			<Sidebar />
 			<div className={style.container}>
-				<div>
+				<div className={style.searchbar}>
 					<Searchbar
 						onChangeQuery={(e) => setQuery(e.target.value)}
 						onChangeSelect={(e) => setKey(e.target.value)}
