@@ -1,0 +1,30 @@
+.step{
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    row-gap: 0.5rem;
+
+    filter: invert(46%) sepia(17%) saturate(0%) hue-rotate(247deg) brightness(96%) contrast(93%);
+}
+
+.step_icon{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    width: 60px;
+    height: 60px;
+    border: 2px solid;
+    border-radius: 50%;
+}
+
+.step img{
+    width: 36px;
+    height: 36px;
+}
+
+.step p{
+    text-align: center;
+    font-size: 1rem;
+    font-weight: 600;
+}

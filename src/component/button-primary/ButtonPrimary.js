@@ -19,7 +19,7 @@ const ButtonPrimary = ({ title, onClick }) => {
         width: "206px",
         height: "56px",
         borderRadius: "20px",
-        fontSize: "16px",
+        fontSize: "1.125rem",
         backgroundColor: "#4CA9EE",
       }}
     >

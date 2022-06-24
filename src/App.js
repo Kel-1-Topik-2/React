@@ -1,16 +1,17 @@
-import { Routes, Route } from 'react-router-dom';
-import React from 'react';
-import './App.css';
-import Dashboard from './page/Dashboard/Dashboard';
-import DataPasien from './page/Data-pasien/DataPasien';
-import DataDokter from './page/Data-dokter/DataDokter';
-import AddData from './page/form-pasien/AddData';
-import DetailData from './page/form-pasien/DetailData';
-import EditData from './page/form-pasien/EditData';
-import AddDataDokter from './page/form-dokter/AddDataDokter';
-import DetailDataDokter from './page/form-dokter/DetailDataDokter';
-import EditDataDokter from './page/form-dokter/EditDataDokter';
-import KelolaJadwal from './page/Kelola-jadwal/KelolaJadwal';
+import { Routes, Route } from "react-router-dom";
+import React from "react";
+import "./App.css";
+import Dashboard from "./page/Dashboard/Dashboard";
+import DataPasien from "./page/Data-pasien/DataPasien";
+import DataDokter from "./page/Data-dokter/DataDokter";
+import AddData from "./page/form-pasien/AddData";
+import DetailData from "./page/form-pasien/DetailData";
+import EditData from "./page/form-pasien/EditData";
+import AddDataDokter from "./page/form-dokter/AddDataDokter";
+import DetailDataDokter from "./page/form-dokter/DetailDataDokter";
+import EditDataDokter from "./page/form-dokter/EditDataDokter";
+import KelolaJadwal from "./page/Kelola-jadwal/KelolaJadwal";
+import TambahJadwal from "./page/Tambah-jadwal/TambahJadwal";
 import Login from './page/Login/Login';
 import ArsipJadwal from './page/Arsip/ArsipJadwal';
 import ArsipReview from './page/Arsip-review/ArsipReview';
@@ -35,7 +36,9 @@ function App() {
 				path="/detail-data-dokter/edit-data-dokter/:id"
 				element={<EditDataDokter />}
 			/>
-			<Route path="kelola-jadwal" element={<KelolaJadwal />} />
+			<Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
+			<Route path="tambah-jadwal" element={<TambahJadwal/>}/>
+			
 			<Route path="arsip-jadwal" element={<ArsipJadwal />} />
 			<Route path="arsip-jadwal/review/:id" element={<ArsipReview />} />
 		</Routes>

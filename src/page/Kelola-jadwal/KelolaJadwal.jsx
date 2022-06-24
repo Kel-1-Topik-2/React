@@ -39,7 +39,7 @@ const KelolaJadwal = () => {
                     <ButtonPrimary
                         title={"Tambah Jadwal"}
                         onClick={() => {
-                        navigate("");
+                        navigate("/tambah-jadwal");
                         }}
                     />
                 </div>

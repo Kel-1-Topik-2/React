@@ -7,7 +7,7 @@ const SecondaryButton = ({ title, onClick }) => {
 		height: '56px',
 		width: '206px',
 		color: '#EC0000',
-		fontSize: '18px',
+		fontSize: '1.125rem',
 		backgroundColor: '#EEEEEE',
 		borderRadius: '20px'
 	});
