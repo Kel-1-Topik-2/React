@@ -12,6 +12,7 @@ import AppLogo from "../../component/AppLogo/AppLogo"
 import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
+import ButtonKembali from "../../component/button-kembali/ButtonKembali";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -117,7 +118,7 @@ const TambahJadwal = () => {
                         aksi={aksi_step1}
                     />
 
-                    <ButtonPrimary
+                    <ButtonKembali
                         title={"KEMBALI"}
                         onClick={() => {navigate(-1)}}
                     />
@@ -133,7 +134,7 @@ const TambahJadwal = () => {
                         aksi={aksi_step2}
                     />
 
-                    <ButtonPrimary
+                    <ButtonKembali
                         title={"KEMBALI"}
                         onClick={() => {setStep("step1")}}
                     />
@@ -157,7 +158,7 @@ const TambahJadwal = () => {
                         </div>
 
                         <div className={style.button_container}>
-                            <ButtonPrimary
+                            <ButtonKembali
                                 title={"KEMBALI"}
                                 onClick={() => {setStep("step2")}}
                             />
