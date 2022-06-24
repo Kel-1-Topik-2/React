@@ -13,6 +13,8 @@ import EditDataDokter from "./page/form-dokter/EditDataDokter";
 import KelolaJadwal from "./page/Kelola-jadwal/KelolaJadwal";
 import TambahJadwal from "./page/Tambah-jadwal/TambahJadwal";
 import Login from './page/Login/Login';
+import ArsipJadwal from './page/Arsip/ArsipJadwal';
+import ArsipReview from './page/Arsip-review/ArsipReview';
 
 function App() {
 	return (
@@ -21,7 +23,6 @@ function App() {
 			<Route path="/" element={<Dashboard />} />
 			<Route path="/data-pasien" element={<DataPasien />} />
 			<Route path="/data-dokter" element={<DataDokter />} />
-
 
 			<Route path="/add-data-pasien" element={<AddData />} />
 			<Route path="/detail-data-pasien/:id" element={<DetailData />} />
@@ -37,6 +38,9 @@ function App() {
 			/>
 			<Route path="kelola-jadwal" element={<KelolaJadwal/>}/>
 			<Route path="tambah-jadwal" element={<TambahJadwal/>}/>
+			
+			<Route path="arsip-jadwal" element={<ArsipJadwal />} />
+			<Route path="arsip-jadwal/review/:id" element={<ArsipReview />} />
 		</Routes>
 	);
 }
