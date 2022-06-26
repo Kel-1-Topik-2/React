@@ -40,10 +40,23 @@ const DataPasien = () => {
 		navigate(`/detail-data-pasien/${idPasien}`);
 	};
 
-	const [key, setKey] = useState('nama');
+	const [keys, setKey] = useState('all');
 
-	const handleSearch = (data) => {
-		return data.filter((item) => item[key].toLowerCase().includes(query));
+	const search = (data) => {
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.idPasien.toLowerCase().includes(query) ||
+					x.nama.toLowerCase().includes(query) ||
+					x.nik.toLowerCase().includes(query)
+			);
+		} else if (keys === 'idPasien') {
+			return data.filter((x) => x.idPasien.toLowerCase().includes(query));
+		} else if (keys === 'nama') {
+			return data.filter((x) => x.nama.toLowerCase().includes(query));
+		} else if (keys === 'nik') {
+			return data.filter((x) => x.nik.toLowerCase().includes(query));
+		}
 	};
 
 	const column = [
@@ -65,21 +78,27 @@ const DataPasien = () => {
 	];
 
 	const dataOption = [
-		{ value: 'nama', label: 'Semua Kategori' },
+		{ value: 'all', label: 'Semua Kategori' },
 		{ value: 'idPasien', label: 'ID' },
 		{ value: 'nama', label: 'Nama Lengkap' },
 		{ value: 'nik', label: 'NIK' },
 	];
 
 	useEffect(() => {
-		console.log(key);
-	}, [key]);
+		console.log(keys);
+	}, [keys]);
 
 	return (
 		<div>
 			<Sidebar />
 			<div className={style.container}>
 				<div className={style.button}>
+					<Searchbar
+						dataOption={dataOption}
+						onChangeQuery={(e) => setQuery(e.target.value)}
+						onChangeSelect={(e) => setKey(e.target.value)}
+						placeholder={'Cari Data Pasien'}
+					/>
 					<ButtonPrimary
 						title={'Tambah Data'}
 						onClick={() => {
@@ -87,17 +106,10 @@ const DataPasien = () => {
 						}}
 					/>
 				</div>
-				<div className={style.outer}>
-					<Searchbar
-						dataOption={dataOption}
-						onChangeQuery={(e) => setQuery(e.target.value)}
-						onChangeSelect={(e) => setKey(e.target.value)}
-						placeholder={'Cari Data Pasien'}
-					/>
-				</div>
+
 				<Table
 					column={column}
-					data={handleSearch(dataPasien)}
+					data={search(dataPasien)}
 					primaryKey={'idPasien'}
 					aksi={aksi}
 				/>

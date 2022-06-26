@@ -4,12 +4,8 @@
 
 .button {
 	display: flex;
-	justify-content: flex-end;
-}
-
-.outer {
-	display: flex;
-	justify-content: flex-end;
-	margin-top: 32px;
-	margin-bottom: 75px;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 32px;
+	margin-top: 50px;
 }
