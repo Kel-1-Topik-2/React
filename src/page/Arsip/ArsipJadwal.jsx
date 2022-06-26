@@ -36,19 +36,35 @@ const ArsipJadwal = () => {
 
 	// Searchbar
 	const [query, setQuery] = useState('');
-	const [key, setKey] = useState('namaPasien');
+	const [keys, setKey] = useState('all');
 
 	const search = (data) => {
-		return data.filter((item) =>
-			item[key]
-				.toString()
-				.toLowerCase()
-				.includes(query)
-		);
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.idPasien
+						.toString()
+						.toLowerCase()
+						.includes(query) ||
+					x.namaPasien.toLowerCase().includes(query) ||
+					x.tanggal.toLowerCase().includes(query)
+			);
+		} else if (keys === 'idPasien') {
+			return data.filter((x) =>
+				x.idPasien
+					.toString()
+					.toLowerCase()
+					.includes(query)
+			);
+		} else if (keys === 'namaPasien') {
+			return data.filter((x) => x.namaPasien.toLowerCase().includes(query));
+		} else if (keys === 'tanggal') {
+			return data.filter((x) => x.tanggal.toLowerCase().includes(query));
+		}
 	};
 
 	const dataOption = [
-		{ value: 'namaPasien', label: 'Semua Kategori' },
+		{ value: 'all', label: 'Semua Kategori' },
 		{ value: 'idPasien', label: 'ID' },
 		{ value: 'namaPasien', label: 'Nama Lengkap' },
 		{ value: 'tanggal', label: 'TGL Kunjungan' },
@@ -57,7 +73,7 @@ const ArsipJadwal = () => {
 		<div>
 			<Sidebar />
 			<div className={style.container}>
-				<div>
+				<div className={style.search}>
 					<Searchbar
 						onChangeQuery={(e) => setQuery(e.target.value)}
 						onChangeSelect={(e) => setKey(e.target.value)}

@@ -44,10 +44,23 @@ const DataDokter = () => {
 	};
 
 	const [query, setQuery] = useState('');
-	const [key, setKey] = useState('nama');
+	const [keys, setKey] = useState('all');
 
 	const search = (data) => {
-		return data.filter((item) => item[key].toLowerCase().includes(query));
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.npa.toLowerCase().includes(query) ||
+					x.nama.toLowerCase().includes(query) ||
+					x.spesialis.toLowerCase().includes(query)
+			);
+		} else if (keys === 'npa') {
+			return data.filter((x) => x.npa.toLowerCase().includes(query));
+		} else if (keys === 'nama') {
+			return data.filter((x) => x.nama.toLowerCase().includes(query));
+		} else if (keys === 'spesialis') {
+			return data.filter((x) => x.spesialis.toLowerCase().includes(query));
+		}
 	};
 
 	const column = [
@@ -69,7 +82,7 @@ const DataDokter = () => {
 	];
 
 	const dataOption = [
-		{ value: 'nama', label: 'Semua Kategori' },
+		{ value: 'all', label: 'Semua Kategori' },
 		{ value: 'npa', label: 'NPA IDI' },
 		{ value: 'nama', label: 'Nama Lengkap' },
 		{ value: 'spesialis', label: 'Spesialis' },
@@ -80,6 +93,12 @@ const DataDokter = () => {
 			<Sidebar />
 			<div className={style.container}>
 				<div className={style.button}>
+					<Searchbar
+						onChangeQuery={(e) => setQuery(e.target.value)}
+						onChangeSelect={(e) => setKey(e.target.value)}
+						dataOption={dataOption}
+						placeholder={'Cari Data Dokter'}
+					/>
 					<ButtonPrimary
 						title={'Tambah Data'}
 						onClick={() => {
@@ -87,14 +106,7 @@ const DataDokter = () => {
 						}}
 					/>
 				</div>
-				<div className={style.outer}>
-					<Searchbar
-						onChangeQuery={(e) => setQuery(e.target.value)}
-						onChangeSelect={(e) => setKey(e.target.value)}
-						dataOption={dataOption}
-						placeholder={'Cari Data Dokter'}
-					/>
-				</div>
+
 				<Table
 					column={column}
 					data={search(dataDokter)}
