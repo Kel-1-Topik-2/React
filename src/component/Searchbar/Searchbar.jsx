@@ -25,15 +25,16 @@ const Searchbar = ({
 				})}
 			</select>
 			<div className={style.containerSearch}>
-				<div className={style.icon}>
-					<img src={searchIcon} alt="search icon" />
-				</div>
+				<div className={style.icon}></div>
 				<input
 					type="text"
 					onChange={onChangeQuery}
 					placeholder={placeholder}
 					className={style.search}
 				/>
+				<div className={style.iconSearch}>
+					<img src={searchIcon} alt="" />
+				</div>
 			</div>
 		</div>
 	);
