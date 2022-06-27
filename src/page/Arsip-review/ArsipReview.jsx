@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 import style from './style.module.css';
-import backIcon from '../../assets/img/back_icon.png';
 import InputReview from '../../component/Input-review/InputReview';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../dummy-api/api';

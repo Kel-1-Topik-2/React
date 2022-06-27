@@ -2,21 +2,23 @@
 	width: 513px;
 	height: 40px;
 	box-sizing: border-box;
-	border: 1px solid #000;
-	border-radius: 40px;
+	border-radius: 15px;
 	overflow: hidden;
 	display: flex;
 	align-items: center;
 	justify-content: space-between;
+	background-color: white;
+	box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.116);
 }
 
 .containerDropdown {
 	margin: 0;
-	background-color: #358c56;
+	background-color: white;
 	padding: 0 22px;
-	color: white;
-	font-weight: 600;
-	line-height: 24px;
+	color: black;
+	font-weight: 400;
+	line-height: 18px;
+	font-size: 12px;
 	width: 207px;
 	height: 100%;
 	border: none;
@@ -54,11 +56,25 @@
 	border: none;
 	outline: 0;
 	background-color: transparent;
-	padding-left: 50px;
+	padding-left: 24px;
 }
 
 .icon {
-	margin: 0 12px;
+	height: 90%;
+	width: 1px;
+	background-color: #4ca9ee;
 	position: absolute;
 	left: 0;
+	border-radius: 2px;
+}
+
+.iconSearch {
+	background-color: #358c56;
+	position: absolute;
+	justify-content: center;
+	width: 48px;
+	right: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
 }
