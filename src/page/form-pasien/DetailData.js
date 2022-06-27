@@ -19,22 +19,23 @@ import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLinkClickHandler } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from 'react-router-dom';
-import axios from '../../dummy-api/api';
+// import api from '../../dummy-api/api';
+import api from '../../API/api'
 export default function DetailData() {
 	let navigate = useNavigate();
 	const [detailPasien, setDetailPasien] = useState([]);
 	const params = useParams();
 	const handleEdit = useLinkClickHandler(
-		`/detail-data-pasien/edit-data-pasien/${detailPasien.idPasien}`,
+		`/detail-data-pasien/edit-data-pasien/${detailPasien.id}`,
 		{
 			state: detailPasien,
 		}
 	);
-	const endPoint = `Pasien/${params.id}`;
+	const endPoint = `pasien/${params.id}`;
 
 	useEffect(() => {
-		axios.get(endPoint).then((res) => {
-			setDetailPasien(res.data);
+		api.get(endPoint).then((res) => {
+			setDetailPasien(res.data.data);
 		});
 	}, []);
 
@@ -128,7 +129,7 @@ export default function DetailData() {
 										title="Nama lengkap"
 										type="text"
 										disable
-										value={detailPasien.nama}
+										value={detailPasien.namapasien}
 									/>
 								</Grid>
 								<Grid item xs={5}>
@@ -152,7 +153,7 @@ export default function DetailData() {
 										title="Usia"
 										type="number"
 										disable
-										value={detailPasien.usia}
+										value={detailPasien.umur}
 									/>
 								</Grid>
 								{/* Radio */}
@@ -170,16 +171,16 @@ export default function DetailData() {
 											name="row-radio-buttons-group"
 										>
 											<FormControlLabel
-												value="Laki Laki"
+												value="Laki laki"
 												control={<Radio />}
 												label="L"
-												checked={detailPasien.jk === 'Laki Laki'}
+												checked={detailPasien.jeniskelamin === 'Laki laki'}
 											/>
 											<FormControlLabel
 												value="Perempuan"
 												control={<Radio />}
 												label="P"
-												checked={detailPasien.jk === 'Perempuan'}
+												checked={detailPasien.jeniskelamin === 'Perempuan'}
 											/>
 										</RadioGroup>
 									</FormControl>

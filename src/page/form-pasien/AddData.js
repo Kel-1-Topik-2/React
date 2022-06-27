@@ -17,13 +17,14 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "../../dummy-api/api";
+// import axios from "../../dummy-api/api";
+import api from '../../API/api'
 
 export default function Form() {
   const formData = {
-    nama: "",
+    namapasien: "",
     nik: "",
-    usia: 0,
+    umur: 0,
     telp: "",
     alamat: "",
   };
@@ -38,10 +39,10 @@ export default function Form() {
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("/data-pasien");
   };
 
-  const endPoint = `Pasien`;
+  const endPoint = 'pasien';
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -50,18 +51,18 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
+    api
       .post(endPoint, {
-        nama: data.nama,
+        namapasien: data.namapasien,
         nik: data.nik,
-        usia: data.usia,
-        jk: radio,
+        umur: data.umur,
+        jeniskelamin: radio,
         telp: data.telp,
         alamat: data.alamat,
       })
       .then((res) => {
         alert("Data telah ditambah");
-        navigate(0);
+        navigate('/data-pasien');
       })
       .catch((error) => {
         console.log(error);
@@ -96,7 +97,7 @@ export default function Form() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -136,8 +137,8 @@ export default function Form() {
                   <FormInput
                     title="Nama lengkap*"
                     type="text"
-                    value={data.nama}
-                    name="nama"
+                    value={data.namapasien}
+                    name="namapasien"
                     onChange={handleChange}
                   />
                 </Grid>
@@ -163,8 +164,8 @@ export default function Form() {
                   <FormInput
                     title="Usia*"
                     type="number"
-                    value={data.usia}
-                    name="usia"
+                    value={data.umur}
+                    name="umur"
                     onChange={handleChange}
                   />
                 </Grid>
@@ -183,7 +184,7 @@ export default function Form() {
                       name="row-radio-buttons-group"
                     >
                       <FormControlLabel
-                        value="Laki-Laki"
+                        value="Laki laki"
                         control={<Radio />}
                         label="L"
                         onChange={(e) => {
