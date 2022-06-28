@@ -13,10 +13,13 @@ import Table from '../../component/Table/Table';
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 import Searchbar from '../../component/Searchbar/Searchbar';
+import Modal from '../../component/Modal/Modal';
 
 const DataDokter = () => {
 	const endPoint = 'Dokter';
 	const [dataDokter, setDataDokter] = useState([]);
+	const [popup, setPopup] = useState({show: false});
+	const [idDokter, setIdDokter] = useState()
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -26,18 +29,31 @@ const DataDokter = () => {
 	}, []);
 
 	const handleDelete = (idDokter) => {
-		const answer = window.confirm('Anda yakin untuk menghapus data?');
+		setIdDokter(idDokter)
+		setPopup({
+			show: true,
+		})
+	}
 
-		if (answer) {
+	const handleDeleteTrue = () => {
+		if (popup.show) {
 			axios
 				.delete(endPoint + `/${idDokter}`)
 				.then((res) => {
-					alert('Data berhasil dihapus!');
+					setPopup({
+						show: false
+					})
 					navigate(0);
 				})
 				.catch((err) => console.log(err));
 		}
 	};
+
+	const handleDeleteFalse = () => {
+		setPopup({
+			show: false
+		})
+	}
 
 	const detailClick = (idDokter) => {
 		navigate(`/detail-data-dokter/${idDokter}`);
@@ -113,6 +129,14 @@ const DataDokter = () => {
 					primaryKey={'idDokter'}
 					aksi={aksi}
 				/>
+				{popup.show && (
+					<Modal
+						title={"Hapus Data Dokter"}
+						text={"Yakin untuk menghapus data dokter?"}
+						handleCancel={handleDeleteFalse}
+						handleDeleteTrue={handleDeleteTrue}
+					/>
+				)}
 			</div>
 		</div>
 	);

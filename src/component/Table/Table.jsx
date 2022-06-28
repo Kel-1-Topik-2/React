@@ -19,6 +19,7 @@ const Table = ({ column, data, primaryKey , aksi }) => {
 		setItemOffset(newOffset);
 	};
 
+	console.log(currentItems);
 	return (
 		<div className={style.container}>
 			<table>
