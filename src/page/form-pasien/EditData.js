@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Box,
 	Button,
@@ -17,21 +17,21 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLocation } from 'react-router-dom';
-import axios from '../../dummy-api/api';
+import axios from '../../API/api';
 
 export default function Form() {
 	let navigate = useNavigate();
 	const location = useLocation();
 
 	const [editDataPasien, setEditDataPasien] = useState({
-		nama: location.state.nama,
+		namapasien: location.state.namapasien,
 		nik: location.state.nik,
 		telp: location.state.telp,
-		usia: location.state.usia,
+		umur: location.state.umur,
 		alamat: location.state.alamat,
 	});
 
-	const [editRadio, setEditRadio] = useState(location.state.jk);
+	const [editRadio, setEditRadio] = useState(location.state.jeniskelamin);
 
 	const handleChangeRadio = (e) => {
 		setEditRadio(e.target.value);
@@ -39,7 +39,7 @@ export default function Form() {
 
 	useEffect(() => {
 		console.log(editRadio);
-	}, [editRadio])
+	}, []);
 
 	const handleChange = (e) => {
 		setEditDataPasien({
@@ -49,7 +49,7 @@ export default function Form() {
 	};
 
 	const handleBack = () => {
-		navigate(-1);
+		navigate(-2);
 	};
 
 	const handleCancel = () => {
@@ -59,17 +59,21 @@ export default function Form() {
 	const handleSubmit = (e) => {
 		e.preventDefault();
 		const newData = {
-			nama: editDataPasien.nama,
+			namapasien: editDataPasien.namapasien,
 			telp: editDataPasien.telp,
 			nik: editDataPasien.nik,
-			usia: editDataPasien.usia,
-			jk: editRadio,
+			umur: editDataPasien.umur,
+			jeniskelamin: editRadio,
 			alamat: editDataPasien.alamat,
 		};
-		axios.put(`/Pasien/${location.state.idPasien}`, newData).then((res) => {
-			console.log(res.data);
-			alert('data telah diubah');
-		});
+		axios
+			.put(`/pasien/${location.state.id}`, newData)
+			.then((res) => {
+				console.log(res.data);
+				alert('data telah diubah');
+				navigate(-2);
+			})
+			.catch((error) => console.error(error));
 	};
 
 	const paperStyle = {
@@ -100,7 +104,7 @@ export default function Form() {
 					<Tooltip title="back">
 						<IconButton>
 							<ArrowBackIcon
-								sx={{ fontSize: 60, color: '#000000' }}
+								sx={{ fontSize: 38, color: '#000000' }}
 								onClick={handleBack}
 							/>
 						</IconButton>
@@ -136,8 +140,8 @@ export default function Form() {
 									<FormInput
 										title="Nama lengkap*"
 										type="text"
-										name="nama"
-										value={editDataPasien.nama}
+										name="namapasien"
+										value={editDataPasien.namapasien}
 										onChange={handleChange}
 									/>
 								</Grid>
@@ -163,8 +167,8 @@ export default function Form() {
 									<FormInput
 										title="Usia*"
 										type="number"
-										name="usia"
-										value={editDataPasien.usia}
+										name="umur"
+										value={editDataPasien.umur}
 										onChange={handleChange}
 									/>
 								</Grid>
@@ -180,11 +184,11 @@ export default function Form() {
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
 											name="row-radio-buttons-group"
-                      value={editRadio}
-                      onChange={handleChangeRadio}
+											value={editRadio}
+											onChange={handleChangeRadio}
 										>
 											<FormControlLabel
-												value="Laki Laki"
+												value="Laki laki"
 												control={<Radio />}
 												label="L"
 											/>
