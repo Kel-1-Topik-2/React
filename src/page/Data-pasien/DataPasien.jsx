@@ -33,7 +33,6 @@ const DataPasien = () => {
 	}
 
 	const handleDeleteTrue = () => {
-		console.log(idPasien);
 		if (popup.show) {
 			axios
 				.delete(endPoint + `/${idPasien}`)
@@ -135,7 +134,7 @@ const DataPasien = () => {
 					title={"Hapus Data Pasien"}
 					text={"Yakin untuk menghapus data pasien?"}
 					handleCancel={handleDeleteFalse}
-					handleDeleteTrue={() => handleDeleteTrue()}
+					handleDeleteTrue={handleDeleteTrue}
 				/>
 			)}
 			</div>
