@@ -25,3 +25,18 @@
   display: flex;
   align-items: center;
 }
+
+.btnCancel {
+  padding: 10px;
+  margin-top: 20px;
+  margin-right: 6px;
+  cursor: pointer;
+}
+
+.btnTrue {
+  padding: 10px;
+  margin-top: 20px;
+  margin-left: 6px;
+  cursor: pointer;
+  color: #ec0000;
+}

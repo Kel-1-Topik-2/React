@@ -8,8 +8,12 @@ function Modal({ handleDeleteTrue, handleCancel, title, text }) {
         <h3>{title}</h3>
         <p>{text}</p>
         <div className={style.btn}>
-          <button onClick={handleCancel}>Batal</button>
-          <button onClick={handleDeleteTrue}>Hapus</button>
+          <button className={style.btnCancel} onClick={handleCancel}>
+            <strong>BATAL</strong>
+          </button>
+          <button className={style.btnTrue} onClick={handleDeleteTrue}>
+            <strong>HAPUS</strong>
+          </button>
         </div>
       </div>
     </div>
