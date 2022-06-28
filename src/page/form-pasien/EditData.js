@@ -1,4 +1,4 @@
-import React, { useState, useEffect} from 'react';
+import React, { useState, useEffect } from 'react';
 import {
 	Box,
 	Button,
@@ -17,8 +17,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLocation } from 'react-router-dom';
-// import api from '../../dummy-api/api';
-import api from '../../API/api'
+import api from '../../API/api';
 
 export default function Form() {
 	let navigate = useNavigate();
@@ -40,7 +39,7 @@ export default function Form() {
 
 	useEffect(() => {
 		console.log(editRadio);
-	}, [])
+	}, []);
 
 	const handleChange = (e) => {
 		setEditDataPasien({
@@ -50,7 +49,7 @@ export default function Form() {
 	};
 
 	const handleBack = () => {
-		navigate('/data-pasien');
+		navigate(-2);
 	};
 
 	const handleCancel = () => {
@@ -63,15 +62,18 @@ export default function Form() {
 			namapasien: editDataPasien.namapasien,
 			telp: editDataPasien.telp,
 			nik: editDataPasien.nik,
-			umut: editDataPasien.umur,
+			umur: editDataPasien.umur,
 			jeniskelamin: editRadio,
 			alamat: editDataPasien.alamat,
 		};
-		api.put(`/pasien/${location.state.id}`, newData).then((res) => {
-			console.log(res.data);
-			alert('data telah diubah');
-			navigate('/data-pasien')
-		}).catch(error => console.error(error)) ;
+		api
+			.put(`/pasien/${location.state.id}`, newData)
+			.then((res) => {
+				console.log(res.data);
+				alert('data telah diubah');
+				navigate(-2);
+			})
+			.catch((error) => console.error(error));
 	};
 
 	const paperStyle = {
@@ -182,8 +184,8 @@ export default function Form() {
 											row
 											aria-labelledby="demo-row-radio-buttons-group-label"
 											name="row-radio-buttons-group"
-                      value={editRadio}
-                      onChange={handleChangeRadio}
+											value={editRadio}
+											onChange={handleChangeRadio}
 										>
 											<FormControlLabel
 												value="Laki laki"
