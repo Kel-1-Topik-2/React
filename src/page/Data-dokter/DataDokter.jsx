@@ -18,8 +18,8 @@ import Modal from '../../component/Modal/Modal';
 const DataDokter = () => {
 	const endPoint = 'Dokter';
 	const [dataDokter, setDataDokter] = useState([]);
-	const [popup, setPopup] = useState({show: false});
-	const [idDokter, setIdDokter] = useState()
+	const [popup, setPopup] = useState({ show: false });
+	const [idDokter, setIdDokter] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -29,11 +29,11 @@ const DataDokter = () => {
 	}, []);
 
 	const handleDelete = (idDokter) => {
-		setIdDokter(idDokter)
+		setIdDokter(idDokter);
 		setPopup({
 			show: true,
-		})
-	}
+		});
+	};
 
 	const handleDeleteTrue = () => {
 		if (popup.show) {
@@ -41,8 +41,8 @@ const DataDokter = () => {
 				.delete(endPoint + `/${idDokter}`)
 				.then((res) => {
 					setPopup({
-						show: false
-					})
+						show: false,
+					});
 					navigate(0);
 				})
 				.catch((err) => console.log(err));
@@ -51,9 +51,9 @@ const DataDokter = () => {
 
 	const handleDeleteFalse = () => {
 		setPopup({
-			show: false
-		})
-	}
+			show: false,
+		});
+	};
 
 	const detailClick = (idDokter) => {
 		navigate(`/detail-data-dokter/${idDokter}`);
@@ -131,8 +131,8 @@ const DataDokter = () => {
 				/>
 				{popup.show && (
 					<Modal
-						title={"Hapus Data Dokter"}
-						text={"Yakin untuk menghapus data dokter?"}
+						title={'Hapus Data Dokter'}
+						text={'Yakin untuk menghapus data dokter?'}
 						handleCancel={handleDeleteFalse}
 						handleDeleteTrue={handleDeleteTrue}
 					/>
