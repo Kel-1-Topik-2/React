@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import api from '../../API/api';
+import axios from '../../API/api';
 import style from './style.module.css';
 
 import Sidebar from '../../component/Sidebar/Sidebar';
@@ -23,7 +23,7 @@ const Dashboard = () => {
 	const [dataPasien, setDataPasien] = useState([]);
 
 	useEffect(() => {
-		api.get(endPoint).then((res) => {
+		axios.get(endPoint).then((res) => {
 			setDataPasien(res.data);
 		});
 	}, []);
@@ -32,7 +32,7 @@ const Dashboard = () => {
 		const answer = window.confirm('Anda yakin untuk menghapus data?');
 
 		if (answer) {
-			api
+			axios
 				.delete(endPoint + `/${id}`)
 				.then((res) => {
 					alert('Data berhasil dihapus!');

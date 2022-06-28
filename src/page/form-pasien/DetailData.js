@@ -19,8 +19,7 @@ import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLinkClickHandler } from 'react-router-dom';
 import EditIcon from '@mui/icons-material/Edit';
 import { useParams } from 'react-router-dom';
-// import api from '../../dummy-api/api';
-import api from '../../API/api'
+import axios from '../../API/api'
 export default function DetailData() {
 	let navigate = useNavigate();
 	const [detailPasien, setDetailPasien] = useState([]);
@@ -34,7 +33,7 @@ export default function DetailData() {
 	const endPoint = `pasien/${params.id}`;
 
 	useEffect(() => {
-		api.get(endPoint).then((res) => {
+		axios.get(endPoint).then((res) => {
 			setDetailPasien(res.data.data);
 		});
 	}, []);

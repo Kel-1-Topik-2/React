@@ -23,7 +23,7 @@ export default function Form() {
     nama: location.state.nama,
     npa: location.state.npa,
     spesialis: location.state.spesialis,
-    userName: location.state.userName,
+    username: location.state.username,
     password: location.state.password,
   });
 
@@ -48,7 +48,7 @@ export default function Form() {
       nama: editDataDokter.nama,
       npa: editDataDokter.npa,
       spesialis: editDataDokter.spesialis,
-      userName: editDataDokter.userName,
+      userName: editDataDokter.username,
       password: editDataDokter.password,
     };
     axios.put(`/Dokter/${location.state.idDokter}`, newData).then((res) => {
@@ -149,7 +149,7 @@ export default function Form() {
                     title="Username*"
                     type="text"
                     name="userName"
-                    value={editDataDokter.userName}
+                    value={editDataDokter.username}
                     onChange={handleChange}
                   />
                 </Grid>

@@ -4,32 +4,42 @@ import { useNavigate } from 'react-router-dom';
 import Table from '../../component/Table/Table';
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
 import style from './style.module.css';
-import api from '../../API/api';
+import axios from '../../API/api';
 
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 import Searchbar from '../../component/Searchbar/Searchbar';
+import Modal from '../../component/Modal/Modal';
 
 const DataPasien = () => {
 	const endPoint = 'pasien';
 	const [dataPasien, setDataPasien] = useState([]);
 	const [query, setQuery] = useState('');
+	const [popup, setPopup] = useState({ show: false });
+	const [idPasien, setIdPasien] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		api.get(endPoint).then((res) => {
+		axios.get(endPoint).then((res) => {
 			setDataPasien(res.data);
 		});
 	}, []);
 
-	const handleDelete = (id) => {
-		const answer = window.confirm('Anda yakin untuk menghapus data?');
+	const handleDelete = (idPasien) => {
+		setIdPasien(idPasien);
+		setPopup({
+			show: true,
+		});
+	};
 
-		if (answer) {
-			api
-				.delete(endPoint + `/${id}`)
+	const handleDeleteTrue = () => {
+		if (popup.show) {
+			axios
+				.delete(endPoint + `/${idPasien}`)
 				.then((res) => {
-					alert('Data berhasil dihapus!');
+					setPopup({
+						show: false,
+					});
 					navigate(0);
 				})
 				.catch((err) => console.log(err));
@@ -38,6 +48,11 @@ const DataPasien = () => {
 
 	const detailClick = (id) => {
 		navigate(`/detail-data-pasien/${id}`);
+	};
+	const handleDeleteFalse = () => {
+		setPopup({
+			show: false,
+		});
 	};
 
 	const [keys, setKey] = useState('all');
@@ -121,6 +136,14 @@ const DataPasien = () => {
 					primaryKey={'id'}
 					aksi={aksi}
 				/>
+				{popup.show && (
+					<Modal
+						title={'Hapus Data Pasien'}
+						text={'Yakin untuk menghapus data pasien?'}
+						handleCancel={handleDeleteFalse}
+						handleDeleteTrue={handleDeleteTrue}
+					/>
+				)}
 			</div>
 		</div>
 	);

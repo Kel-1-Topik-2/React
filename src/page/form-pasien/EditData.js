@@ -17,7 +17,7 @@ import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLocation } from 'react-router-dom';
-import api from '../../API/api';
+import axios from '../../API/api';
 
 export default function Form() {
 	let navigate = useNavigate();
@@ -66,7 +66,7 @@ export default function Form() {
 			jeniskelamin: editRadio,
 			alamat: editDataPasien.alamat,
 		};
-		api
+		axios
 			.put(`/pasien/${location.state.id}`, newData)
 			.then((res) => {
 				console.log(res.data);
