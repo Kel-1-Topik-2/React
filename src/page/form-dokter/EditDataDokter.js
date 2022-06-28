@@ -13,6 +13,7 @@ import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../../dummy-api/api";
+import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   let navigate = useNavigate();
@@ -23,9 +24,11 @@ export default function Form() {
     nama: location.state.nama,
     npa: location.state.npa,
     spesialis: location.state.spesialis,
-    username: location.state.username,
+    username: location.state.userName,
     password: location.state.password,
   });
+
+  const [popup, setPopup] = useState({ show: false });
 
   const handleChange = (e) => {
     setEditDataDokter({
@@ -52,9 +55,17 @@ export default function Form() {
       password: editDataDokter.password,
     };
     axios.put(`/Dokter/${location.state.idDokter}`, newData).then((res) => {
-      console.log(res.data);
-      alert("data telah diubah");
+      setPopup({
+        show: true,
+      });
     });
+  };
+
+  const handleOk = () => {
+    setPopup({
+      show: false,
+    });
+    navigate(-1);
   };
 
   const paperStyle = {
@@ -148,7 +159,7 @@ export default function Form() {
                   <FormInput
                     title="Username*"
                     type="text"
-                    name="userName"
+                    name="username"
                     value={editDataDokter.username}
                     onChange={handleChange}
                   />
@@ -198,6 +209,12 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
+              {popup.show && (
+                <Modal
+                  title={"Data Dokter Berhasil diubah!"}
+                  handleCancel={handleOk}
+                />
+              )}
             </Box>
           </Paper>
         </Box>

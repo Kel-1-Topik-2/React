@@ -18,7 +18,8 @@ import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
 // import axios from "../../dummy-api/api";
-import api from '../../API/api'
+import axios from "../../API/api";
+import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   const formData = {
@@ -33,6 +34,7 @@ export default function Form() {
 
   const [data, setData] = useState(formData);
   const [radio, setRadio] = useState("");
+  const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {
     navigate(-1);
@@ -42,7 +44,7 @@ export default function Form() {
     navigate("/data-pasien");
   };
 
-  const endPoint = 'pasien';
+  const endPoint = "pasien";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -51,7 +53,7 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    api
+    axios
       .post(endPoint, {
         namapasien: data.namapasien,
         nik: data.nik,
@@ -61,12 +63,20 @@ export default function Form() {
         alamat: data.alamat,
       })
       .then((res) => {
-        alert("Data telah ditambah");
-        navigate('/data-pasien');
+        setPopup({
+          show: true,
+        });
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleOk = () => {
+    setPopup({
+      show: false,
+    });
+    navigate("/data-pasien");
   };
 
   const paperStyle = {
@@ -249,6 +259,12 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
+              {popup.show && (
+                <Modal
+                  title={"Data Pasien Berhasil ditambahkan!"}
+                  handleCancel={handleOk}
+                />
+              )}
             </Box>
           </Paper>
         </Box>

@@ -13,6 +13,7 @@ import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
 import axios from "../../dummy-api/api";
+import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   const formData = {
@@ -26,6 +27,7 @@ export default function Form() {
   let navigate = useNavigate();
 
   const [data, setData] = useState(formData);
+  const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {
     navigate(-1);
@@ -53,12 +55,20 @@ export default function Form() {
         npa: data.npa,
       })
       .then((res) => {
-        alert("Data telah ditambah");
-        navigate("/data-dokter");
+        setPopup({
+          show: true,
+        });
       })
       .catch((error) => {
         console.log(error);
       });
+  };
+
+  const handleOk = () => {
+    setPopup({
+      show: false,
+    });
+    navigate("/data-dokter");
   };
 
   const paperStyle = {
@@ -206,6 +216,12 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
+              {popup.show && (
+                <Modal
+                  title={"Data Dokter Berhasil ditambahkan!"}
+                  handleCancel={handleOk}
+                />
+              )}
             </Box>
           </Paper>
         </Box>
