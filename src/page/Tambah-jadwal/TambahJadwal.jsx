@@ -26,6 +26,13 @@ const TambahJadwal = () => {
     const [step, setStep] = useState("step1")
     const [dataPasien, setDataPasien] = useState([]);
     const [dataDokter, setDataDokter] = useState([]);
+    const [jadwal, setJadwal] =  useState({
+        nourut: 0,
+        jp: "",
+        tanggal: "",
+        dokter: {},
+        pasien: {},
+    })
 
     const step_progress = {
         filter: "invert(55%) sepia(86%) saturate(653%) hue-rotate(179deg) brightness(97%) contrast(93%)"
@@ -52,6 +59,13 @@ const TambahJadwal = () => {
         getDataDokter()
     }, [])
 
+    const handleChangeForm = (e) => {
+        const newJadwal = {...jadwal}
+        newJadwal[e.target.name] = e.target.value
+
+        setJadwal(newJadwal)
+    }
+
     const column_step1 = [
         { field: "idPasien", header: "ID" },
         { field: "nama", header: "Nama Lengkap" },
@@ -61,7 +75,15 @@ const TambahJadwal = () => {
     
     const aksi_step1 = [
         {
-            click: () => {setStep("step2")},
+            click: (idPasien) => {
+                const pasien = dataPasien.filter((item) => item.idPasien === idPasien)
+
+                setJadwal({
+                    ...jadwal, pasien: {...pasien[0]}
+                })
+
+                setStep("step2")
+            },
             icon: tambah_icon
         },
     ]
@@ -75,11 +97,19 @@ const TambahJadwal = () => {
     
     const aksi_step2 = [
         {
-            click: () => {setStep("step3")},
+            click: (idDokter) => {
+                const dokter = dataDokter.filter((item) => item.idDokter === idDokter)
+
+                setJadwal({
+                    ...jadwal, dokter: {...dokter[0]}
+                })
+
+                setStep("step3")
+            },
             icon: tambah_icon
         },
     ]
-
+    console.log(jadwal)
     return(
         <div className={style.container}>
             <div className={style.header_container}>
@@ -90,9 +120,7 @@ const TambahJadwal = () => {
             </div>
 
             <div className={style.step_container}>
-                <div className={style.step_group} style={
-                    step === "step1" || step === "step2" || step === "step3" ? step_progress : {}
-                }>
+                <div className={style.step_group} style={step_progress}>
                     <StepCard image={pasien_icon} text={"1.Pilih Pasien"}/>
                 </div>
 
@@ -146,14 +174,14 @@ const TambahJadwal = () => {
                     <form>
                         <div className={style.input_container}>
                             <p>Pilih Tanggal<span style={{color: "#EC0000"}}>*</span></p>
-                            <input type="date" />
+                            <input type="date" name="tanggal" onChange={(e) => handleChangeForm(e)} required/>
                         </div>
                         <div className={style.input_container}>
                             <p>Jenis Perawatan<span style={{color: "#EC0000"}}>*</span></p>
-                            <select defaultValue={""}>
-                                <option value="" disabled>Pilih jenis perawatan</option>
-                                <option value="Rawat_biasa">perawatan biasa</option>
-                                <option value="Rawat_jalan">rawat jalan</option>
+                            <select value={jadwal.jp} name={"jp"} onChange={(e) => handleChangeForm(e)} required>
+                                <option value="" disabled hidden>Pilih jenis perawatan</option>
+                                <option value="Perawatan Biasa">Perawatan Biasa</option>
+                                <option value="Rawat Jalan">Rawat Jalan</option>
                             </select>
                         </div>
 
