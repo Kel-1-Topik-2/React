@@ -11,7 +11,6 @@ import Table from "../../component/Table/Table";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
-import suster_icon from "../../assets/img/suster_icon.svg";
 import pertemuan_icon from "../../assets/img/pertemuan_icon.svg";
 import detailIcon from "../../assets/img/detail_icon.svg";
 import deleteIcon from "../../assets/img/delete_icon.svg";
@@ -89,12 +88,7 @@ const Dashboard = () => {
           <div className={style.overview}>
             <OverviewCard amount={478} type={"Pasien"} icon={pasien_icon} />
             <OverviewCard amount={272} type={"Dokter"} icon={dokter_icon} />
-            <OverviewCard amount={67} type={"Suster"} icon={suster_icon} />
-            <OverviewCard
-              amount={78}
-              type={"Pertemuan hari ini"}
-              icon={pertemuan_icon}
-            />
+            <OverviewCard amount={78} type={"Pertemuan hari ini"} icon={pertemuan_icon}/>
           </div>
         </div>
 
