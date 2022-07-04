@@ -72,6 +72,10 @@ const TambahJadwal = () => {
         setJadwal(newJadwal)
     }
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+    }
+
     const column_step1 = [
 		{ field: 'id', header: 'ID' },
 		{ field: 'namapasien', header: 'Nama Lengkap' },
@@ -177,7 +181,11 @@ const TambahJadwal = () => {
 
             {step === "step3" && (
                 <div className={style.form_container}>
-                    <form>
+                    <form onSubmit={handleSubmit}>
+                        <div className={style.pasien_dokter_container}>
+                            <p>Nama Pasien: <span>{jadwal.pasien.namapasien}</span></p>
+                            <p>Nama Dokter: <span>{jadwal.dokter.namadokter}</span></p>
+                        </div>
                         <div className={style.input_container}>
                             <p>Pilih Tanggal<span style={{color: "#EC0000"}}>*</span></p>
                             <input type="date" name="tanggal" onChange={(e) => handleChangeForm(e)} required/>
