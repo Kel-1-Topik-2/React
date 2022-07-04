@@ -12,16 +12,16 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   const formData = {
     username: "",
     password: "",
-    nama: "",
+    namadokter: "",
     spesialis: "",
-    npa: "",
+    srp: "",
   };
 
   let navigate = useNavigate();
@@ -37,7 +37,7 @@ export default function Form() {
     navigate("/");
   };
 
-  const endPoint = `Dokter`;
+  const endPoint = `dokter`;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
@@ -48,11 +48,11 @@ export default function Form() {
     e.preventDefault();
     axios
       .post(endPoint, {
-        userName: data.username,
+        username: data.username,
         password: data.password,
-        nama: data.nama,
+        namadokter: data.namadokter,
         spesialis: data.spesialis,
-        npa: data.npa,
+        srp: data.srp,
       })
       .then((res) => {
         setPopup({
@@ -137,10 +137,10 @@ export default function Form() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormInput
-                    title="Nama lengkap*"
+                    title="Namadokter lengkap*"
                     type="text"
-                    value={data.nama}
-                    name="nama"
+                    value={data.namadokter}
+                    name="namadokter"
                     onChange={handleChange}
                   />
                 </Grid>
@@ -148,7 +148,7 @@ export default function Form() {
                   <FormInput
                     title="NPA IDI*"
                     type="text"
-                    value={data.npa}
+                    value={data.srp}
                     name="npa"
                     onChange={handleChange}
                   />

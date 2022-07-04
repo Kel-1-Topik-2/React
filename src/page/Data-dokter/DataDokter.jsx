@@ -2,7 +2,7 @@ import React, { useState, useEffect } from 'react';
 
 import { useNavigate } from 'react-router-dom';
 
-import axios from '../../dummy-api/api';
+import axios from '../../API/api';
 
 import style from './style.module.css';
 
@@ -16,7 +16,7 @@ import Searchbar from '../../component/Searchbar/Searchbar';
 import Modal from '../../component/Modal/Modal';
 
 const DataDokter = () => {
-	const endPoint = 'Dokter';
+	const endPoint = 'dokter';
 	const [dataDokter, setDataDokter] = useState([]);
 	const [popup, setPopup] = useState({ show: false });
 	const [idDokter, setIdDokter] = useState();
@@ -66,23 +66,23 @@ const DataDokter = () => {
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
-					x.npa.toLowerCase().includes(query) ||
-					x.nama.toLowerCase().includes(query) ||
+					x.srp.toLowerCase().includes(query) ||
+					x.namadokter.toLowerCase().includes(query) ||
 					x.spesialis.toLowerCase().includes(query)
 			);
-		} else if (keys === 'npa') {
-			return data.filter((x) => x.npa.toLowerCase().includes(query));
-		} else if (keys === 'nama') {
-			return data.filter((x) => x.nama.toLowerCase().includes(query));
+		} else if (keys === 'srp') {
+			return data.filter((x) => x.srp.toLowerCase().includes(query));
+		} else if (keys === 'namadokter') {
+			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
 		} else if (keys === 'spesialis') {
 			return data.filter((x) => x.spesialis.toLowerCase().includes(query));
 		}
 	};
 
 	const column = [
-		{ field: 'npa', header: 'NPA IDI' },
-		{ field: 'nama', header: 'Nama Lengkap' },
-		{ field: 'userName', header: 'Username' },
+		{ field: 'srp', header: 'NPA IDI' },
+		{ field: 'namadokter', header: 'Nama Lengkap' },
+		{ field: 'username', header: 'Username' },
 		{ field: 'spesialis', header: 'Spesialis' },
 	];
 
@@ -99,8 +99,8 @@ const DataDokter = () => {
 
 	const dataOption = [
 		{ value: 'all', label: 'Semua Kategori' },
-		{ value: 'npa', label: 'NPA IDI' },
-		{ value: 'nama', label: 'Nama Lengkap' },
+		{ value: 'srp', label: 'NPA IDI' },
+		{ value: 'namadokter', label: 'Nama Lengkap' },
 		{ value: 'spesialis', label: 'Spesialis' },
 	];
 
