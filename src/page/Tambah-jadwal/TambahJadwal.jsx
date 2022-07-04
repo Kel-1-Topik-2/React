@@ -2,7 +2,7 @@ import React from "react";
 
 import { useState,useEffect } from "react";
 
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 import { useNavigate } from "react-router";
 
@@ -39,7 +39,7 @@ const TambahJadwal = () => {
     }
 
     const getDataPasien = () => {
-        const endPoint = "Pasien"
+        const endPoint = "pasien"
 
         axios.get(endPoint).then((res) => {
             setDataPasien(res.data);
@@ -47,10 +47,16 @@ const TambahJadwal = () => {
     }
 
     const getDataDokter = () => {
-        const endPoint = "Dokter"
+        const endPoint = "dokter"
 
         axios.get(endPoint).then((res) => {
-            setDataDokter(res.data);
+            const newData = res.data
+
+            newData.forEach((dokter) => {
+                dokter.username = dokter.user.username
+            })
+            
+            setDataDokter(newData)
         });
     }
 
@@ -67,16 +73,16 @@ const TambahJadwal = () => {
     }
 
     const column_step1 = [
-        { field: "idPasien", header: "ID" },
-        { field: "nama", header: "Nama Lengkap" },
-        { field: "nik", header: "NIK" },
-        { field: "usia", header: "Usia" },
-    ];
+		{ field: 'id', header: 'ID' },
+		{ field: 'namapasien', header: 'Nama Lengkap' },
+		{ field: 'nik', header: 'NIK' },
+		{ field: 'umur', header: 'Usia' },
+	];
     
     const aksi_step1 = [
         {
-            click: (idPasien) => {
-                const pasien = dataPasien.filter((item) => item.idPasien === idPasien)
+            click: (id) => {
+                const pasien = dataPasien.filter((item) => item.id === id)
 
                 setJadwal({
                     ...jadwal, pasien: {...pasien[0]}
@@ -89,16 +95,16 @@ const TambahJadwal = () => {
     ]
 
     const column_step2 = [
-        { field: "npa", header: "NPA IDI" },
-        { field: "nama", header: "Nama Lengkap" },
-        { field: "userName", header: "Username" },
+        { field: "srp", header: "NPA IDI" },
+        { field: "namadokter", header: "Nama Lengkap" },
+        { field: "username", header: "Username" },
         { field: "spesialis", header: "Spesialis" },
     ];
     
     const aksi_step2 = [
         {
-            click: (idDokter) => {
-                const dokter = dataDokter.filter((item) => item.idDokter === idDokter)
+            click: (id) => {
+                const dokter = dataDokter.filter((item) => item.id === id)
 
                 setJadwal({
                     ...jadwal, dokter: {...dokter[0]}
@@ -142,7 +148,7 @@ const TambahJadwal = () => {
                     <Table
                         column={column_step1}
                         data={dataPasien}
-                        primaryKey={"idPasien"}
+                        primaryKey={"id"}
                         aksi={aksi_step1}
                     />
 
@@ -158,7 +164,7 @@ const TambahJadwal = () => {
                     <Table
                         column={column_step2}
                         data={dataDokter}
-                        primaryKey={"idDokter"}
+                        primaryKey={"id"}
                         aksi={aksi_step2}
                     />
 

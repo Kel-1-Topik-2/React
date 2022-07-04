@@ -86,7 +86,7 @@ const DataPasien = () => {
 		{ field: 'id', header: 'ID' },
 		{ field: 'namapasien', header: 'Nama Lengkap' },
 		{ field: 'nik', header: 'NIK' },
-		{ field: 'usia', header: 'Usia' },
+		{ field: 'umur', header: 'Usia' },
 	];
 
 	const aksi = [
