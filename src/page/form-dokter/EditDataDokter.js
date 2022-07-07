@@ -12,7 +12,7 @@ import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate, useLocation } from "react-router-dom";
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
@@ -21,11 +21,11 @@ export default function Form() {
   const location = useLocation();
 
   const [editDataDokter, setEditDataDokter] = useState({
-    nama: location.state.nama,
-    npa: location.state.npa,
+    namadokter: location.state.namadokter,
+    srp: location.state.srp,
     spesialis: location.state.spesialis,
-    username: location.state.userName,
-    password: location.state.password,
+    username: location.state.user.username,
+    password: location.state.user.password,
   });
 
   const [popup, setPopup] = useState({ show: false });
@@ -47,16 +47,20 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newData = {
-      nama: editDataDokter.nama,
-      npa: editDataDokter.npa,
+    const newDataDokter = {
+      namadokter: editDataDokter.namadokter,
+      srp: editDataDokter.srp,
       spesialis: editDataDokter.spesialis,
-      userName: editDataDokter.username,
+    };
+    const newDataUser = {
+      username: editDataDokter.username,
       password: editDataDokter.password,
     };
-    axios.put(`/Dokter/${location.state.idDokter}`, newData).then((res) => {
-      setPopup({
-        show: true,
+    axios.put(`/dokter/${location.state.id}`, newDataDokter).then((res) => {
+      axios.put(`/user/${location.state.id}`, newDataUser).then((res) => {
+        setPopup({
+          show: true,
+        });
       });
     });
   };
@@ -132,8 +136,8 @@ export default function Form() {
                   <FormInput
                     title="Nama lengkap*"
                     type="text"
-                    name="nama"
-                    value={editDataDokter.nama}
+                    name="namadokter"
+                    value={editDataDokter.namadokter}
                     onChange={handleChange}
                   />
                 </Grid>
@@ -141,8 +145,8 @@ export default function Form() {
                   <FormInput
                     title="NPA IDI*"
                     type="text"
-                    name="npa"
-                    value={editDataDokter.npa}
+                    name="srp"
+                    value={editDataDokter.srp}
                     onChange={handleChange}
                   />
                 </Grid>
