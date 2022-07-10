@@ -6,6 +6,8 @@ import axios from "../../API/api";
 
 import { useNavigate } from "react-router";
 
+import moment from "moment";
+
 import style from "./style.module.css"
 
 import AppLogo from "../../component/AppLogo/AppLogo"
@@ -13,6 +15,7 @@ import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import ButtonKembali from "../../component/button-kembali/ButtonKembali";
+import Modal from "../../component/ModalNew/Modal";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -26,13 +29,20 @@ const TambahJadwal = () => {
     const [step, setStep] = useState("step1")
     const [dataPasien, setDataPasien] = useState([]);
     const [dataDokter, setDataDokter] = useState([]);
+    const [selected, setSelected] = useState({
+        pasien: {},
+        dokter: {},
+    })
+
     const [jadwal, setJadwal] =  useState({
         nourut: 0,
         jp: "",
         tanggal: "",
-        dokter: {},
-        pasien: {},
+        dokter_id: 0,
+        pasien_id: 0,
     })
+
+    const [popup, setPopup] = useState({ show: false });
 
     const step_progress = {
         filter: "invert(55%) sepia(86%) saturate(653%) hue-rotate(179deg) brightness(97%) contrast(93%)"
@@ -59,21 +69,47 @@ const TambahJadwal = () => {
             setDataDokter(newData)
         });
     }
+    
+    const getNoUrut = () => {
+        const endPoint = "jadwal"
+
+        axios.get(endPoint)
+        .then((res) => {
+            const pickedDate = res.data.filter((item) => item.tanggal === jadwal.tanggal) 
+            
+            setJadwal({...jadwal, nourut: pickedDate.length + 1})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
+    }
 
     useEffect(() => {
         getDataPasien()
         getDataDokter()
     }, [])
 
+    useEffect(() => {
+        //only run if no urut in jadwal change, that happens when form is submitted
+        if(jadwal.nourut !== 0){
+            const endpoint = "jadwal"
+            axios.post(endpoint, {...jadwal})
+            .then((res) => {
+                setPopup({
+                    show: true,
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })    
+        }
+    }, [jadwal.nourut])
+
     const handleChangeForm = (e) => {
         const newJadwal = {...jadwal}
         newJadwal[e.target.name] = e.target.value
 
         setJadwal(newJadwal)
-    }
-
-    const handleSubmit = (e) => {
-        e.preventDefault()
     }
 
     const column_step1 = [
@@ -87,10 +123,9 @@ const TambahJadwal = () => {
         {
             click: (id) => {
                 const pasien = dataPasien.filter((item) => item.id === id)
+                setSelected({...selected, pasien: pasien[0]})
 
-                setJadwal({
-                    ...jadwal, pasien: {...pasien[0]}
-                })
+                setJadwal({...jadwal, pasien_id: id})
 
                 setStep("step2")
             },
@@ -109,17 +144,21 @@ const TambahJadwal = () => {
         {
             click: (id) => {
                 const dokter = dataDokter.filter((item) => item.id === id)
-
-                setJadwal({
-                    ...jadwal, dokter: {...dokter[0]}
-                })
+                setSelected({...selected, dokter: dokter[0]})
+                
+                setJadwal({...jadwal, dokter_id: id})
 
                 setStep("step3")
             },
             icon: tambah_icon
         },
     ]
-    console.log(jadwal)
+
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        getNoUrut()
+    }
+    
     return(
         <div className={style.container}>
             <div className={style.header_container}>
@@ -183,12 +222,15 @@ const TambahJadwal = () => {
                 <div className={style.form_container}>
                     <form onSubmit={handleSubmit}>
                         <div className={style.pasien_dokter_container}>
-                            <p>Nama Pasien: <span>{jadwal.pasien.namapasien}</span></p>
-                            <p>Nama Dokter: <span>{jadwal.dokter.namadokter}</span></p>
+                            <p>Nama Pasien: <span>{selected.pasien.namapasien}</span></p>
+                            <p>Nama Dokter: <span>{selected.dokter.namadokter}</span></p>
                         </div>
                         <div className={style.input_container}>
                             <p>Pilih Tanggal<span style={{color: "#EC0000"}}>*</span></p>
-                            <input type="date" name="tanggal" onChange={(e) => handleChangeForm(e)} required/>
+                            <input type="date" name="tanggal" 
+                                    min={`${moment().format("YYYY-MM-DD")}`} max={"9999-12-31"} 
+                                    onChange={(e) => handleChangeForm(e)} required
+                            />
                         </div>
                         <div className={style.input_container}>
                             <p>Jenis Perawatan<span style={{color: "#EC0000"}}>*</span></p>
@@ -212,6 +254,17 @@ const TambahJadwal = () => {
                     </form>
                 </div>
             )}
+            {popup.show && (
+                <Modal
+                  title={"Jadwal Berhasil ditambahkan!"}
+                  handleCancel={() => {
+                    setPopup({
+                        show: false,
+                    });
+                    navigate("/kelola-jadwal");
+                  }}
+                />
+              )}
         </div>
     )
 }
