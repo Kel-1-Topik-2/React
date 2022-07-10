@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { Link } from "react-router-dom";
 
+import moment from "moment";
+
 import axios from "../../API/api";
 import style from "./style.module.css";
 
@@ -20,13 +22,16 @@ const Dashboard = () => {
   useEffect(() => {
     axios.get(endPoint).then((res) => {
       const newData = res.data
+      const today = moment().format("YYYY-MM-DD")
 
       newData.forEach((jadwal) => {
         jadwal.namapasien = jadwal.pasien.namapasien
         jadwal.namadokter = jadwal.dokter.namadokter
       })
       
-      setJadwal(newData)
+      const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+      
+      setJadwal(todayJadwal)
     });
   }, []);
 

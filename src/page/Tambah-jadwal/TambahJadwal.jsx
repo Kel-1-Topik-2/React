@@ -75,7 +75,9 @@ const TambahJadwal = () => {
 
         axios.get(endPoint)
         .then((res) => {
-            setJadwal({...jadwal, nourut: res.data.length + 1})
+            const pickedDate = res.data.filter((item) => item.tanggal === jadwal.tanggal) 
+            
+            setJadwal({...jadwal, nourut: pickedDate.length + 1})
         })
         .catch((err) => {
             console.log(err)
