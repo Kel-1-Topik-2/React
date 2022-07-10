@@ -14,7 +14,7 @@ const ButtonKembali = ({ title, onClick }) => {
         border: "2px solid #000000"
 	});
 	return (
-		<ButtonSecondary variant="text" onClick={onClick}>
+		<ButtonSecondary variant="text" onClick={onClick} type="reset">
 			{title}
 		</ButtonSecondary>
 	);
