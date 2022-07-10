@@ -4,6 +4,6 @@ export default axios.create({
 	baseURL: 'https://springboot-postgresql-capstone.herokuapp.com/',
   headers: {
     "content-type": "application/json",
-    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwic3ViIjoic2FzYSJ9.pe1J8C3M1FWB4jDPHpkNq_dcvHSW7T6qePZA2l1kX0A`
+    'Authorization': `Bearer eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIyIiwic3ViIjoic2FzYSJ9.7oeORU2oHYY_6ogO2Oiu0eEQ9YEmkC-mebW4HsA1qW4`
   }
 });
