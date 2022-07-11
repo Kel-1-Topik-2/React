@@ -2,9 +2,11 @@ import React from "react";
 
 import { useState,useEffect } from "react";
 
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 import { useNavigate } from "react-router";
+
+import moment from "moment";
 
 import style from "./style.module.css"
 
@@ -13,6 +15,7 @@ import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import ButtonKembali from "../../component/button-kembali/ButtonKembali";
+import Modal from "../../component/ModalNew/Modal";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -26,13 +29,27 @@ const TambahJadwal = () => {
     const [step, setStep] = useState("step1")
     const [dataPasien, setDataPasien] = useState([]);
     const [dataDokter, setDataDokter] = useState([]);
+    const [selected, setSelected] = useState({
+        pasien: {},
+        dokter: {},
+    })
+
+    const [jadwal, setJadwal] =  useState({
+        nourut: 0,
+        jp: "",
+        tanggal: "",
+        dokter_id: 0,
+        pasien_id: 0,
+    })
+
+    const [popup, setPopup] = useState({ show: false });
 
     const step_progress = {
         filter: "invert(55%) sepia(86%) saturate(653%) hue-rotate(179deg) brightness(97%) contrast(93%)"
     }
 
     const getDataPasien = () => {
-        const endPoint = "Pasien"
+        const endPoint = "pasien"
 
         axios.get(endPoint).then((res) => {
             setDataPasien(res.data);
@@ -40,11 +57,31 @@ const TambahJadwal = () => {
     }
 
     const getDataDokter = () => {
-        const endPoint = "Dokter"
+        const endPoint = "dokter"
 
         axios.get(endPoint).then((res) => {
-            setDataDokter(res.data);
+            const newData = res.data
+
+            newData.forEach((dokter) => {
+                dokter.username = dokter.user.username
+            })
+            
+            setDataDokter(newData)
         });
+    }
+    
+    const getNoUrut = () => {
+        const endPoint = "jadwal"
+
+        axios.get(endPoint)
+        .then((res) => {
+            const pickedDate = res.data.filter((item) => item.tanggal === jadwal.tanggal) 
+            
+            setJadwal({...jadwal, nourut: pickedDate.length + 1})
+        })
+        .catch((err) => {
+            console.log(err)
+        })
     }
 
     useEffect(() => {
@@ -52,34 +89,76 @@ const TambahJadwal = () => {
         getDataDokter()
     }, [])
 
+    useEffect(() => {
+        //only run if no urut in jadwal change, that happens when form is submitted
+        if(jadwal.nourut !== 0){
+            const endpoint = "jadwal"
+            axios.post(endpoint, {...jadwal})
+            .then((res) => {
+                setPopup({
+                    show: true,
+                })
+            })
+            .catch((err) => {
+                console.log(err)
+            })    
+        }
+    }, [jadwal.nourut])
+
+    const handleChangeForm = (e) => {
+        const newJadwal = {...jadwal}
+        newJadwal[e.target.name] = e.target.value
+
+        setJadwal(newJadwal)
+    }
+
     const column_step1 = [
-        { field: "idPasien", header: "ID" },
-        { field: "nama", header: "Nama Lengkap" },
-        { field: "nik", header: "NIK" },
-        { field: "usia", header: "Usia" },
-    ];
+		{ field: 'id', header: 'ID' },
+		{ field: 'namapasien', header: 'Nama Lengkap' },
+		{ field: 'nik', header: 'NIK' },
+		{ field: 'umur', header: 'Usia' },
+	];
     
     const aksi_step1 = [
         {
-            click: () => {setStep("step2")},
+            click: (id) => {
+                const pasien = dataPasien.filter((item) => item.id === id)
+                setSelected({...selected, pasien: pasien[0]})
+
+                setJadwal({...jadwal, pasien_id: id})
+
+                setStep("step2")
+            },
             icon: tambah_icon
         },
     ]
 
     const column_step2 = [
-        { field: "npa", header: "NPA IDI" },
-        { field: "nama", header: "Nama Lengkap" },
-        { field: "userName", header: "Username" },
+        { field: "srp", header: "NPA IDI" },
+        { field: "namadokter", header: "Nama Lengkap" },
+        { field: "username", header: "Username" },
         { field: "spesialis", header: "Spesialis" },
     ];
     
     const aksi_step2 = [
         {
-            click: () => {setStep("step3")},
+            click: (id) => {
+                const dokter = dataDokter.filter((item) => item.id === id)
+                setSelected({...selected, dokter: dokter[0]})
+                
+                setJadwal({...jadwal, dokter_id: id})
+
+                setStep("step3")
+            },
             icon: tambah_icon
         },
     ]
 
+    const handleSubmit = (e) => {
+        e.preventDefault()
+        getNoUrut()
+    }
+    
     return(
         <div className={style.container}>
             <div className={style.header_container}>
@@ -90,9 +169,7 @@ const TambahJadwal = () => {
             </div>
 
             <div className={style.step_container}>
-                <div className={style.step_group} style={
-                    step === "step1" || step === "step2" || step === "step3" ? step_progress : {}
-                }>
+                <div className={style.step_group} style={step_progress}>
                     <StepCard image={pasien_icon} text={"1.Pilih Pasien"}/>
                 </div>
 
@@ -114,7 +191,7 @@ const TambahJadwal = () => {
                     <Table
                         column={column_step1}
                         data={dataPasien}
-                        primaryKey={"idPasien"}
+                        primaryKey={"id"}
                         aksi={aksi_step1}
                     />
 
@@ -130,7 +207,7 @@ const TambahJadwal = () => {
                     <Table
                         column={column_step2}
                         data={dataDokter}
-                        primaryKey={"idDokter"}
+                        primaryKey={"id"}
                         aksi={aksi_step2}
                     />
 
@@ -143,17 +220,24 @@ const TambahJadwal = () => {
 
             {step === "step3" && (
                 <div className={style.form_container}>
-                    <form>
+                    <form onSubmit={handleSubmit}>
+                        <div className={style.pasien_dokter_container}>
+                            <p>Nama Pasien: <span>{selected.pasien.namapasien}</span></p>
+                            <p>Nama Dokter: <span>{selected.dokter.namadokter}</span></p>
+                        </div>
                         <div className={style.input_container}>
                             <p>Pilih Tanggal<span style={{color: "#EC0000"}}>*</span></p>
-                            <input type="date" />
+                            <input type="date" name="tanggal" 
+                                    min={`${moment().format("YYYY-MM-DD")}`} max={"9999-12-31"} 
+                                    onChange={(e) => handleChangeForm(e)} required
+                            />
                         </div>
                         <div className={style.input_container}>
                             <p>Jenis Perawatan<span style={{color: "#EC0000"}}>*</span></p>
-                            <select defaultValue={""}>
-                                <option value="" disabled>Pilih jenis perawatan</option>
-                                <option value="Rawat_biasa">perawatan biasa</option>
-                                <option value="Rawat_jalan">rawat jalan</option>
+                            <select value={jadwal.jp} name={"jp"} onChange={(e) => handleChangeForm(e)} required>
+                                <option value="" disabled hidden>Pilih jenis perawatan</option>
+                                <option value="Perawatan Biasa">Perawatan Biasa</option>
+                                <option value="Rawat Jalan">Rawat Jalan</option>
                             </select>
                         </div>
 
@@ -170,6 +254,17 @@ const TambahJadwal = () => {
                     </form>
                 </div>
             )}
+            {popup.show && (
+                <Modal
+                  title={"Jadwal Berhasil ditambahkan!"}
+                  handleCancel={() => {
+                    setPopup({
+                        show: false,
+                    });
+                    navigate("/kelola-jadwal");
+                  }}
+                />
+              )}
         </div>
     )
 }

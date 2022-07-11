@@ -14,29 +14,30 @@ import FormInput from "../../component/formInput/FormInput";
 import { useLinkClickHandler, useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 export default function DetailData() {
   let navigate = useNavigate();
   const [detailDokter, setDetailDokter] = useState([]);
+  const [userDokter, setUserDokter] = useState([]);
 
   const params = useParams();
 
   const handleEdit = useLinkClickHandler(
-    `/detail-data-dokter/edit-data-dokter/${detailDokter.idDokter}`,
+    `/detail-data-dokter/edit-data-dokter/${detailDokter.id}`,
     {
       state: detailDokter,
     }
   );
-  const endPoint = `Dokter/${params.id}`;
+  const endPoint = `dokter/${params.id}`;
 
   useEffect(() => {
     axios.get(endPoint).then((res) => {
-      setDetailDokter(res.data);
+      setDetailDokter(res.data.data);
+      setUserDokter(res.data.data.user);
     });
   }, []);
 
-  console.log(detailDokter);
   const handleBack = () => {
     navigate(-1);
   };
@@ -126,7 +127,7 @@ export default function DetailData() {
                     title="Nama lengkap"
                     type="text"
                     disable
-                    value={detailDokter.nama}
+                    value={detailDokter.namadokter}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -134,7 +135,7 @@ export default function DetailData() {
                     title="NPA IDI"
                     type="text"
                     disable
-                    value={detailDokter.npa}
+                    value={detailDokter.srp}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -150,7 +151,7 @@ export default function DetailData() {
                     title="Username"
                     type="text"
                     disable
-                    value={detailDokter.userName}
+                    value={userDokter.username}
                   />
                 </Grid>
                 <Grid item xs={6}>
@@ -158,7 +159,7 @@ export default function DetailData() {
                     title="Password"
                     type="text"
                     disable
-                    value={detailDokter.password}
+                    value={userDokter.password}
                   />
                 </Grid>
               </Grid>

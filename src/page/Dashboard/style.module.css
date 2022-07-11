@@ -7,10 +7,30 @@
     flex-wrap: wrap;
     align-items: center;
     
-    column-gap: 1rem;
-    row-gap: 1rem;
+    column-gap: 1.25rem;
+    row-gap: 2rem;
 
     margin-bottom: 3rem;
+}
+
+.table_container{
+    display: flex;
+    flex-direction: column;
+    row-gap: 0.5rem;
+}
+
+.table_container a{
+    align-self: flex-end;
+
+    font-weight: 400;
+    font-size: 0.875rem;
+    color: #358C56;
+
+    transition: 0.3s;
+}
+
+.table_container a:hover{
+    opacity: 0.6;
 }
 
 .header{

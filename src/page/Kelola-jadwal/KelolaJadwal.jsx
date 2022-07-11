@@ -2,7 +2,9 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom"
 
-import axios from "../../dummy-api/api";
+import moment from "moment";
+
+import axios from "../../API/api";
 
 import style from "./style.module.css"
 
@@ -14,21 +16,31 @@ const KelolaJadwal = () => {
 
     const navigate = useNavigate()
 
-    const endPoint = "Jadwal";
+    const endPoint = "jadwal";
     const [jadwal, setJadwal] = useState([]);
 
     useEffect(() => {
         axios.get(endPoint).then((res) => {
-          setJadwal(res.data);
+          const newData = res.data
+          const today = moment().format("YYYY-MM-DD")
+    
+          newData.forEach((jadwal) => {
+            jadwal.namapasien = jadwal.pasien.namapasien
+            jadwal.namadokter = jadwal.dokter.namadokter
+          })
+          
+          const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+          
+          setJadwal(todayJadwal)
         });
       }, []);
 
       const column = [
         { field: "tanggal", header: "Tanggal" },
-        { field: "noUrut", header: "Antrian" },
-        { field: "namaPasien", header: "Nama Pasien" },
-        { field: "namaDokter", header: "Nama Dokter" },
-        { field: "jenisPerawatan", header: "Jenis Perawatan" },
+        { field: "nourut", header: "Antrian" },
+        { field: "namapasien", header: "Nama Pasien" },
+        { field: "namadokter", header: "Nama Dokter" },
+        { field: "jp", header: "Jenis Perawatan" },
       ];
     
     return(
