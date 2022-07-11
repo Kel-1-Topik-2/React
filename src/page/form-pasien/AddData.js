@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -33,6 +33,7 @@ export default function Form() {
   let navigate = useNavigate();
 
   const [data, setData] = useState(formData);
+  const [dataError, setDataError] = useState({});
   const [radio, setRadio] = useState("");
   const [popup, setPopup] = useState({ show: false });
 
@@ -51,25 +52,69 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
+  const handleChangeRadio = (e) => {
+    setRadio(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(endPoint, {
-        namapasien: data.namapasien,
-        nik: data.nik,
-        umur: data.umur,
-        jeniskelamin: radio,
-        telp: data.telp,
-        alamat: data.alamat,
-      })
-      .then((res) => {
-        setPopup({
-          show: true,
+    console.log(dataError);
+    validate(data);
+    if (validate(data) === true) {
+      axios
+        .post(endPoint, {
+          namapasien: data.namapasien,
+          nik: data.nik,
+          umur: data.umur,
+          jeniskelamin: radio,
+          telp: data.telp,
+          alamat: data.alamat,
+        })
+        .then((res) => {
+          setPopup({
+            show: true,
+          });
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.namapasien) {
+      errors.namapasien = "nama pasien perlu dibutuhkan";
+    }
+
+    if (!values.nik) {
+      errors.nik = "nik perlu dibutuhkan";
+    } else if (values.nik.length < 16) {
+      errors.nik = "nik perlu 16 digit";
+    }
+
+    if (values.umur <= 0) {
+      errors.umur = "umur tidak sesuai";
+    }
+    if (!values.telp) {
+      errors.telp = "nomor telpon perlu dibutuhkan";
+    }
+    if (!values.alamat) {
+      errors.alamat = "alamat perlu dibutuhkan";
+    }
+    // if (!values.radio) {
+    //   errors.radio = "silakan pilih jenis kelamin";
+    // }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const handleOk = () => {
@@ -151,6 +196,9 @@ export default function Form() {
                     name="namapasien"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.namapasien}
+                  </Typography>
                 </Grid>
                 <Grid item xs={5}>
                   <FormInput
@@ -160,6 +208,9 @@ export default function Form() {
                     name="telp"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.telp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -169,6 +220,9 @@ export default function Form() {
                     name="nik"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.nik}
+                  </Typography>
                 </Grid>
                 <Grid item xs={2}>
                   <FormInput
@@ -178,6 +232,9 @@ export default function Form() {
                     name="umur"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.umur}
+                  </Typography>
                 </Grid>
                 {/* Radio */}
                 <Grid item xs={4}>
@@ -192,25 +249,24 @@ export default function Form() {
                       row
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
+                      value={radio}
+                      onChange={handleChangeRadio}
                     >
                       <FormControlLabel
                         value="Laki laki"
                         control={<Radio />}
                         label="L"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                       <FormControlLabel
                         value="Perempuan"
                         control={<Radio />}
                         label="P"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                     </RadioGroup>
                   </FormControl>
+                  {/* <Typography component="div" color={"red"}>
+                    {dataError.radio}
+                  </Typography> */}
                 </Grid>
                 <Grid item xs={12}>
                   <FormInput
@@ -222,6 +278,9 @@ export default function Form() {
                     name="alamat"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.alamat}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid
