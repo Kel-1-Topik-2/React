@@ -19,6 +19,7 @@ export default function Form() {
   const formData = {
     username: "",
     password: "",
+    confirmpassword: "",
     namadokter: "",
     spesialis: "",
     srp: "",
@@ -27,6 +28,7 @@ export default function Form() {
   let navigate = useNavigate();
 
   const [data, setData] = useState(formData);
+  const [dataError, setDataError] = useState({});
   const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {
@@ -46,22 +48,67 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(endPoint, {
-        username: data.username,
-        password: data.password,
-        namadokter: data.namadokter,
-        spesialis: data.spesialis,
-        srp: data.srp,
-      })
-      .then((res) => {
-        setPopup({
-          show: true,
+    validate(data);
+    if (validate(data) === true) {
+      axios
+        .post(endPoint, {
+          username: data.username,
+          password: data.password,
+          namadokter: data.namadokter,
+          spesialis: data.spesialis,
+          srp: data.srp,
+        })
+        .then((res) => {
+          setPopup({
+            show: true,
+          });
+          console.log(res);
+        })
+        .catch((error) => {
+          console.log(error);
         });
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.username) {
+      errors.username = "username perlu dibutuhkan";
+    } else if (values.username.length < 8) {
+      errors.username = "username perlu 8 digit";
+    }
+
+    if (!values.password) {
+      errors.password = "Kata Sandi perlu dibutuhkan";
+    } else if (values.password.length < 8) {
+      errors.password = "Kata Sandi perlu 8 digit";
+    }
+
+    if (!values.confirmpassword) {
+      errors.confirmpassword = "Kata Sandi perlu dibutuhkan";
+    } else if (values.confirmpassword.length < 8) {
+      errors.confirmpassword = "Kata Sandi tidak sesuai";
+    }
+
+    if (!values.namadokter) {
+      errors.namadokter = "nama pasien perlu dibutuhkan";
+    }
+    if (!values.spesialis) {
+      errors.spesialis = "spesialis perlu dibutuhkan";
+    }
+    if (!values.srp) {
+      errors.srp = "NPA IDI perlu dibutuhkan";
+    }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const handleOk = () => {
@@ -137,12 +184,15 @@ export default function Form() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormInput
-                    title="Namadokter lengkap*"
+                    title="Nama lengkap*"
                     type="text"
                     value={data.namadokter}
-                    name="namadokter"
+                    name="nama"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.namadokter}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -152,6 +202,9 @@ export default function Form() {
                     name="npa"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.srp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -161,8 +214,11 @@ export default function Form() {
                     name="spesialis"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.spesialis}
+                  </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <FormInput
                     title="Username*"
                     type="text"
@@ -170,15 +226,33 @@ export default function Form() {
                     name="username"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.username}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="Password*"
+                    title="Kata Sandi*"
                     type="text"
                     value={data.password}
                     name="password"
                     onChange={handleChange}
                   />
+                  <Typography component="div" color={"red"}>
+                    {dataError.password}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormInput
+                    title="Konfirmasi Kata Sandi*"
+                    type="text"
+                    value={data.confirmpassword}
+                    name="confirm password"
+                    onChange={handleChange}
+                  />
+                  <Typography component="div" color={"red"}>
+                    {dataError.confirmpassword}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid

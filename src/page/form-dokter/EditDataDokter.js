@@ -159,7 +159,7 @@ export default function Form() {
                     onChange={handleChange}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <FormInput
                     title="Username*"
                     type="text"
@@ -170,10 +170,19 @@ export default function Form() {
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="Password*"
+                    title="Kata Sandi Baru*"
                     type="text"
                     name="password"
                     value={editDataDokter.password}
+                    onChange={handleChange}
+                  />
+                </Grid>
+                <Grid item xs={6}>
+                  <FormInput
+                    title="Konfirmasi Kata Sandi Baru*"
+                    type="text"
+                    value={""}
+                    name="confirm password"
                     onChange={handleChange}
                   />
                 </Grid>
