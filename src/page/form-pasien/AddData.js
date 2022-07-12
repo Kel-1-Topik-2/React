@@ -34,7 +34,7 @@ export default function Form() {
 
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
-  const [radio, setRadio] = useState("");
+  const [radio, setRadio] = useState("Laki laki");
   const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {

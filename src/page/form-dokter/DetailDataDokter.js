@@ -146,20 +146,12 @@ export default function DetailData() {
                     value={detailDokter.spesialis}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <FormInput
                     title="Username"
                     type="text"
                     disable
                     value={userDokter.username}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormInput
-                    title="Password"
-                    type="text"
-                    disable
-                    value={userDokter.password}
                   />
                 </Grid>
               </Grid>
