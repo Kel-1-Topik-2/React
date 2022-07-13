@@ -1,9 +1,14 @@
 import React from "react";
-import { NavLink } from "react-router-dom";
+
+import { useState } from "react";
+
+import { NavLink, useNavigate } from "react-router-dom";
 
 import style from "./style.module.css";
 
 import AppLogo from "../AppLogo/AppLogo";
+
+import Modal from "../ModalNew/Modal";
 
 import dashboard_icon from "../../assets/img/dashboard_icon.svg";
 import data_pasien_icon from "../../assets/img/data_pasien_icon.svg";
@@ -13,6 +18,17 @@ import arsip_jadwal_icon from "../../assets/img/arsip_jadwal_icon.svg";
 import logout_icon from "../../assets/img/logout_icon.svg";
 
 const Sidebar = () => {
+
+  const navigate = useNavigate()
+
+  const [popup, setPopup] = useState({ show: false });
+
+  const logoutClick = () => {
+    setPopup({
+      show: true,
+    });
+  }
+
   return (
     <div className={style.container}>
       <div className={style.icon}>
@@ -72,12 +88,23 @@ const Sidebar = () => {
 
           <hr />
 
-          <NavLink to={"#"}>
+          <NavLink to={"#"} onClick={() => logoutClick()}>
             <img src={logout_icon} alt="" />
             <li>Logout</li>
           </NavLink>
         </ul>
       </div>
+
+      {popup.show && (
+          <Modal
+            title={"Berhasil logout"}
+            handleCancel={() => {
+              sessionStorage.removeItem("token")
+              navigate("/login")
+            }}
+          />
+        )}
+
     </div>
   );
 };

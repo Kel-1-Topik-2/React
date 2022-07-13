@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import moment from "moment";
 
@@ -10,29 +10,50 @@ import style from "./style.module.css";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import OverviewCard from "../../component/OverviewCard/OverviewCard";
 import Table from "../../component/Table/Table";
+import Modal from "../../component/ModalNew/Modal";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
 import pertemuan_icon from "../../assets/img/pertemuan_icon.svg";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate()
+
   const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
+  const [popup, setPopup] = useState({ show: false });
 
   useEffect(() => {
-    axios.get(endPoint).then((res) => {
-      const newData = res.data
-      const today = moment().format("YYYY-MM-DD")
+    const status = sessionStorage.getItem("token")
+        
+    if(status === null){
+      navigate("/login", {replace: true})
+    }
 
-      newData.forEach((jadwal) => {
-        jadwal.namapasien = jadwal.pasien.namapasien
-        jadwal.namadokter = jadwal.dokter.namadokter
+    else{
+      axios.get(endPoint)
+      .then((res) => {
+        const newData = res.data
+        const today = moment().format("YYYY-MM-DD")
+  
+        newData.forEach((jadwal) => {
+          jadwal.namapasien = jadwal.pasien.namapasien
+          jadwal.namadokter = jadwal.dokter.namadokter
+        })
+        
+        const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+        
+        setJadwal(todayJadwal)
       })
-      
-      const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
-      
-      setJadwal(todayJadwal)
-    });
+      .catch((err) => {
+        if(err.response.status === 403){
+          setPopup({
+            show: true,
+          });
+        }
+      });
+    }
   }, []);
 
   const column = [
@@ -66,6 +87,19 @@ const Dashboard = () => {
           />
         </div>
       </div>
+
+      {popup.show && (
+        <Modal
+          title={"Session berakhir, silahkan login kembali"}
+          handleCancel={() => {
+            setPopup({
+              show: false,
+            });
+            navigate("/login", {replace: true})
+          }}
+        />
+      )}
+
     </div>
   );
 };
