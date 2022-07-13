@@ -196,7 +196,11 @@ export default function Form() {
                     name="namapasien"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.namapasien}
                   </Typography>
                 </Grid>
@@ -208,7 +212,11 @@ export default function Form() {
                     name="telp"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.telp}
                   </Typography>
                 </Grid>
@@ -220,7 +228,11 @@ export default function Form() {
                     name="nik"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.nik}
                   </Typography>
                 </Grid>
@@ -232,7 +244,11 @@ export default function Form() {
                     name="umur"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.umur}
                   </Typography>
                 </Grid>
@@ -264,9 +280,6 @@ export default function Form() {
                       />
                     </RadioGroup>
                   </FormControl>
-                  {/* <Typography component="div" color={"red"}>
-                    {dataError.radio}
-                  </Typography> */}
                 </Grid>
                 <Grid item xs={12}>
                   <FormInput
@@ -278,7 +291,11 @@ export default function Form() {
                     name="alamat"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.alamat}
                   </Typography>
                 </Grid>
