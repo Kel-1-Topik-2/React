@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 
-import { Link } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
 import moment from "moment";
+
+import Swal from "sweetalert2";
 
 import axios from "../../API/api";
 import style from "./style.module.css";
@@ -16,23 +18,51 @@ import dokter_icon from "../../assets/img/dokter_icon.svg";
 import pertemuan_icon from "../../assets/img/pertemuan_icon.svg";
 
 const Dashboard = () => {
+
+  const navigate = useNavigate()
+
   const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
 
   useEffect(() => {
-    axios.get(endPoint).then((res) => {
-      const newData = res.data
-      const today = moment().format("YYYY-MM-DD")
+    const status = localStorage.getItem("token")
+  
+    if(status === null){
+      navigate("/login", {replace: true})
+    }
 
-      newData.forEach((jadwal) => {
-        jadwal.namapasien = jadwal.pasien.namapasien
-        jadwal.namadokter = jadwal.dokter.namadokter
+    else{
+      axios.get(endPoint, {
+        headers: {
+          "content-type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
       })
-      
-      const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
-      
-      setJadwal(todayJadwal)
-    });
+      .then((res) => {
+        const newData = res.data
+        const today = moment().format("YYYY-MM-DD")
+  
+        newData.forEach((jadwal) => {
+          jadwal.namapasien = jadwal.pasien.namapasien
+          jadwal.namadokter = jadwal.dokter.namadokter
+        })
+        
+        const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+        
+        setJadwal(todayJadwal)
+      })
+      .catch((err) => {
+        if(err.response.status === 403){
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'Sesi anda sudah berakhir, silahkan login kembali',
+          }).then(() => {
+            navigate("/login")
+          })
+        }
+      });
+    }
   }, []);
 
   const column = [
