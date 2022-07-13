@@ -190,7 +190,11 @@ export default function Form() {
                     name="nama"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.namadokter}
                   </Typography>
                 </Grid>
@@ -202,7 +206,11 @@ export default function Form() {
                     name="npa"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.srp}
                   </Typography>
                 </Grid>
@@ -214,7 +222,11 @@ export default function Form() {
                     name="spesialis"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.spesialis}
                   </Typography>
                 </Grid>
@@ -226,7 +238,11 @@ export default function Form() {
                     name="username"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.username}
                   </Typography>
                 </Grid>
@@ -238,7 +254,11 @@ export default function Form() {
                     name="password"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.password}
                   </Typography>
                 </Grid>
@@ -250,7 +270,11 @@ export default function Form() {
                     name="confirm password"
                     onChange={handleChange}
                   />
-                  <Typography component="div" color={"red"}>
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
                     {dataError.confirmpassword}
                   </Typography>
                 </Grid>
