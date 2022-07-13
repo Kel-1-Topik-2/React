@@ -4,13 +4,14 @@ import { Link, useNavigate } from "react-router-dom";
 
 import moment from "moment";
 
+import Swal from "sweetalert2";
+
 import axios from "../../API/api";
 import style from "./style.module.css";
 
 import Sidebar from "../../component/Sidebar/Sidebar";
 import OverviewCard from "../../component/OverviewCard/OverviewCard";
 import Table from "../../component/Table/Table";
-import Modal from "../../component/ModalNew/Modal";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
@@ -22,17 +23,21 @@ const Dashboard = () => {
 
   const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
-  const [popup, setPopup] = useState({ show: false });
 
   useEffect(() => {
-    const status = sessionStorage.getItem("token")
-        
+    const status = localStorage.getItem("token")
+  
     if(status === null){
       navigate("/login", {replace: true})
     }
 
     else{
-      axios.get(endPoint)
+      axios.get(endPoint, {
+        headers: {
+          "content-type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+      })
       .then((res) => {
         const newData = res.data
         const today = moment().format("YYYY-MM-DD")
@@ -48,9 +53,13 @@ const Dashboard = () => {
       })
       .catch((err) => {
         if(err.response.status === 403){
-          setPopup({
-            show: true,
-          });
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'Sesi anda sudah berakhir, silahkan login kembali',
+          }).then(() => {
+            navigate("/login")
+          })
         }
       });
     }
@@ -87,19 +96,6 @@ const Dashboard = () => {
           />
         </div>
       </div>
-
-      {popup.show && (
-        <Modal
-          title={"Session berakhir, silahkan login kembali"}
-          handleCancel={() => {
-            setPopup({
-              show: false,
-            });
-            navigate("/login", {replace: true})
-          }}
-        />
-      )}
-
     </div>
   );
 };

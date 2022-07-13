@@ -1,14 +1,12 @@
 import React from "react";
 
-import { useState } from "react";
-
 import { NavLink, useNavigate } from "react-router-dom";
+
+import Swal from "sweetalert2";
 
 import style from "./style.module.css";
 
 import AppLogo from "../AppLogo/AppLogo";
-
-import Modal from "../ModalNew/Modal";
 
 import dashboard_icon from "../../assets/img/dashboard_icon.svg";
 import data_pasien_icon from "../../assets/img/data_pasien_icon.svg";
@@ -21,12 +19,22 @@ const Sidebar = () => {
 
   const navigate = useNavigate()
 
-  const [popup, setPopup] = useState({ show: false });
+  const activeStyle = {
+    filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+  }
 
   const logoutClick = () => {
-    setPopup({
-      show: true,
-    });
+    Swal.fire({
+      title: "Apakah anda yakin untuk keluar?",
+      showCancelButton: true,
+      cancelButtonText: "Tidak",
+      confirmButtonText: "Ya",
+    }).then((result) => {
+      if(result.isConfirmed){
+        localStorage.removeItem("token")
+        navigate("/login")
+      }
+    })
   }
 
   return (
@@ -36,52 +44,27 @@ const Sidebar = () => {
       </div>
       <div className={style.navigation_container}>
         <ul>
-          <NavLink to="/"
-            style={({isActive}) => (
-              isActive ? {
-                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
-              } : {}
-            )}>
+          <NavLink to="/" style={({isActive}) => (isActive ? activeStyle : {})}>
             <img src={dashboard_icon} alt="" />
             <li>Dashboard</li>
           </NavLink>
 
-          <NavLink to="/data-pasien"
-            style={({isActive}) => (
-              isActive ? {
-                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
-              } : {}
-            )}>
+          <NavLink to="/data-pasien" style={({isActive}) => (isActive ? activeStyle : {})}>
             <img src={data_pasien_icon} alt="" />
             <li>Data Pasien</li>
           </NavLink>
 
-          <NavLink to="/data-dokter"
-            style={({isActive}) => (
-              isActive ? {
-                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
-              } : {}
-            )}>
+          <NavLink to="/data-dokter" style={({isActive}) => (isActive ? activeStyle : {})}>
             <img src={data_dokter_icon} alt="" />
             <li>Data Dokter</li>
           </NavLink>
 
-          <NavLink to="/kelola-jadwal"
-            style={({isActive}) => (
-              isActive ? {
-                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
-              } : {}
-            )}>
+          <NavLink to="/kelola-jadwal" style={({isActive}) => (isActive ? activeStyle : {})}>
             <img src={kelola_jadwal_icon} alt="" />
             <li>Kelola Jadwal</li>
           </NavLink>
 
-          <NavLink to="/arsip-jadwal"
-            style={({isActive}) => (
-              isActive ? {
-                filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
-              } : {}
-            )}>
+          <NavLink to="/arsip-jadwal" style={({isActive}) => (isActive ? activeStyle : {})}>
             <img src={arsip_jadwal_icon} alt="" />
             <li>Arsip Jadwal</li>
           </NavLink>
@@ -94,17 +77,6 @@ const Sidebar = () => {
           </NavLink>
         </ul>
       </div>
-
-      {popup.show && (
-          <Modal
-            title={"Berhasil logout"}
-            handleCancel={() => {
-              sessionStorage.removeItem("token")
-              navigate("/login")
-            }}
-          />
-        )}
-
     </div>
   );
 };

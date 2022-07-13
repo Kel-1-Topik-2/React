@@ -4,10 +4,11 @@ import axios from "../../API/api";
 
 import { useNavigate } from "react-router-dom";
 
+import Swal from 'sweetalert2'
+
 import style from './style.module.css';
 
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
-import Modal from '../../component/ModalNew/Modal';
 import Checkbox from '@mui/material/Checkbox';
 
 import showOff from '../../assets/img/showOff.svg';
@@ -15,8 +16,6 @@ import showOn from '../../assets/img/showOn.svg';
 import banner from '../../assets/sideFoto/banner.png';
 
 const Login = () => {
-
-	//eyJhbGciOiJIUzI1NiJ9.eyJqdGkiOiIxMyIsInN1YiI6ImFkbWluMTIzIn0.IyDgsDjLlR8REzrQepn3RMpZIcLmfh_mVARhN6ZTwDU
 
 	const navigate = useNavigate()
 
@@ -26,7 +25,6 @@ const Login = () => {
 		password: "",
 		role: "ROLE_ADMIN"
 	})
-	const [popup, setPopup] = useState({ show: false });
 
 	const handleClickShow = () => {
 		setShow((prevValue) => !prevValue);
@@ -48,13 +46,24 @@ const Login = () => {
 		const endPoint = "api/auth/login"
 		axios.post(endPoint, {...inputs})
 		.then((res) => {
-			sessionStorage.setItem("token", res.data.token)
-			setPopup({
-				show: true,
-			});
+			localStorage.setItem("token", res.data.token)
+
+			Swal.fire({
+				icon: 'success',
+				title: 'Sukses...',
+				text: 'Berhasil login!',
+			}).then(() => {
+				navigate("/")
+			})
 		})
 		.catch((err) => {
 			console.log(err)
+
+			Swal.fire({
+				icon: 'error',
+				title: 'Error...',
+				text: 'Username atau password salah!',
+			})
 		})
 	}
 
@@ -112,19 +121,6 @@ const Login = () => {
 					</div>
 				</form>
 			</div>
-
-			{popup.show && (
-				<Modal
-				title={"Login berhasil"}
-				handleCancel={() => {
-					setPopup({
-					show: false,
-					});
-					navigate("/")
-				}}
-				/>
-			)}
-
 		</div>
 	);
 };
