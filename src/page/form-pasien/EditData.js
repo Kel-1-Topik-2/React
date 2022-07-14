@@ -91,12 +91,16 @@ export default function Form() {
     let validated = false;
     if (!values.namapasien) {
       errors.namapasien = "nama pasien perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.namapasien)) {
+      errors.namapasien = "hanya mengandung huruf";
     }
 
     if (!values.nik) {
       errors.nik = "nik perlu dibutuhkan";
     } else if (values.nik.length < 16) {
       errors.nik = "nik perlu 16 digit";
+    } else if (!/^[0-9]*$/.test(values.nik)) {
+      errors.nik = "nik harus berupa angka";
     }
 
     if (values.umur <= 0) {
@@ -104,7 +108,10 @@ export default function Form() {
     }
     if (!values.telp) {
       errors.telp = "nomor telpon perlu dibutuhkan";
+    } else if (!/^[0-9]*$/.test(values.telp)) {
+      errors.telp = "nomor telpon harus berupa angka";
     }
+
     if (!values.alamat) {
       errors.alamat = "alamat perlu dibutuhkan";
     }

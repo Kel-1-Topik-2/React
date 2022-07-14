@@ -44,21 +44,6 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
-  // const handleLetterNama = (e) => {
-  //   const value = e.target.value.replace(/[^a-z]/gi, "");
-  //   setData({ ...data.namadokter, [e.target.name]: value });
-  // };
-
-  // const handleLetterSpesialis = (e) => {
-  //   const value = e.target.value.replace(/[^a-z]/gi, "");
-  //   setData({ ...data.spesialis, [e.target.name]: value });
-  // };
-
-  // const handleNumber = (e) => {
-  //   const value = e.target.value.replace(/\D/g, "");
-  //   setData({ ...data.srp, [e.target.name]: value });
-  // };
-
   const handleSubmit = async (e) => {
     e.preventDefault();
     validate(data);
@@ -108,21 +93,29 @@ export default function Form() {
     }
 
     if (!values.confirmpassword) {
-      errors.confirmpassword = "Kata Sandi perlu dibutuhkan";
+      errors.confirmpassword = "Kata sandi perlu dibutuhkan";
     } else if (values.confirmpassword !== values.password) {
-      errors.confirmpassword = "Konfirmasi password tidak sama";
+      errors.confirmpassword = "Konfirmasi Kata sandi tidak sama";
     }
 
     if (!values.namadokter) {
       errors.namadokter = "nama dokter perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.namadokter)) {
+      errors.namadokter = "hanya mengandung huruf";
     }
+
     if (!values.spesialis) {
       errors.spesialis = "spesialis perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.spesialis)) {
+      errors.spesialis = "hanya mengandung huruf";
     }
+
     if (!values.srp) {
       errors.srp = "NPA IDI perlu dibutuhkan";
     } else if (values.srp.length < 6) {
       errors.srp = "NPA IDI minimal 6 karakter";
+    } else if (!/^[0-9]*$/.test(values.srp)) {
+      errors.srp = "NPA IDI harus berupa angka";
     }
 
     console.log(errors);

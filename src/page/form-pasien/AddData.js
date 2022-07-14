@@ -52,21 +52,6 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
-  // const handleLetterNama = (e) => {
-  //   const value = e.target.value.replace(/[^a-z]/gi, "");
-  //   setData({ ...data.namapasien, [e.target.name]: value });
-  // };
-
-  // const handleNumTelp = (e) => {
-  //   const value = e.target.value.replace(/\D/g, "");
-  //   setData({ ...data.telp, [e.target.name]: value });
-  // };
-
-  // const handleNumNik = (e) => {
-  //   const value = e.target.value.replace(/\D/g, "");
-  //   setData({ ...data.nik, [e.target.name]: value });
-  // };
-
   const handleChangeRadio = (e) => {
     setRadio(e.target.value);
   };
@@ -110,20 +95,28 @@ export default function Form() {
     let validated = false;
     if (!values.namapasien) {
       errors.namapasien = "nama pasien perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.namapasien)) {
+      errors.namapasien = "hanya mengandung huruf";
     }
 
     if (!values.nik) {
       errors.nik = "nik perlu dibutuhkan";
     } else if (values.nik.length < 16) {
       errors.nik = "nik perlu 16 digit";
+    } else if (!/^[0-9]*$/.test(values.nik)) {
+      errors.nik = "nik harus berupa angka";
     }
 
     if (values.umur <= 0) {
       errors.umur = "umur tidak sesuai";
     }
+
     if (!values.telp) {
       errors.telp = "nomor telpon perlu dibutuhkan";
+    } else if (!/^[0-9]*$/.test(values.telp)) {
+      errors.telp = "nomor telpon harus berupa angka";
     }
+
     if (!values.alamat) {
       errors.alamat = "alamat perlu dibutuhkan";
     }
