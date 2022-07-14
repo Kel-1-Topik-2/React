@@ -52,6 +52,11 @@ export default function Form() {
         const respUser = await axios.post('/user', {
           username: data.username,
           password: data.password
+        }, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
         });
         console.log(respUser.data.data.id)
         if (respUser.status === 200) {
@@ -60,6 +65,11 @@ export default function Form() {
             namadokter: data.namadokter,
             spesialis: data.spesialis,
             srp: data.srp
+          }, {
+            headers: {
+              "content-type": "application/json",
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
           });
           if (respDokter.status === 200) {
             setPopup({
