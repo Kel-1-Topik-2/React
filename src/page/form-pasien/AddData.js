@@ -51,6 +51,21 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
+  // const handleLetterNama = (e) => {
+  //   const value = e.target.value.replace(/[^a-z]/gi, "");
+  //   setData({ ...data.namapasien, [e.target.name]: value });
+  // };
+
+  // const handleNumTelp = (e) => {
+  //   const value = e.target.value.replace(/\D/g, "");
+  //   setData({ ...data.telp, [e.target.name]: value });
+  // };
+
+  // const handleNumNik = (e) => {
+  //   const value = e.target.value.replace(/\D/g, "");
+  //   setData({ ...data.nik, [e.target.name]: value });
+  // };
+
   const handleChangeRadio = (e) => {
     setRadio(e.target.value);
   };
@@ -61,19 +76,23 @@ export default function Form() {
     validate(data);
     if (validate(data) === true) {
       axios
-        .post(endPoint, {
-          namapasien: data.namapasien,
-          nik: data.nik,
-          umur: data.umur,
-          jeniskelamin: radio,
-          telp: data.telp,
-          alamat: data.alamat,
-        }, {
-          headers: {
-            "content-type": "application/json",
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
+        .post(
+          endPoint,
+          {
+            namapasien: data.namapasien,
+            nik: data.nik,
+            umur: data.umur,
+            jeniskelamin: radio,
+            telp: data.telp,
+            alamat: data.alamat,
+          },
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
           }
-        })
+        )
         .then((res) => {
           Swal.fire({
             icon: 'success',
@@ -116,9 +135,6 @@ export default function Form() {
     if (!values.alamat) {
       errors.alamat = "alamat perlu dibutuhkan";
     }
-    // if (!values.radio) {
-    //   errors.radio = "silakan pilih jenis kelamin";
-    // }
 
     console.log(errors);
     if (Object.keys(errors).length !== 0) {

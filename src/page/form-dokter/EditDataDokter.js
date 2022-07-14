@@ -26,8 +26,9 @@ export default function Form() {
     spesialis: location.state.spesialis,
     username: location.state.user.username,
     password: location.state.user.password,
+    confirmpassword: "",
   });
-
+  const [dataError, setDataError] = useState({});
   const [popup, setPopup] = useState({ show: false });
 
   const handleChange = (e) => {
@@ -47,22 +48,68 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newDataDokter = {
-      namadokter: editDataDokter.namadokter,
-      srp: editDataDokter.srp,
-      spesialis: editDataDokter.spesialis,
-    };
-    const newDataUser = {
-      username: editDataDokter.username,
-      password: editDataDokter.password,
-    };
-    axios.put(`/dokter/${location.state.id}`, newDataDokter).then((res) => {
-      axios.put(`/user/${location.state.id}`, newDataUser).then((res) => {
-        setPopup({
-          show: true,
+    validate(editDataDokter);
+    if (validate(editDataDokter) === true) {
+      const newDataDokter = {
+        namadokter: editDataDokter.namadokter,
+        srp: editDataDokter.srp,
+        spesialis: editDataDokter.spesialis,
+      };
+      const newDataUser = {
+        username: editDataDokter.username,
+        password: editDataDokter.password,
+      };
+      axios.put(`/dokter/${location.state.id}`, newDataDokter).then((res) => {
+        axios.put(`/user/${location.state.id}`, newDataUser).then((res) => {
+          setPopup({
+            show: true,
+          });
         });
       });
-    });
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.username) {
+      errors.username = "username perlu dibutuhkan";
+    } else if (values.username.length < 8) {
+      errors.username = "username perlu 8 digit";
+    }
+
+    if (!values.password) {
+      errors.password = "Kata Sandi perlu dibutuhkan";
+    } else if (values.password.length < 8) {
+      errors.password = "Kata Sandi perlu 8 digit";
+    }
+
+    if (!values.confirmpassword) {
+      errors.confirmpassword = "Kata Sandi perlu dibutuhkan";
+    } else if (values.confirmpassword !== values.password) {
+      errors.confirmpassword = "Konfirmasi password tidak sama";
+    }
+
+    if (!values.namadokter) {
+      errors.namadokter = "nama dokter perlu dibutuhkan";
+    }
+    if (!values.spesialis) {
+      errors.spesialis = "spesialis perlu dibutuhkan";
+    }
+    if (!values.srp) {
+      errors.srp = "NPA IDI perlu dibutuhkan";
+    } else if (values.srp.length < 6) {
+      errors.srp = "NPA IDI minimal 6 karakter";
+    }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const handleOk = () => {
@@ -100,7 +147,7 @@ export default function Form() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -140,6 +187,13 @@ export default function Form() {
                     value={editDataDokter.namadokter}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.namadokter}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -149,6 +203,13 @@ export default function Form() {
                     value={editDataDokter.srp}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.srp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -158,6 +219,13 @@ export default function Form() {
                     value={editDataDokter.spesialis}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.spesialis}
+                  </Typography>
                 </Grid>
                 <Grid item xs={12}>
                   <FormInput
@@ -167,6 +235,13 @@ export default function Form() {
                     value={editDataDokter.username}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.username}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -176,15 +251,29 @@ export default function Form() {
                     value={editDataDokter.password}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.password}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
                     title="Konfirmasi Kata Sandi Baru*"
                     type="text"
-                    value={""}
-                    name="confirm password"
+                    value={editDataDokter.confirmpassword}
+                    name="confirmpassword"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.confirmpassword}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid

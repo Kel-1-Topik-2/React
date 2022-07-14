@@ -31,7 +31,7 @@ export default function Form() {
     umur: location.state.umur,
     alamat: location.state.alamat,
   });
-
+  const [dataError, setDataError] = useState({});
   const [editRadio, setEditRadio] = useState(location.state.jeniskelamin);
 
   const handleChangeRadio = (e) => {
@@ -59,38 +59,74 @@ export default function Form() {
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    const newData = {
-      namapasien: editDataPasien.namapasien,
-      telp: editDataPasien.telp,
-      nik: editDataPasien.nik,
-      umur: editDataPasien.umur,
-      jeniskelamin: editRadio,
-      alamat: editDataPasien.alamat,
-    };
-    axios
-      .put(`/pasien/${location.state.id}`, newData, {
-        headers: {
-          "content-type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem("token")}`
-        }
-      })
-      .then((res) => {
-        Swal.fire({
-          icon: 'success',
-          title: 'Sukses...',
-          text: 'Data telah berhasil diedit',
-        }).then(() => {
-          navigate(-1)
+    validate(editDataPasien);
+    if (validate(editDataPasien) === true){
+      const newData = {
+        namapasien: editDataPasien.namapasien,
+        telp: editDataPasien.telp,
+        nik: editDataPasien.nik,
+        umur: editDataPasien.umur,
+        jeniskelamin: editRadio,
+        alamat: editDataPasien.alamat,
+      };
+      axios
+        .put(`/pasien/${location.state.id}`, newData, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
         })
-      })
-      .catch((error) => {
-        console.error(error)
-        Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Terjadi kesalahan',
+        .then((res) => {
+          Swal.fire({
+            icon: 'success',
+            title: 'Sukses...',
+            text: 'Data telah berhasil diedit',
+          }).then(() => {
+            navigate(-1)
+          })
         })
-      });
+        .catch((error) => {
+          console.error(error)
+          Swal.fire({
+            icon: 'error',
+            title: 'Error!',
+            text: 'Terjadi kesalahan',
+          })
+        });
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.namapasien) {
+      errors.namapasien = "nama pasien perlu dibutuhkan";
+    }
+
+    if (!values.nik) {
+      errors.nik = "nik perlu dibutuhkan";
+    } else if (values.nik.length < 16) {
+      errors.nik = "nik perlu 16 digit";
+    }
+
+    if (values.umur <= 0) {
+      errors.umur = "umur tidak sesuai";
+    }
+    if (!values.telp) {
+      errors.telp = "nomor telpon perlu dibutuhkan";
+    }
+    if (!values.alamat) {
+      errors.alamat = "alamat perlu dibutuhkan";
+    }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const paperStyle = {
@@ -161,6 +197,13 @@ export default function Form() {
                     value={editDataPasien.namapasien}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.namapasien}
+                  </Typography>
                 </Grid>
                 <Grid item xs={5}>
                   <FormInput
@@ -170,6 +213,13 @@ export default function Form() {
                     value={editDataPasien.telp}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.telp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -179,6 +229,13 @@ export default function Form() {
                     value={editDataPasien.nik}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.nik}
+                  </Typography>
                 </Grid>
                 <Grid item xs={2}>
                   <FormInput
@@ -188,6 +245,13 @@ export default function Form() {
                     value={editDataPasien.umur}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.umur}
+                  </Typography>
                 </Grid>
                 <Grid item xs={4}>
                   <FormControl>
@@ -227,6 +291,13 @@ export default function Form() {
                     value={editDataPasien.alamat}
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.alamat}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid
