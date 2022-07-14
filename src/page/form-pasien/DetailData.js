@@ -13,6 +13,7 @@ import {
 	FormControlLabel,
 	Radio,
 } from '@mui/material';
+import Swal from 'sweetalert2';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 import image from '../../assets/sideFoto/foto.png';
 import FormInput from '../../component/formInput/FormInput';
@@ -33,14 +34,32 @@ export default function DetailData() {
 	const endPoint = `pasien/${params.id}`;
 
 	useEffect(() => {
-		axios.get(endPoint, {
-			headers: {
-				"content-type": "application/json",
-				'Authorization': `Bearer ${localStorage.getItem("token")}`
-			}
-		}).then((res) => {
-			setDetailPasien(res.data.data);
-		});
+		const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+		else{
+			axios.get(endPoint, {
+				headers: {
+					"content-type": "application/json",
+					'Authorization': `Bearer ${localStorage.getItem("token")}`
+				}
+			}).then((res) => {
+				setDetailPasien(res.data.data);
+			}).catch((err) => {
+				if(err.response.status === 403){
+					Swal.fire({
+					  icon: 'warning',
+					  title: 'Oops',
+					  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+					}).then(() => {
+						localStorage.removeItem("token")
+						navigate("/login")
+					})
+				}
+			});
+		}
 	}, []);
 
 	console.log(detailPasien);

@@ -99,8 +99,15 @@ const TambahJadwal = () => {
     }
 
     useEffect(() => {
-        getDataPasien()
-        getDataDokter()
+        const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+        else{
+            getDataPasien()
+            getDataDokter()
+        }
     }, [])
 
     useEffect(() => {

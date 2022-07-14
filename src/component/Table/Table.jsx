@@ -10,7 +10,6 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 
 	useEffect(() => {
 		const endOffset = itemOffset + itemsPerPage;
-		console.log('data:', data);
 		setCurrentItems(data.slice(itemOffset, endOffset));
 		setPageCount(Math.ceil(data.length / itemsPerPage));
 	}, [itemOffset, itemsPerPage, data]);

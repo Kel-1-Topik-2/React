@@ -1,19 +1,57 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import Searchbar from '../../component/Searchbar/Searchbar';
 import Sidebar from '../../component/Sidebar/Sidebar';
 import Table from '../../component/Table/Table';
 import style from './style.module.css';
-import axios from '../../dummy-api/api';
+import axios from '../../API/api';
 import arsipIcon from '../../assets/img/arsip_icon.svg';
 import { useNavigate } from 'react-router-dom';
 const ArsipJadwal = () => {
-	const [dataArsip, setDataArsip] = useState([]);
+
 	const navigate = useNavigate();
+
+	const [dataArsip, setDataArsip] = useState([]);
+	const endPoint = "jadwal"
+
 	useEffect(() => {
-		axios.get('Jadwal').then((res) => {
-			setDataArsip(res.data);
-		});
+		const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+		else{
+			getJadwal()
+		}
 	}, []);
+
+	const getJadwal = () => {
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
+			const newData = res.data;
+
+			newData.forEach((jadwal) => {
+				jadwal.idpasien = jadwal.pasien.id
+				jadwal.namapasien = jadwal.pasien.namapasien
+			});
+			setDataArsip(newData);
+		}).catch((err) => {
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
+		});
+	}
 
 	// Table
 	const detailClick = (idJadwal) => {
@@ -21,9 +59,9 @@ const ArsipJadwal = () => {
 	};
 
 	const column = [
-		{ field: 'idPasien', header: 'ID' },
-		{ field: 'namaPasien', header: 'Nama Pasien' },
-		{ field: 'jenisPerawatan', header: 'Jenis Perawatan' },
+		{ field: 'idpasien', header: 'ID' },
+		{ field: 'namapasien', header: 'Nama Pasien' },
+		{ field: 'jp', header: 'Jenis Perawatan' },
 		{ field: 'tanggal', header: 'Tanggal Kunjungan' },
 	];
 
@@ -42,22 +80,25 @@ const ArsipJadwal = () => {
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
-					x.idPasien
+					x.idpasien
 						.toString()
 						.toLowerCase()
 						.includes(query) ||
-					x.namaPasien.toLowerCase().includes(query) ||
+					x.namapasien.toLowerCase().includes(query) ||
+					x.jp.toLowerCase().includes(query) ||
 					x.tanggal.toLowerCase().includes(query)
 			);
-		} else if (keys === 'idPasien') {
+		} else if (keys === 'idpasien') {
 			return data.filter((x) =>
-				x.idPasien
+				x.idpasien
 					.toString()
 					.toLowerCase()
 					.includes(query)
 			);
-		} else if (keys === 'namaPasien') {
-			return data.filter((x) => x.namaPasien.toLowerCase().includes(query));
+		} else if (keys === 'namapasien') {
+			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+		} else if (keys === 'jp') {
+			return data.filter((x) => x.jp.toLowerCase().includes(query));
 		} else if (keys === 'tanggal') {
 			return data.filter((x) => x.tanggal.toLowerCase().includes(query));
 		}
@@ -65,9 +106,10 @@ const ArsipJadwal = () => {
 
 	const dataOption = [
 		{ value: 'all', label: 'Semua Kategori' },
-		{ value: 'idPasien', label: 'ID' },
-		{ value: 'namaPasien', label: 'Nama Lengkap' },
-		{ value: 'tanggal', label: 'TGL Kunjungan' },
+		{ value: 'idpasien', label: 'ID' },
+		{ value: 'namapasien', label: 'Nama Pasien' },
+		{ value: 'jp', label: 'Jenis Perawatan'},
+		{ value: 'tanggal', label: 'Tanggal Kunjungan' },
 	];
 	return (
 		<div>
@@ -86,7 +128,7 @@ const ArsipJadwal = () => {
 					column={column}
 					data={search(dataArsip)}
 					aksi={aksi}
-					primaryKey={'idJadwal'}
+					primaryKey={'id'}
 				/>
 			</div>
 		</div>

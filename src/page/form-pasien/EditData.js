@@ -39,7 +39,11 @@ export default function Form() {
   };
 
   useEffect(() => {
-    console.log(editRadio);
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
   }, []);
 
   const handleChange = (e) => {
