@@ -33,7 +33,12 @@ export default function DetailData() {
 	const endPoint = `pasien/${params.id}`;
 
 	useEffect(() => {
-		axios.get(endPoint).then((res) => {
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
 			setDetailPasien(res.data.data);
 		});
 	}, []);

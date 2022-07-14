@@ -84,6 +84,11 @@ export default function Form() {
           jeniskelamin: radio,
           telp: data.telp,
           alamat: data.alamat,
+        }, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
         })
         .then((res) => {
           setPopup({

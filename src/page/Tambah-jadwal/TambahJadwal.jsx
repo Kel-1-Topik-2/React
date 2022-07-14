@@ -51,7 +51,12 @@ const TambahJadwal = () => {
     const getDataPasien = () => {
         const endPoint = "pasien"
 
-        axios.get(endPoint).then((res) => {
+        axios.get(endPoint, {
+            headers: {
+                "content-type": "application/json",
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        }).then((res) => {
             setDataPasien(res.data);
         });
     }
@@ -59,7 +64,12 @@ const TambahJadwal = () => {
     const getDataDokter = () => {
         const endPoint = "dokter"
 
-        axios.get(endPoint).then((res) => {
+        axios.get(endPoint, {
+            headers: {
+                "content-type": "application/json",
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        }).then((res) => {
             const newData = res.data
 
             newData.forEach((dokter) => {
@@ -73,7 +83,12 @@ const TambahJadwal = () => {
     const getNoUrut = () => {
         const endPoint = "jadwal"
 
-        axios.get(endPoint)
+        axios.get(endPoint, {
+            headers: {
+                "content-type": "application/json",
+                'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+        })
         .then((res) => {
             const pickedDate = res.data.filter((item) => item.tanggal === jadwal.tanggal) 
             
@@ -93,7 +108,12 @@ const TambahJadwal = () => {
         //only run if no urut in jadwal change, that happens when form is submitted
         if(jadwal.nourut !== 0){
             const endpoint = "jadwal"
-            axios.post(endpoint, {...jadwal})
+            axios.post(endpoint, {...jadwal}, {
+                headers: {
+                    "content-type": "application/json",
+                    'Authorization': `Bearer ${localStorage.getItem("token")}`
+                }
+            })
             .then((res) => {
                 setPopup({
                     show: true,

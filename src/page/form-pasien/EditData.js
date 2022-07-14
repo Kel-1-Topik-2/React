@@ -69,7 +69,12 @@ export default function Form() {
       alamat: editDataPasien.alamat,
     };
     axios
-      .put(`/pasien/${location.state.id}`, newData)
+      .put(`/pasien/${location.state.id}`, newData, {
+        headers: {
+          "content-type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+      })
       .then((res) => {
         setPopup({
           show: true,
