@@ -44,35 +44,50 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
+  const handleLetterNama = (e) => {
+    const value = e.target.value.replace(/[^a-z]/gi, "");
+    setData({ ...data.namadokter, [e.target.name]: value });
+  };
+
+  const handleLetterSpesialis = (e) => {
+    const value = e.target.value.replace(/[^a-z]/gi, "");
+    setData({ ...data.spesialis, [e.target.name]: value });
+  };
+
+  const handleNumber = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setData({ ...data.srp, [e.target.name]: value });
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     validate(data);
     if (validate(data) === true) {
       try {
-        const respUser = await axios.post('/user', {
+        const respUser = await axios.post("/user", {
           username: data.username,
-          password: data.password
+          password: data.password,
         });
-        console.log(respUser.data.data.id)
+        console.log(respUser.data.data.id);
         if (respUser.status === 200) {
-          const respDokter = await axios.post('/dokter', {
+          const respDokter = await axios.post("/dokter", {
             user_id: respUser.data.data.id,
             namadokter: data.namadokter,
             spesialis: data.spesialis,
-            srp: data.srp
+            srp: data.srp,
           });
           if (respDokter.status === 200) {
             setPopup({
               show: true,
-            })
+            });
           } else {
             return false;
           }
-        } else{
+        } else {
           return false;
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
     }
   };
@@ -94,8 +109,8 @@ export default function Form() {
 
     if (!values.confirmpassword) {
       errors.confirmpassword = "Kata Sandi perlu dibutuhkan";
-    } else if (values.confirmpassword !== values.password){
-      errors.confirmpassword = "Konfirmasi password tidak sama"
+    } else if (values.confirmpassword !== values.password) {
+      errors.confirmpassword = "Konfirmasi password tidak sama";
     }
 
     if (!values.namadokter) {
@@ -106,8 +121,8 @@ export default function Form() {
     }
     if (!values.srp) {
       errors.srp = "NPA IDI perlu dibutuhkan";
-    } else if (values.srp.length !== 6){
-      errors.srp = "NPA IDI minimal 6 karakter"
+    } else if (values.srp.length !== 6) {
+      errors.srp = "NPA IDI minimal 6 karakter";
     }
 
     console.log(errors);
@@ -197,7 +212,7 @@ export default function Form() {
                     type="text"
                     value={data.namadokter}
                     name="namadokter"
-                    onChange={handleChange}
+                    onChange={handleLetterNama}
                   />
                   <Typography
                     component="div"
@@ -213,7 +228,7 @@ export default function Form() {
                     type="text"
                     value={data.srp}
                     name="srp"
-                    onChange={handleChange}
+                    onChange={handleNumber}
                   />
                   <Typography
                     component="div"
@@ -229,7 +244,7 @@ export default function Form() {
                     type="text"
                     value={data.spesialis}
                     name="spesialis"
-                    onChange={handleChange}
+                    onChange={handleLetterSpesialis}
                   />
                   <Typography
                     component="div"

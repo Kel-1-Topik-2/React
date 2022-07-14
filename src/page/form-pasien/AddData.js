@@ -52,6 +52,21 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
+  const handleLetterNama = (e) => {
+    const value = e.target.value.replace(/[^a-z]/gi, "");
+    setData({ ...data.namapasien, [e.target.name]: value });
+  };
+
+  const handleNumTelp = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setData({ ...data.telp, [e.target.name]: value });
+  };
+
+  const handleNumNik = (e) => {
+    const value = e.target.value.replace(/\D/g, "");
+    setData({ ...data.nik, [e.target.name]: value });
+  };
+
   const handleChangeRadio = (e) => {
     setRadio(e.target.value);
   };
@@ -194,7 +209,7 @@ export default function Form() {
                     type="text"
                     value={data.namapasien}
                     name="namapasien"
-                    onChange={handleChange}
+                    onChange={handleLetterNama}
                   />
                   <Typography
                     component="div"
@@ -210,7 +225,7 @@ export default function Form() {
                     type="text"
                     value={data.telp}
                     name="telp"
-                    onChange={handleChange}
+                    onChange={handleNumTelp}
                   />
                   <Typography
                     component="div"
@@ -226,7 +241,7 @@ export default function Form() {
                     type="text"
                     value={data.nik}
                     name="nik"
-                    onChange={handleChange}
+                    onChange={handleNumNik}
                   />
                   <Typography
                     component="div"
