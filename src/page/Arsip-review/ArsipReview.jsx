@@ -2,24 +2,35 @@ import React, { useState, useEffect } from 'react';
 import style from './style.module.css';
 import InputReview from '../../component/Input-review/InputReview';
 import { useParams, useNavigate } from 'react-router-dom';
-import axios from '../../dummy-api/api';
+import axios from '../../API/api';
 import { Tooltip, IconButton } from '@mui/material';
 import ArrowBackIcon from '@mui/icons-material/ArrowBack';
 
 const ArsipReview = () => {
 	const params = useParams();
 	const navigate = useNavigate();
-	const endPoint = `Jadwal/${params.id}`;
+
+	const endPoint = `jadwal/${params.id}`;
 	const [dataReview, setDataReview] = useState([]);
 
 	useEffect(() => {
-		axios
-			.get(endPoint)
-			.then((res) => {
-				setDataReview(res.data);
-			})
-			.catch((err) => console.log(err));
+		getDetailJadwal()
 	}, []);
+
+	const getDetailJadwal = () => {
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		})
+		.then((res) => {
+			setDataReview(res.data);
+		})
+		.catch((err) => {
+			console.log(err)
+		});
+	}
 
 	return (
 		<div className={style.container}>
@@ -49,7 +60,7 @@ const ArsipReview = () => {
 							<label className={style.label}>ID</label>
 							<InputReview
 								type="text"
-								value={dataReview.idPasien}
+								value={dataReview.pasien.id}
 								width="257px"
 							/>
 						</div>
@@ -57,7 +68,7 @@ const ArsipReview = () => {
 							<label className={style.label}>Jenis Perawatan</label>
 							<InputReview
 								type="text"
-								value={dataReview.jenisPerawatan}
+								value={dataReview.jp}
 								width="257px"
 							/>
 						</div>
@@ -67,7 +78,7 @@ const ArsipReview = () => {
 						<label className={style.label}>Nama Pasien</label>
 						<InputReview
 							type="text"
-							value={dataReview.namaPasien}
+							value={dataReview.pasien.namapasien}
 							width="100%"
 						/>
 					</div>
@@ -76,7 +87,7 @@ const ArsipReview = () => {
 						<label className={style.label}>Nama Dokter</label>
 						<InputReview
 							type="text"
-							value={dataReview.namaDokter}
+							value={dataReview.dokter.namadokter}
 							width="100%"
 						/>
 					</div>
