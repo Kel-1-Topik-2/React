@@ -92,14 +92,22 @@ export default function Form() {
 
     if (!values.namadokter) {
       errors.namadokter = "nama dokter perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.namadokter)) {
+      errors.namadokter = "hanya mengandung huruf";
     }
+
     if (!values.spesialis) {
       errors.spesialis = "spesialis perlu dibutuhkan";
+    } else if (!/^[a-z., ]*$/.test(values.spesialis)) {
+      errors.spesialis = "tidak menggandung angka";
     }
+
     if (!values.srp) {
       errors.srp = "NPA IDI perlu dibutuhkan";
     } else if (values.srp.length < 6) {
       errors.srp = "NPA IDI minimal 6 karakter";
+    } else if (!/^[0-9]*$/.test(values.srp)) {
+      errors.srp = "NPA IDI harus berupa angka";
     }
 
     console.log(errors);
