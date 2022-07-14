@@ -20,7 +20,12 @@ const KelolaJadwal = () => {
     const [jadwal, setJadwal] = useState([]);
 
     useEffect(() => {
-        axios.get(endPoint).then((res) => {
+        axios.get(endPoint, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
+        }).then((res) => {
           const newData = res.data
           const today = moment().format("YYYY-MM-DD")
     

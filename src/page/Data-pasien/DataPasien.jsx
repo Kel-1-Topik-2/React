@@ -20,7 +20,12 @@ const DataPasien = () => {
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		axios.get(endPoint).then((res) => {
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
 			setDataPasien(res.data);
 		});
 	}, []);
@@ -35,7 +40,12 @@ const DataPasien = () => {
 	const handleDeleteTrue = () => {
 		if (popup.show) {
 			axios
-				.delete(endPoint + `/${idPasien}`)
+				.delete(endPoint + `/${idPasien}`, {
+					headers: {
+						"content-type": "application/json",
+						'Authorization': `Bearer ${localStorage.getItem("token")}`
+					}
+				})
 				.then((res) => {
 					setPopup({
 						show: false,

@@ -27,7 +27,12 @@ const DataDokter = () => {
 	}, []);
 
 	const getDataDokter = () => {
-		axios.get(endPoint).then((res) => {
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
 			const newData = res.data;
 
 			newData.forEach((dokter) => {
@@ -48,7 +53,12 @@ const DataDokter = () => {
 	const handleDeleteTrue = () => {
 		if (popup.show) {
 			axios
-				.delete(endPoint + `/${id}`)
+				.delete(endPoint + `/${id}`, {
+					headers: {
+						"content-type": "application/json",
+						'Authorization': `Bearer ${localStorage.getItem("token")}`
+					}
+				})
 				.then((res) => {
 					setPopup({
 						show: false,
