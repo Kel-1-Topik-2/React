@@ -4,6 +4,8 @@ import { useNavigate } from 'react-router-dom';
 
 import axios from '../../API/api';
 
+import Swal from 'sweetalert2';
+
 import style from './style.module.css';
 
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
@@ -13,17 +15,21 @@ import Table from '../../component/Table/Table';
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 import Searchbar from '../../component/Searchbar/Searchbar';
-import Modal from '../../component/Modal/Modal';
 
 const DataDokter = () => {
 	const endPoint = 'dokter';
 	const [dataDokter, setDataDokter] = useState([]);
-	const [popup, setPopup] = useState({ show: false });
-	const [id, setId] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
-		getDataDokter();
+		const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+		else{
+			getDataDokter();
+		}
 	}, []);
 
 	const getDataDokter = () => {
@@ -40,39 +46,52 @@ const DataDokter = () => {
 			});
 
 			setDataDokter(newData);
+		}).catch((err) => {
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
 		});
 	};
 
-	const handleDelete = (id) => {
-		setId(id);
-		setPopup({
-			show: true,
-		});
-	};
-
-	const handleDeleteTrue = () => {
-		if (popup.show) {
-			axios
-				.delete(endPoint + `/${id}`, {
+	const handleDelete = (idDokter) => {
+		Swal.fire({
+			title: "Apakah anda yakin untuk menghapus data?",
+			showCancelButton: true,
+			cancelButtonText: "Tidak",
+			confirmButtonText: "Ya",
+		}).then((result) => {
+			if(result.isConfirmed){
+				axios.delete(endPoint + `/${idDokter}`, {
 					headers: {
 						"content-type": "application/json",
 						'Authorization': `Bearer ${localStorage.getItem("token")}`
 					}
 				})
 				.then((res) => {
-					setPopup({
-						show: false,
-					});
-					navigate(0);
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses!',
+						text: 'Data telah berhasil dihapus!',
+					})
+					getDataDokter()
 				})
-				.catch((err) => console.log(err));
-		}
-	};
-
-	const handleDeleteFalse = () => {
-		setPopup({
-			show: false,
-		});
+				.catch((err) => {
+					console.log(err)
+					Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text: 'Terjadi kesalahan',
+					})
+				});
+			}
+		})
 	};
 
 	const detailClick = (id) => {
@@ -157,14 +176,6 @@ const DataDokter = () => {
 					primaryKey={'id'}
 					aksi={aksi}
 				/>
-				{popup.show && (
-					<Modal
-						title={'Hapus Data Dokter'}
-						text={'Yakin untuk menghapus data dokter?'}
-						handleCancel={handleDeleteFalse}
-						handleDeleteTrue={handleDeleteTrue}
-					/>
-				)}
 			</div>
 		</div>
 	);

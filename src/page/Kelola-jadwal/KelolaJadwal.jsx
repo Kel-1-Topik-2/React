@@ -2,6 +2,8 @@ import React, { useState, useEffect } from "react";
 
 import { useNavigate } from "react-router-dom"
 
+import Swal from "sweetalert2";
+
 import moment from "moment";
 
 import axios from "../../API/api";
@@ -20,33 +22,55 @@ const KelolaJadwal = () => {
     const [jadwal, setJadwal] = useState([]);
 
     useEffect(() => {
-        axios.get(endPoint, {
-          headers: {
-            "content-type": "application/json",
-            'Authorization': `Bearer ${localStorage.getItem("token")}`
-          }
-        }).then((res) => {
-          const newData = res.data
-          const today = moment().format("YYYY-MM-DD")
-    
-          newData.forEach((jadwal) => {
-            jadwal.namapasien = jadwal.pasien.namapasien
-            jadwal.namadokter = jadwal.dokter.namadokter
-          })
-          
-          const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
-          
-          setJadwal(todayJadwal)
-        });
-      }, []);
+      const status = localStorage.getItem("token")
+  
+      if(status === null){
+        navigate("/login", {replace: true})
+      }
+      else{
+        getJadwal()
+      }
+    }, []);
 
-      const column = [
-        { field: "tanggal", header: "Tanggal" },
-        { field: "nourut", header: "Antrian" },
-        { field: "namapasien", header: "Nama Pasien" },
-        { field: "namadokter", header: "Nama Dokter" },
-        { field: "jp", header: "Jenis Perawatan" },
-      ];
+    const getJadwal = () => {
+      axios.get(endPoint, {
+        headers: {
+          "content-type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        const newData = res.data
+        const today = moment().format("YYYY-MM-DD")
+  
+        newData.forEach((jadwal) => {
+          jadwal.namapasien = jadwal.pasien.namapasien
+          jadwal.namadokter = jadwal.dokter.namadokter
+        })
+        
+        const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+        
+        setJadwal(todayJadwal)
+      }).catch((err) => {
+        if(err.response.status === 403){
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'Sesi anda sudah berakhir, silahkan login kembali',
+          }).then(() => {
+            localStorage.removeItem("token")
+            navigate("/login")
+          })
+        }
+      });
+    }
+
+    const column = [
+      { field: "tanggal", header: "Tanggal" },
+      { field: "nourut", header: "Antrian" },
+      { field: "namapasien", header: "Nama Pasien" },
+      { field: "namadokter", header: "Nama Dokter" },
+      { field: "jp", header: "Jenis Perawatan" },
+    ];
     
     return(
         <div>

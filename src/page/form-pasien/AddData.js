@@ -13,13 +13,13 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
 // import axios from "../../dummy-api/api";
 import axios from "../../API/api";
-import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   const formData = {
@@ -35,7 +35,6 @@ export default function Form() {
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
   const [radio, setRadio] = useState("Laki laki");
-  const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {
     navigate(-1);
@@ -80,12 +79,21 @@ export default function Form() {
           }
         )
         .then((res) => {
-          setPopup({
-            show: true,
-          });
+          Swal.fire({
+            icon: 'success',
+            title: 'Sukses...',
+            text: 'Data telah berhasil disimpan',
+          }).then(() => {
+            navigate("/data-pasien")
+          })
         })
         .catch((error) => {
           console.log(error);
+          Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text: 'Terjadi kesalahan',
+					})
         });
     }
   };
@@ -129,13 +137,6 @@ export default function Form() {
     }
     setDataError(errors);
     return validated;
-  };
-
-  const handleOk = () => {
-    setPopup({
-      show: false,
-    });
-    navigate("/data-pasien");
   };
 
   const paperStyle = {
@@ -349,12 +350,6 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
-              {popup.show && (
-                <Modal
-                  title={"Data Pasien Berhasil ditambahkan!"}
-                  handleCancel={handleOk}
-                />
-              )}
             </Box>
           </Paper>
         </Box>

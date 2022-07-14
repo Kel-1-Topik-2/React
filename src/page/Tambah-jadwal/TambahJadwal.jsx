@@ -8,6 +8,8 @@ import { useNavigate } from "react-router";
 
 import moment from "moment";
 
+import Swal from "sweetalert2";
+
 import style from "./style.module.css"
 
 import AppLogo from "../../component/AppLogo/AppLogo"
@@ -15,7 +17,6 @@ import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import ButtonKembali from "../../component/button-kembali/ButtonKembali";
-import Modal from "../../component/ModalNew/Modal";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -41,8 +42,6 @@ const TambahJadwal = () => {
         dokter_id: 0,
         pasien_id: 0,
     })
-
-    const [popup, setPopup] = useState({ show: false });
 
     const step_progress = {
         filter: "invert(55%) sepia(86%) saturate(653%) hue-rotate(179deg) brightness(97%) contrast(93%)"
@@ -115,12 +114,21 @@ const TambahJadwal = () => {
                 }
             })
             .then((res) => {
-                setPopup({
-                    show: true,
+                Swal.fire({
+                    icon: 'success',
+                    title: 'Sukses...',
+                    text: 'Data telah berhasil disimpan',
+                }).then(() => {
+                    navigate("/kelola-jadwal")
                 })
             })
             .catch((err) => {
                 console.log(err)
+                Swal.fire({
+                    icon: 'error',
+                    title: 'Error!',
+                    text: 'Terjadi kesalahan',
+                })
             })    
         }
     }, [jadwal.nourut])
@@ -274,17 +282,6 @@ const TambahJadwal = () => {
                     </form>
                 </div>
             )}
-            {popup.show && (
-                <Modal
-                  title={"Jadwal Berhasil ditambahkan!"}
-                  handleCancel={() => {
-                    setPopup({
-                        show: false,
-                    });
-                    navigate("/kelola-jadwal");
-                  }}
-                />
-              )}
         </div>
     )
 }
