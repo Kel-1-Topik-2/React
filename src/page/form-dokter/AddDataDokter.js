@@ -44,20 +44,20 @@ export default function Form() {
     setData({ ...data, [name]: value });
   };
 
-  const handleLetterNama = (e) => {
-    const value = e.target.value.replace(/[^a-z]/gi, "");
-    setData({ ...data.namadokter, [e.target.name]: value });
-  };
+  // const handleLetterNama = (e) => {
+  //   const value = e.target.value.replace(/[^a-z]/gi, "");
+  //   setData({ ...data.namadokter, [e.target.name]: value });
+  // };
 
-  const handleLetterSpesialis = (e) => {
-    const value = e.target.value.replace(/[^a-z]/gi, "");
-    setData({ ...data.spesialis, [e.target.name]: value });
-  };
+  // const handleLetterSpesialis = (e) => {
+  //   const value = e.target.value.replace(/[^a-z]/gi, "");
+  //   setData({ ...data.spesialis, [e.target.name]: value });
+  // };
 
-  const handleNumber = (e) => {
-    const value = e.target.value.replace(/\D/g, "");
-    setData({ ...data.srp, [e.target.name]: value });
-  };
+  // const handleNumber = (e) => {
+  //   const value = e.target.value.replace(/\D/g, "");
+  //   setData({ ...data.srp, [e.target.name]: value });
+  // };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -121,7 +121,7 @@ export default function Form() {
     }
     if (!values.srp) {
       errors.srp = "NPA IDI perlu dibutuhkan";
-    } else if (values.srp.length !== 6) {
+    } else if (values.srp.length < 6) {
       errors.srp = "NPA IDI minimal 6 karakter";
     }
 
@@ -170,7 +170,7 @@ export default function Form() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -212,7 +212,7 @@ export default function Form() {
                     type="text"
                     value={data.namadokter}
                     name="namadokter"
-                    onChange={handleLetterNama}
+                    onChange={handleChange}
                   />
                   <Typography
                     component="div"
@@ -228,7 +228,7 @@ export default function Form() {
                     type="text"
                     value={data.srp}
                     name="srp"
-                    onChange={handleNumber}
+                    onChange={handleChange}
                   />
                   <Typography
                     component="div"
@@ -244,7 +244,7 @@ export default function Form() {
                     type="text"
                     value={data.spesialis}
                     name="spesialis"
-                    onChange={handleLetterSpesialis}
+                    onChange={handleChange}
                   />
                   <Typography
                     component="div"
