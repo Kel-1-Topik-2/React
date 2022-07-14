@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -29,6 +29,14 @@ export default function Form() {
 
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
+
+  useEffect(() => {
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+  }, [])
 
   const handleBack = () => {
     navigate(-1);

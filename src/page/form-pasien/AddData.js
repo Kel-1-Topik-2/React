@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -35,6 +35,14 @@ export default function Form() {
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
   const [radio, setRadio] = useState("Laki laki");
+
+  useEffect(() => {
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+  }, [])
 
   const handleBack = () => {
     navigate(-1);
@@ -103,7 +111,7 @@ export default function Form() {
     let validated = false;
     if (!values.namapasien) {
       errors.namapasien = "nama pasien perlu dibutuhkan";
-    } else if (!/^[a-z., ]*$/.test(values.namapasien)) {
+    } else if (!/^[a-zA-Z., ]*$/.test(values.namapasien)) {
       errors.namapasien = "hanya mengandung huruf";
     }
 

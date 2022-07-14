@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import Swal from 'sweetalert2';
 import style from './style.module.css';
 import InputReview from '../../component/Input-review/InputReview';
 import { useParams, useNavigate } from 'react-router-dom';
@@ -11,10 +12,30 @@ const ArsipReview = () => {
 	const navigate = useNavigate();
 
 	const endPoint = `jadwal/${params.id}`;
-	const [dataReview, setDataReview] = useState([]);
+	const [dataReview, setDataReview] = useState({
+		id: "",
+		tanggal: "",
+		jp: "",
+		diagnosa: "",
+		catatan: "",
+		dokter: {
+			namadokter: ""
+		},
+		pasien: {
+			id: "",
+			namapasien: "",
+		}
+	});
 
 	useEffect(() => {
-		getDetailJadwal()
+		const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+		else{
+			getDetailJadwal()
+		}
 	}, []);
 
 	const getDetailJadwal = () => {
@@ -25,10 +46,19 @@ const ArsipReview = () => {
 			}
 		})
 		.then((res) => {
-			setDataReview(res.data);
+			setDataReview(res.data.data);
 		})
 		.catch((err) => {
-			console.log(err)
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
 		});
 	}
 
@@ -95,7 +125,8 @@ const ArsipReview = () => {
 				<div className={style.rightBox}>
 					<div>
 						<label className={style.label}>Diagnosa</label>
-						<InputReview type="text" value={dataReview.diagnosa} width="100%" />
+						<InputReview type="text" 
+						value={dataReview.diagnosa === null ? "Tidak ada diagnosa" : dataReview.diagnosa} width="100%" />
 					</div>
 					<div
 						style={{
@@ -106,7 +137,7 @@ const ArsipReview = () => {
 						<textarea
 							disabled
 							className={style.catatan}
-							value={dataReview.catatan}
+							value={dataReview.catatan === null ? "Tidak ada catatan" : dataReview.catatan}
 						></textarea>
 					</div>
 				</div>
