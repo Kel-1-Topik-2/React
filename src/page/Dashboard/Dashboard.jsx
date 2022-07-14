@@ -24,44 +24,48 @@ const Dashboard = () => {
   const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
 
+  const getJadwal = () => {
+    axios.get(endPoint, {
+      headers: {
+        "content-type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then((res) => {
+      const newData = res.data
+      const today = moment().format("YYYY-MM-DD")
+
+      newData.forEach((jadwal) => {
+        jadwal.namapasien = jadwal.pasien.namapasien
+        jadwal.namadokter = jadwal.dokter.namadokter
+      })
+      
+      const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+      
+      setJadwal(todayJadwal)
+    })
+    .catch((err) => {
+      if(err.response.status === 403){
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops',
+          text: 'Sesi anda sudah berakhir, silahkan login kembali',
+        }).then(() => {
+          localStorage.removeItem("token")
+          navigate("/login")
+        })
+      }
+    });
+  }
+
   useEffect(() => {
     const status = localStorage.getItem("token")
   
     if(status === null){
       navigate("/login", {replace: true})
     }
-
     else{
-      axios.get(endPoint, {
-        headers: {
-          "content-type": "application/json",
-          'Authorization': `Bearer ${localStorage.getItem("token")}`
-        }
-      })
-      .then((res) => {
-        const newData = res.data
-        const today = moment().format("YYYY-MM-DD")
-  
-        newData.forEach((jadwal) => {
-          jadwal.namapasien = jadwal.pasien.namapasien
-          jadwal.namadokter = jadwal.dokter.namadokter
-        })
-        
-        const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
-        
-        setJadwal(todayJadwal)
-      })
-      .catch((err) => {
-        if(err.response.status === 403){
-          Swal.fire({
-            icon: 'warning',
-            title: 'Oops',
-            text: 'Sesi anda sudah berakhir, silahkan login kembali',
-          }).then(() => {
-            navigate("/login")
-          })
-        }
-      });
+      getJadwal()
     }
   }, []);
 

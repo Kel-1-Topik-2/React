@@ -1,25 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import Sidebar from '../../component/Sidebar/Sidebar';
+import Swal from 'sweetalert2';
 import { useNavigate } from 'react-router-dom';
+import axios from '../../API/api';
+import style from './style.module.css';
+
+import Sidebar from '../../component/Sidebar/Sidebar';
 import Table from '../../component/Table/Table';
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
-import style from './style.module.css';
-import axios from '../../API/api';
+import Searchbar from '../../component/Searchbar/Searchbar';
 
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
-import Searchbar from '../../component/Searchbar/Searchbar';
-import Modal from '../../component/Modal/Modal';
 
 const DataPasien = () => {
 	const endPoint = 'pasien';
 	const [dataPasien, setDataPasien] = useState([]);
 	const [query, setQuery] = useState('');
-	const [popup, setPopup] = useState({ show: false });
-	const [idPasien, setIdPasien] = useState();
 	const navigate = useNavigate();
 
 	useEffect(() => {
+		const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+		else{
+			getDataPasien()
+		}
+	}, []);
+
+	const getDataPasien = () => {
 		axios.get(endPoint, {
 			headers: {
 				"content-type": "application/json",
@@ -27,42 +37,56 @@ const DataPasien = () => {
 			}
 		}).then((res) => {
 			setDataPasien(res.data);
+		}).catch((err) => {
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
 		});
-	}, []);
+	}
 
 	const handleDelete = (idPasien) => {
-		setIdPasien(idPasien);
-		setPopup({
-			show: true,
-		});
-	};
-
-	const handleDeleteTrue = () => {
-		if (popup.show) {
-			axios
-				.delete(endPoint + `/${idPasien}`, {
+		Swal.fire({
+			title: "Apakah anda yakin untuk menghapus data?",
+			showCancelButton: true,
+			cancelButtonText: "Tidak",
+			confirmButtonText: "Ya",
+		}).then((result) => {
+			if(result.isConfirmed){
+				axios.delete(endPoint + `/${idPasien}`, {
 					headers: {
 						"content-type": "application/json",
 						'Authorization': `Bearer ${localStorage.getItem("token")}`
 					}
 				})
 				.then((res) => {
-					setPopup({
-						show: false,
-					});
-					navigate(0);
+					Swal.fire({
+						icon: 'success',
+						title: 'Sukses!',
+						text: 'Data telah berhasil dihapus!',
+					})
+					getDataPasien()
 				})
-				.catch((err) => console.log(err));
-		}
+				.catch((err) => {
+					console.log(err)
+					Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text: 'Terjadi kesalahan',
+					})
+				});
+			}
+		})
 	};
 
 	const detailClick = (id) => {
 		navigate(`/detail-data-pasien/${id}`);
-	};
-	const handleDeleteFalse = () => {
-		setPopup({
-			show: false,
-		});
 	};
 
 	const [keys, setKey] = useState('all');
@@ -156,14 +180,6 @@ const DataPasien = () => {
 					primaryKey={'id'}
 					aksi={aksi}
 				/>
-				{popup.show && (
-					<Modal
-						title={'Hapus Data Pasien'}
-						text={'Yakin untuk menghapus data pasien?'}
-						handleCancel={handleDeleteFalse}
-						handleDeleteTrue={handleDeleteTrue}
-					/>
-				)}
 			</div>
 		</div>
 	);

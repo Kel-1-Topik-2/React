@@ -13,12 +13,12 @@ import {
   FormControlLabel,
   Radio,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate, useLocation } from "react-router-dom";
 import axios from "../../API/api";
-import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   let navigate = useNavigate();
@@ -33,7 +33,6 @@ export default function Form() {
   });
 
   const [editRadio, setEditRadio] = useState(location.state.jeniskelamin);
-  const [popup, setPopup] = useState({ show: false });
 
   const handleChangeRadio = (e) => {
     setEditRadio(e.target.value);
@@ -55,7 +54,7 @@ export default function Form() {
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleSubmit = (e) => {
@@ -76,18 +75,22 @@ export default function Form() {
         }
       })
       .then((res) => {
-        setPopup({
-          show: true,
-        });
+        Swal.fire({
+          icon: 'success',
+          title: 'Sukses...',
+          text: 'Data telah berhasil diedit',
+        }).then(() => {
+          navigate(-1)
+        })
       })
-      .catch((error) => console.error(error));
-  };
-
-  const handleOk = () => {
-    setPopup({
-      show: false,
-    });
-    navigate(-1);
+      .catch((error) => {
+        console.error(error)
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Terjadi kesalahan',
+        })
+      });
   };
 
   const paperStyle = {
@@ -261,12 +264,6 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
-              {popup.show && (
-                <Modal
-                  title={"Data Pasien Berhasil diubah!"}
-                  handleCancel={handleOk}
-                />
-              )}
             </Box>
           </Paper>
         </Box>

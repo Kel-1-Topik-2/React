@@ -8,12 +8,12 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import Swal from "sweetalert2";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
 import axios from "../../API/api";
-import Modal from "../../component/ModalNew/Modal";
 
 export default function Form() {
   const formData = {
@@ -29,14 +29,13 @@ export default function Form() {
 
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
-  const [popup, setPopup] = useState({ show: false });
 
   const handleBack = () => {
     navigate(-1);
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate(-1);
   };
 
   const handleChange = (e) => {
@@ -58,7 +57,6 @@ export default function Form() {
             'Authorization': `Bearer ${localStorage.getItem("token")}`
           }
         });
-        console.log(respUser.data.data.id)
         if (respUser.status === 200) {
           const respDokter = await axios.post('/dokter', {
             user_id: respUser.data.data.id,
@@ -72,8 +70,12 @@ export default function Form() {
             }
           });
           if (respDokter.status === 200) {
-            setPopup({
-              show: true,
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses...',
+              text: 'Data telah berhasil disimpan',
+            }).then(() => {
+              navigate("/data-dokter")
             })
           } else {
             return false;
@@ -82,7 +84,12 @@ export default function Form() {
           return false;
         }
       } catch (error) {
-        console.log(error)
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Terjadi kesalahan',
+        })
       }
     }
   };
@@ -128,13 +135,6 @@ export default function Form() {
     }
     setDataError(errors);
     return validated;
-  };
-
-  const handleOk = () => {
-    setPopup({
-      show: false,
-    });
-    navigate("/data-dokter");
   };
 
   const paperStyle = {
@@ -333,12 +333,6 @@ export default function Form() {
                   </Button>
                 </Grid>
               </Grid>
-              {popup.show && (
-                <Modal
-                  title={"Data Dokter Berhasil ditambahkan!"}
-                  handleCancel={handleOk}
-                />
-              )}
             </Box>
           </Paper>
         </Box>

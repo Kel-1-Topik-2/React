@@ -50,8 +50,8 @@ const Login = () => {
 
 			Swal.fire({
 				icon: 'success',
-				title: 'Sukses...',
-				text: 'Berhasil login!',
+				title: 'Sukses!',
+				text: 'Berhasil login',
 			}).then(() => {
 				navigate("/")
 			})
@@ -61,7 +61,7 @@ const Login = () => {
 
 			Swal.fire({
 				icon: 'error',
-				title: 'Error...',
+				title: 'Error!',
 				text: 'Username atau password salah!',
 			})
 		})
