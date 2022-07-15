@@ -17,6 +17,7 @@ import StepCard from "../../component/StepCard/StepCard";
 import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import ButtonKembali from "../../component/button-kembali/ButtonKembali";
+import Searchbar from "../../component/Searchbar/Searchbar";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -163,10 +164,58 @@ const TambahJadwal = () => {
                 setJadwal({...jadwal, pasien_id: id})
 
                 setStep("step2")
+                
+                setKey("all")
+                setQuery("")
             },
             icon: tambah_icon
         },
     ]
+
+    const [keys, setKey] = useState('all');
+	const [query, setQuery] = useState('');
+
+    // Search pasien
+	const searchPasien = (data) => {
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.id
+						.toString()
+						.toLowerCase()
+						.includes(query) ||
+					x.namapasien.toLowerCase().includes(query) ||
+					x.nik
+						.toString()
+						.toLowerCase()
+						.includes(query)
+			);
+		} else if (keys === 'id') {
+			return data.filter((x) =>
+				x.id
+					.toString()
+					.toLowerCase()
+					.includes(query)
+			);
+		} else if (keys === 'nama') {
+			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+		} else if (keys === 'nik') {
+			return data.filter((x) =>
+				x.nik
+					.toString()
+					.toLowerCase()
+					.includes(query)
+			);
+		}
+		return data;
+	};
+
+	const dataPasienOption = [
+		{ value: 'all', label: 'Semua Kategori' },
+		{ value: 'id', label: 'ID' },
+		{ value: 'nama', label: 'Nama Lengkap' },
+		{ value: 'nik', label: 'NIK' },
+	];
 
     const column_step2 = [
         { field: "srp", header: "NPA IDI" },
@@ -184,10 +233,46 @@ const TambahJadwal = () => {
                 setJadwal({...jadwal, dokter_id: id})
 
                 setStep("step3")
+
+                setKey("all")
+                setQuery("")
             },
             icon: tambah_icon
         },
     ]
+
+    //Search dokter
+    const searchDokter = (data) => {
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.srp
+						.toString()
+						.toLowerCase()
+						.includes(query) ||
+					x.namadokter.toLowerCase().includes(query) ||
+					x.spesialis.toLowerCase().includes(query)
+			);
+		} else if (keys === 'srp') {
+			return data.filter((x) =>
+				x.srp
+					.toString()
+					.toLowerCase()
+					.includes(query)
+			);
+		} else if (keys === 'namadokter') {
+			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
+		} else if (keys === 'spesialis') {
+			return data.filter((x) => x.spesialis.toLowerCase().includes(query));
+		}
+	};
+
+	const dataDokterOption = [
+		{ value: 'all', label: 'Semua Kategori' },
+		{ value: 'srp', label: 'NPA IDI' },
+		{ value: 'namadokter', label: 'Nama Lengkap' },
+		{ value: 'spesialis', label: 'Spesialis' },
+	];
 
     const handleSubmit = (e) => {
         e.preventDefault()
@@ -223,32 +308,60 @@ const TambahJadwal = () => {
             
             {step === "step1" && (
                 <div className={style.table_container}>
+                    <div className={style.search_container}>
+                        <Searchbar
+                            dataOption={dataPasienOption}
+                            onChangeQuery={(e) => setQuery(e.target.value)}
+                            onChangeSelect={(e) => setKey(e.target.value)}
+                            placeholder={'Cari Data Pasien'}
+                        />
+                    </div>
+
                     <Table
                         column={column_step1}
-                        data={dataPasien}
+                        data={searchPasien(dataPasien)}
                         primaryKey={"id"}
                         aksi={aksi_step1}
                     />
 
                     <ButtonKembali
                         title={"KEMBALI"}
-                        onClick={() => {navigate(-1)}}
+                        onClick={() => {
+                            navigate(-1)
+                            
+                            setKey("all")
+                            setQuery("")
+                        }}
                     />
                 </div>
             )}
 
             {step === "step2" && (
                 <div className={style.table_container}>
+                    <div className={style.search_container}>
+                        <Searchbar
+                            onChangeQuery={(e) => setQuery(e.target.value)}
+                            onChangeSelect={(e) => setKey(e.target.value)}
+                            dataOption={dataDokterOption}
+                            placeholder={'Cari Data Dokter'}
+                        />
+                    </div>
+
                     <Table
                         column={column_step2}
-                        data={dataDokter}
+                        data={searchDokter(dataDokter)}
                         primaryKey={"id"}
                         aksi={aksi_step2}
                     />
 
                     <ButtonKembali
                         title={"KEMBALI"}
-                        onClick={() => {setStep("step1")}}
+                        onClick={() => {
+                            setStep("step1")
+
+                            setKey("all")
+                            setQuery("")
+                        }}
                     />
                 </div>
             )}

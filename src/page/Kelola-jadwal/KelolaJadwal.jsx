@@ -13,6 +13,7 @@ import style from "./style.module.css"
 import Sidebar from "../../component/Sidebar/Sidebar"
 import Table from "../../component/Table/Table"
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
+import Searchbar from "../../component/Searchbar/Searchbar";
 
 const KelolaJadwal = () => {
 
@@ -72,11 +73,47 @@ const KelolaJadwal = () => {
       { field: "jp", header: "Jenis Perawatan" },
     ];
     
+    // Searchbar
+	const [query, setQuery] = useState('');
+	const [keys, setKey] = useState('all');
+
+	const search = (data) => {
+		if (keys === 'all') {
+			return data.filter(
+				(x) =>
+					x.namapasien.toLowerCase().includes(query) ||
+          x.namadokter.toLowerCase().includes(query) ||
+					x.jp.toLowerCase().includes(query)
+			);
+		} else if (keys === 'namapasien') {
+			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+		} else if (keys === 'namadokter') {
+			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
+		} else if (keys === 'jp') {
+			return data.filter((x) => x.jp.toLowerCase().includes(query));
+		} else if (keys === 'jp') {
+			return data.filter((x) => x.jp.toLowerCase().includes(query));
+		}
+	};
+
+	const dataOption = [
+		{ value: 'all', label: 'Semua Kategori' },
+		{ value: 'namapasien', label: 'Nama Pasien' },
+    { value: 'namadokter', label: 'Nama Dokter' },
+		{ value: 'jp', label: 'Jenis Perawatan'},
+	];
+
     return(
         <div>
             <Sidebar/>
             <div className={style.container}>
                 <div className={style.button}>
+                    <Searchbar
+                      dataOption={dataOption}
+                      onChangeQuery={(e) => setQuery(e.target.value)}
+                      onChangeSelect={(e) => setKey(e.target.value)}
+                      placeholder={'Cari jadwal'}
+                    />
                     <ButtonPrimary
                         title={"Tambah Jadwal"}
                         onClick={() => {
@@ -87,7 +124,7 @@ const KelolaJadwal = () => {
 
                 <Table
                     column={column}
-                    data={jadwal}
+                    data={search(jadwal)}
                     aksi={[]}
                 />
             </div>
