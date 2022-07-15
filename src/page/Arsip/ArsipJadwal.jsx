@@ -3,6 +3,7 @@ import Swal from 'sweetalert2';
 import Searchbar from '../../component/Searchbar/Searchbar';
 import Sidebar from '../../component/Sidebar/Sidebar';
 import Table from '../../component/Table/Table';
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 import style from './style.module.css';
 import axios from '../../API/api';
 import arsipIcon from '../../assets/img/arsip_icon.svg';
@@ -12,6 +13,8 @@ const ArsipJadwal = () => {
 	const navigate = useNavigate();
 
 	const [dataArsip, setDataArsip] = useState([]);
+	const [loading, setLoading] = useState(false)
+
 	const endPoint = "jadwal"
 
 	useEffect(() => {
@@ -26,12 +29,15 @@ const ArsipJadwal = () => {
 	}, []);
 
 	const getJadwal = () => {
+		setLoading(true)
+
 		axios.get(endPoint, {
 			headers: {
 				"content-type": "application/json",
 				'Authorization': `Bearer ${localStorage.getItem("token")}`
 			}
 		}).then((res) => {
+			setLoading(false)
 			const newData = res.data;
 
 			newData.forEach((jadwal) => {
@@ -40,6 +46,7 @@ const ArsipJadwal = () => {
 			});
 			setDataArsip(newData);
 		}).catch((err) => {
+			setLoading(false)
 			if(err.response.status === 403){
 				Swal.fire({
 				  icon: 'warning',
@@ -115,6 +122,7 @@ const ArsipJadwal = () => {
 	];
 	return (
 		<div>
+			{loading && (<BackdropLoading/>)}
 			<Sidebar />
 			<div className={style.container}>
 				<div className={style.search}>

@@ -18,6 +18,7 @@ import Table from "../../component/Table/Table";
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import ButtonKembali from "../../component/button-kembali/ButtonKembali";
 import Searchbar from "../../component/Searchbar/Searchbar";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg"
 import dokter_icon from "../../assets/img/dokter_icon.svg"
@@ -44,12 +45,16 @@ const TambahJadwal = () => {
         pasien_id: 0,
     })
 
+    const [loading, setLoading] = useState(false)
+
     const step_progress = {
         filter: "invert(55%) sepia(86%) saturate(653%) hue-rotate(179deg) brightness(97%) contrast(93%)"
     }
 
     const getDataPasien = () => {
         const endPoint = "pasien"
+
+        setLoading(true)
 
         axios.get(endPoint, {
             headers: {
@@ -58,6 +63,18 @@ const TambahJadwal = () => {
             }
         }).then((res) => {
             setDataPasien(res.data);
+        }).catch((err) => {
+            setLoading(false)
+            if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
         });
     }
 
@@ -70,6 +87,7 @@ const TambahJadwal = () => {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
         }).then((res) => {
+            setLoading(false)
             const newData = res.data
 
             newData.forEach((dokter) => {
@@ -77,11 +95,25 @@ const TambahJadwal = () => {
             })
             
             setDataDokter(newData)
+        }).catch((err) => {
+            setLoading(false)
+            if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
         });
     }
     
     const getNoUrut = () => {
         const endPoint = "jadwal"
+
+        setLoading(true)
 
         axios.get(endPoint, {
             headers: {
@@ -95,7 +127,18 @@ const TambahJadwal = () => {
             setJadwal({...jadwal, nourut: pickedDate.length + 1})
         })
         .catch((err) => {
+            setLoading(false)
             console.log(err)
+            if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
         })
     }
 
@@ -122,6 +165,7 @@ const TambahJadwal = () => {
                 }
             })
             .then((res) => {
+                setLoading(false)
                 Swal.fire({
                     icon: 'success',
                     title: 'Sukses...',
@@ -131,6 +175,7 @@ const TambahJadwal = () => {
                 })
             })
             .catch((err) => {
+                setLoading(false)
                 console.log(err)
                 Swal.fire({
                     icon: 'error',
@@ -285,6 +330,7 @@ const TambahJadwal = () => {
     
     return(
         <div className={style.container}>
+            {loading && (<BackdropLoading/>)}
             <div className={style.header_container}>
                 <div className={style.icon}>
                     <AppLogo/>

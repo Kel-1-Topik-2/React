@@ -14,6 +14,7 @@ import {
   Radio,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
@@ -33,6 +34,7 @@ export default function Form() {
   });
   const [dataError, setDataError] = useState({});
   const [editRadio, setEditRadio] = useState(location.state.jeniskelamin);
+  const [loading, setLoading] = useState(false)
 
   const handleChangeRadio = (e) => {
     setEditRadio(e.target.value);
@@ -73,6 +75,7 @@ export default function Form() {
         jeniskelamin: editRadio,
         alamat: editDataPasien.alamat,
       };
+      setLoading(true)
       axios
         .put(`/pasien/${location.state.id}`, newData, {
           headers: {
@@ -81,6 +84,7 @@ export default function Form() {
           }
         })
         .then((res) => {
+          setLoading(false)
           Swal.fire({
             icon: 'success',
             title: 'Sukses...',
@@ -90,6 +94,7 @@ export default function Form() {
           })
         })
         .catch((error) => {
+          setLoading(false)
           console.error(error)
           Swal.fire({
             icon: 'error',
@@ -105,7 +110,7 @@ export default function Form() {
     let validated = false;
     if (!values.namapasien) {
       errors.namapasien = "nama pasien perlu dibutuhkan";
-    } else if (!/^[a-z., ]*$/.test(values.namapasien)) {
+    } else if (!/^[a-zA-Z., ]*$/.test(values.namapasien)) {
       errors.namapasien = "hanya mengandung huruf";
     }
 
@@ -154,6 +159,7 @@ export default function Form() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}

@@ -14,6 +14,7 @@ import Sidebar from "../../component/Sidebar/Sidebar"
 import Table from "../../component/Table/Table"
 import ButtonPrimary from "../../component/button-primary/ButtonPrimary"
 import Searchbar from "../../component/Searchbar/Searchbar";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 
 const KelolaJadwal = () => {
 
@@ -21,6 +22,7 @@ const KelolaJadwal = () => {
 
     const endPoint = "jadwal";
     const [jadwal, setJadwal] = useState([]);
+    const [loading, setLoading] = useState(false)
 
     useEffect(() => {
       const status = localStorage.getItem("token")
@@ -34,12 +36,15 @@ const KelolaJadwal = () => {
     }, []);
 
     const getJadwal = () => {
+      setLoading(true)
+
       axios.get(endPoint, {
         headers: {
           "content-type": "application/json",
           'Authorization': `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
+        setLoading(false)
         const newData = res.data
         const today = moment().format("YYYY-MM-DD")
   
@@ -52,6 +57,7 @@ const KelolaJadwal = () => {
         
         setJadwal(todayJadwal)
       }).catch((err) => {
+        setLoading(false)
         if(err.response.status === 403){
           Swal.fire({
             icon: 'warning',
@@ -105,6 +111,7 @@ const KelolaJadwal = () => {
 
     return(
         <div>
+            {loading && (<BackdropLoading/>)}
             <Sidebar/>
             <div className={style.container}>
                 <div className={style.button}>

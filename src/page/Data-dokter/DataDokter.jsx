@@ -11,15 +11,20 @@ import style from './style.module.css';
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
 import Sidebar from '../../component/Sidebar/Sidebar';
 import Table from '../../component/Table/Table';
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 import Searchbar from '../../component/Searchbar/Searchbar';
 
 const DataDokter = () => {
-	const endPoint = 'dokter';
-	const [dataDokter, setDataDokter] = useState([]);
+
 	const navigate = useNavigate();
+
+	const [dataDokter, setDataDokter] = useState([]);
+	const [loading, setLoading] = useState(false)
+
+	const endPoint = 'dokter';
 
 	useEffect(() => {
 		const status = localStorage.getItem("token")
@@ -33,12 +38,15 @@ const DataDokter = () => {
 	}, []);
 
 	const getDataDokter = () => {
+		setLoading(true)
+
 		axios.get(endPoint, {
 			headers: {
 				"content-type": "application/json",
 				'Authorization': `Bearer ${localStorage.getItem("token")}`
 			}
 		}).then((res) => {
+			setLoading(false)
 			const newData = res.data;
 
 			newData.forEach((dokter) => {
@@ -47,6 +55,7 @@ const DataDokter = () => {
 
 			setDataDokter(newData);
 		}).catch((err) => {
+			setLoading(false)
 			if(err.response.status === 403){
 				Swal.fire({
 				  icon: 'warning',
@@ -68,6 +77,8 @@ const DataDokter = () => {
 			confirmButtonText: "Ya",
 		}).then((result) => {
 			if(result.isConfirmed){
+				setLoading(true)
+
 				axios.delete(endPoint + `/${idDokter}`, {
 					headers: {
 						"content-type": "application/json",
@@ -83,6 +94,7 @@ const DataDokter = () => {
 					getDataDokter()
 				})
 				.catch((err) => {
+					setLoading(false)
 					console.log(err)
 					Swal.fire({
 						icon: 'error',
@@ -155,6 +167,7 @@ const DataDokter = () => {
 
 	return (
 		<div>
+			{loading && (<BackdropLoading/>)}
 			<Sidebar />
 			<div className={style.container}>
 				<div className={style.button}>
