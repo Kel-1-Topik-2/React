@@ -8,14 +8,19 @@ import Sidebar from '../../component/Sidebar/Sidebar';
 import Table from '../../component/Table/Table';
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
 import Searchbar from '../../component/Searchbar/Searchbar';
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 
 import detailIcon from '../../assets/img/detail_icon.svg';
 import deleteIcon from '../../assets/img/delete_icon.svg';
 
 const DataPasien = () => {
-	const endPoint = 'pasien';
-	const [dataPasien, setDataPasien] = useState([]);
+
 	const navigate = useNavigate();
+
+	const [dataPasien, setDataPasien] = useState([]);
+	const [loading, setLoading] = useState(false)
+
+	const endPoint = 'pasien';
 
 	useEffect(() => {
 		const status = localStorage.getItem("token")
@@ -29,14 +34,18 @@ const DataPasien = () => {
 	}, []);
 
 	const getDataPasien = () => {
+		setLoading(true)
+		
 		axios.get(endPoint, {
 			headers: {
 				"content-type": "application/json",
 				'Authorization': `Bearer ${localStorage.getItem("token")}`
 			}
 		}).then((res) => {
+			setLoading(false)
 			setDataPasien(res.data);
 		}).catch((err) => {
+			setLoading(false)
 			if(err.response.status === 403){
 				Swal.fire({
 				  icon: 'warning',
@@ -58,6 +67,8 @@ const DataPasien = () => {
 			confirmButtonText: "Ya",
 		}).then((result) => {
 			if(result.isConfirmed){
+				setLoading(true)
+
 				axios.delete(endPoint + `/${idPasien}`, {
 					headers: {
 						"content-type": "application/json",
@@ -73,6 +84,7 @@ const DataPasien = () => {
 					getDataPasien()
 				})
 				.catch((err) => {
+					setLoading(false)
 					console.log(err)
 					Swal.fire({
 						icon: 'error',
@@ -155,6 +167,7 @@ const DataPasien = () => {
 
 	return (
 		<div>
+			{loading && (<BackdropLoading/>)}
 			<Sidebar />
 			<div className={style.container}>
 				<div className={style.button}>

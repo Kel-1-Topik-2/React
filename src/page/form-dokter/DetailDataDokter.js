@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
@@ -21,6 +22,8 @@ export default function DetailData() {
   let navigate = useNavigate();
   const [detailDokter, setDetailDokter] = useState([]);
   const [userDokter, setUserDokter] = useState([]);
+
+  const [loading, setLoading] = useState(false)
 
   const params = useParams();
 
@@ -39,15 +42,19 @@ export default function DetailData() {
 			navigate("/login", {replace: true})
 		}
     else{
+      setLoading(true)
+
       axios.get(endPoint, {
         headers: {
           "content-type": "application/json",
           'Authorization': `Bearer ${localStorage.getItem("token")}`
         }
       }).then((res) => {
+        setLoading(false)
         setDetailDokter(res.data.data);
         setUserDokter(res.data.data.user);
       }).catch((err) => {
+        setLoading(false)
         if(err.response.status === 403){
           Swal.fire({
             icon: 'warning',
@@ -80,6 +87,7 @@ export default function DetailData() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}

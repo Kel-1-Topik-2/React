@@ -2,6 +2,8 @@
 	background-color: #FFFFFF;
 	width: 100%;
 	display: flex;
+
+	overflow-y: hidden;
 }
 
 .banner {

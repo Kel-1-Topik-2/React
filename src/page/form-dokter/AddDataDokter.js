@@ -9,6 +9,7 @@ import {
   Typography,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
@@ -29,6 +30,7 @@ export default function Form() {
 
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const status = localStorage.getItem("token")
@@ -56,6 +58,8 @@ export default function Form() {
     validate(data);
     if (validate(data) === true) {
       try {
+        setLoading(true)
+
         const respUser = await axios.post("/user", {
           username: data.username,
           password: data.password,
@@ -78,6 +82,7 @@ export default function Form() {
             }
           });
           if (respDokter.status === 200) {
+            setLoading(false)
             Swal.fire({
               icon: 'success',
               title: 'Sukses...',
@@ -92,6 +97,7 @@ export default function Form() {
           return false;
         }
       } catch (error) {
+        setLoading(false)
         console.log(error);
         Swal.fire({
           icon: 'error',
@@ -167,6 +173,7 @@ export default function Form() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}

@@ -14,6 +14,7 @@ import {
   Radio,
 } from "@mui/material";
 import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
@@ -35,6 +36,8 @@ export default function Form() {
   const [data, setData] = useState(formData);
   const [dataError, setDataError] = useState({});
   const [radio, setRadio] = useState("Laki laki");
+
+  const [loading, setLoading] = useState(false)
 
   useEffect(() => {
     const status = localStorage.getItem("token")
@@ -68,6 +71,8 @@ export default function Form() {
     console.log(dataError);
     validate(data);
     if (validate(data) === true) {
+      setLoading(true)
+
       axios
         .post(
           endPoint,
@@ -87,6 +92,7 @@ export default function Form() {
           }
         )
         .then((res) => {
+          setLoading(false)
           Swal.fire({
             icon: 'success',
             title: 'Sukses...',
@@ -96,6 +102,7 @@ export default function Form() {
           })
         })
         .catch((error) => {
+          setLoading(false)
           console.log(error);
           Swal.fire({
 						icon: 'error',
@@ -161,6 +168,7 @@ export default function Form() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}

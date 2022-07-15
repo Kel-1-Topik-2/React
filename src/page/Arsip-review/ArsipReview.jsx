@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Swal from 'sweetalert2';
 import style from './style.module.css';
 import InputReview from '../../component/Input-review/InputReview';
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 import { useParams, useNavigate } from 'react-router-dom';
 import axios from '../../API/api';
 import { Tooltip, IconButton } from '@mui/material';
@@ -26,6 +27,7 @@ const ArsipReview = () => {
 			namapasien: "",
 		}
 	});
+	const [loading, setLoading] = useState(false)
 
 	useEffect(() => {
 		const status = localStorage.getItem("token")
@@ -39,6 +41,8 @@ const ArsipReview = () => {
 	}, []);
 
 	const getDetailJadwal = () => {
+		setLoading(true)
+
 		axios.get(endPoint, {
 			headers: {
 				"content-type": "application/json",
@@ -46,9 +50,11 @@ const ArsipReview = () => {
 			}
 		})
 		.then((res) => {
+			setLoading(false)
 			setDataReview(res.data.data);
 		})
 		.catch((err) => {
+			setLoading(false)
 			if(err.response.status === 403){
 				Swal.fire({
 				  icon: 'warning',
@@ -64,6 +70,7 @@ const ArsipReview = () => {
 
 	return (
 		<div className={style.container}>
+			{loading && (<BackdropLoading/>)}
 			<div className={style.head}>
 				<Tooltip title="back">
 					<IconButton>
@@ -126,7 +133,7 @@ const ArsipReview = () => {
 					<div>
 						<label className={style.label}>Diagnosa</label>
 						<InputReview type="text" 
-						value={dataReview.diagnosa === null ? "Tidak ada diagnosa" : dataReview.diagnosa} width="100%" />
+						value={dataReview.diagnosa} width="100%" />
 					</div>
 					<div
 						style={{
@@ -137,7 +144,7 @@ const ArsipReview = () => {
 						<textarea
 							disabled
 							className={style.catatan}
-							value={dataReview.catatan === null ? "Tidak ada catatan" : dataReview.catatan}
+							value={dataReview.catatan}
 						></textarea>
 					</div>
 				</div>

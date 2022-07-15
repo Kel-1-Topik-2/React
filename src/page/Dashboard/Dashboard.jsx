@@ -12,6 +12,7 @@ import style from "./style.module.css";
 import Sidebar from "../../component/Sidebar/Sidebar";
 import OverviewCard from "../../component/OverviewCard/OverviewCard";
 import Table from "../../component/Table/Table";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
@@ -23,6 +24,7 @@ const Dashboard = () => {
 
   const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
+  const [loading, setLoading] = useState(false)
 
   const getJadwal = () => {
     axios.get(endPoint, {
@@ -32,6 +34,8 @@ const Dashboard = () => {
       }
     })
     .then((res) => {
+      setLoading(false)
+      
       const newData = res.data
       const today = moment().format("YYYY-MM-DD")
 
@@ -45,6 +49,7 @@ const Dashboard = () => {
       setJadwal(todayJadwal)
     })
     .catch((err) => {
+      setLoading(false)
       if(err.response.status === 403){
         Swal.fire({
           icon: 'warning',
@@ -65,6 +70,7 @@ const Dashboard = () => {
       navigate("/login", {replace: true})
     }
     else{
+      setLoading(true)
       getJadwal()
     }
   }, []);
@@ -79,6 +85,7 @@ const Dashboard = () => {
 
   return (
     <div>
+      {loading && (<BackdropLoading/>)}
       <Sidebar />
       <div className={style.container}>
         <div className={style.overview_container}>

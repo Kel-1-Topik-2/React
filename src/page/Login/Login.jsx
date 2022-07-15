@@ -10,6 +10,7 @@ import style from './style.module.css';
 
 import ButtonPrimary from '../../component/button-primary/ButtonPrimary';
 import Checkbox from '@mui/material/Checkbox';
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 
 import showOff from '../../assets/img/showOff.svg';
 import showOn from '../../assets/img/showOn.svg';
@@ -25,6 +26,7 @@ const Login = () => {
 		password: "",
 		role: "ROLE_ADMIN"
 	})
+	const [loading, setLoading] = useState(false)
 
 	const handleClickShow = () => {
 		setShow((prevValue) => !prevValue);
@@ -39,6 +41,8 @@ const Login = () => {
 
 	const handleSubmit = (e) => {
 		e.preventDefault()
+
+		setLoading(true)
 		getToken()
 	} 
 
@@ -46,6 +50,7 @@ const Login = () => {
 		const endPoint = "api/auth/login"
 		axios.post(endPoint, {...inputs})
 		.then((res) => {
+			setLoading(false)
 			localStorage.setItem("token", res.data.token)
 
 			Swal.fire({
@@ -57,6 +62,7 @@ const Login = () => {
 			})
 		})
 		.catch((err) => {
+			setLoading(false)
 			console.log(err)
 
 			Swal.fire({
@@ -69,6 +75,7 @@ const Login = () => {
 
 	return (
 		<div className={style.container}>
+			{loading && (<BackdropLoading/>)}
 			<div className={style.banner}>
 				<img src={banner} alt="banner" />
 			</div>
