@@ -91,35 +91,38 @@ const DataPasien = () => {
 	const [keys, setKey] = useState('all');
 	const [query, setQuery] = useState('');
 
+
 	const search = (data) => {
+		let queryLowerCase = query.toLowerCase()
+
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
 					x.id
 						.toString()
 						.toLowerCase()
-						.includes(query) ||
-					x.namapasien.toLowerCase().includes(query) ||
+						.includes(queryLowerCase) ||
+					x.namapasien.toLowerCase().includes(queryLowerCase) ||
 					x.nik
 						.toString()
 						.toLowerCase()
-						.includes(query)
+						.includes(queryLowerCase)
 			);
 		} else if (keys === 'id') {
 			return data.filter((x) =>
 				x.id
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		} else if (keys === 'nama') {
-			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+			return data.filter((x) => x.namapasien.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'nik') {
 			return data.filter((x) =>
 				x.nik
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		}
 		return data;

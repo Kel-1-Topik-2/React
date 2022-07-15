@@ -15,6 +15,7 @@ import TambahJadwal from "./page/Tambah-jadwal/TambahJadwal";
 import Login from './page/Login/Login';
 import ArsipJadwal from './page/Arsip/ArsipJadwal';
 import ArsipReview from './page/Arsip-review/ArsipReview';
+import NotFound from "./page/Not-found/NotFound";
 
 function App() {
 	return (
@@ -41,6 +42,8 @@ function App() {
 			
 			<Route path="arsip-jadwal" element={<ArsipJadwal />} />
 			<Route path="arsip-jadwal/review/:id" element={<ArsipReview />} />
+
+			<Route path="*" element={<NotFound />}/>
 		</Routes>
 	);
 }

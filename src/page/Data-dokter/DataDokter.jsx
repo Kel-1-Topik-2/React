@@ -102,27 +102,29 @@ const DataDokter = () => {
 	const [keys, setKey] = useState('all');
 
 	const search = (data) => {
+		let queryLowerCase = query.toLowerCase()
+		
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
 					x.srp
 						.toString()
 						.toLowerCase()
-						.includes(query) ||
-					x.namadokter.toLowerCase().includes(query) ||
-					x.spesialis.toLowerCase().includes(query)
+						.includes(queryLowerCase) ||
+					x.namadokter.toLowerCase().includes(queryLowerCase) ||
+					x.spesialis.toLowerCase().includes(queryLowerCase)
 			);
 		} else if (keys === 'srp') {
 			return data.filter((x) =>
 				x.srp
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		} else if (keys === 'namadokter') {
-			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
+			return data.filter((x) => x.namadokter.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'spesialis') {
-			return data.filter((x) => x.spesialis.toLowerCase().includes(query));
+			return data.filter((x) => x.spesialis.toLowerCase().includes(queryLowerCase));
 		}
 	};
 
