@@ -77,30 +77,32 @@ const ArsipJadwal = () => {
 	const [keys, setKey] = useState('all');
 
 	const search = (data) => {
+		let queryLowerCase = query.toLowerCase()
+
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
 					x.idpasien
 						.toString()
 						.toLowerCase()
-						.includes(query) ||
-					x.namapasien.toLowerCase().includes(query) ||
-					x.jp.toLowerCase().includes(query) ||
-					x.tanggal.toLowerCase().includes(query)
+						.includes(queryLowerCase) ||
+					x.namapasien.toLowerCase().includes(queryLowerCase) ||
+					x.jp.toLowerCase().includes(queryLowerCase) ||
+					x.tanggal.toLowerCase().includes(queryLowerCase)
 			);
 		} else if (keys === 'idpasien') {
 			return data.filter((x) =>
 				x.idpasien
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		} else if (keys === 'namapasien') {
-			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+			return data.filter((x) => x.namapasien.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'jp') {
-			return data.filter((x) => x.jp.toLowerCase().includes(query));
+			return data.filter((x) => x.jp.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'tanggal') {
-			return data.filter((x) => x.tanggal.toLowerCase().includes(query));
+			return data.filter((x) => x.tanggal.toLowerCase().includes(queryLowerCase));
 		}
 	};
 

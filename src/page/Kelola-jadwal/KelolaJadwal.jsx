@@ -78,21 +78,21 @@ const KelolaJadwal = () => {
 	const [keys, setKey] = useState('all');
 
 	const search = (data) => {
+    let queryLowerCase = query.toLowerCase()
+
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
-					x.namapasien.toLowerCase().includes(query) ||
-          x.namadokter.toLowerCase().includes(query) ||
-					x.jp.toLowerCase().includes(query)
+					x.namapasien.toLowerCase().includes(queryLowerCase) ||
+          x.namadokter.toLowerCase().includes(queryLowerCase) ||
+					x.jp.toLowerCase().includes(queryLowerCase)
 			);
 		} else if (keys === 'namapasien') {
-			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+			return data.filter((x) => x.namapasien.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'namadokter') {
-			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
+			return data.filter((x) => x.namadokter.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'jp') {
-			return data.filter((x) => x.jp.toLowerCase().includes(query));
-		} else if (keys === 'jp') {
-			return data.filter((x) => x.jp.toLowerCase().includes(query));
+			return data.filter((x) => x.jp.toLowerCase().includes(queryLowerCase));
 		}
 	};
 

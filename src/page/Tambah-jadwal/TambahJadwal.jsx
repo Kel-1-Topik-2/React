@@ -177,34 +177,36 @@ const TambahJadwal = () => {
 
     // Search pasien
 	const searchPasien = (data) => {
+        let queryLowerCase = query.toLowerCase()
+
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
 					x.id
 						.toString()
 						.toLowerCase()
-						.includes(query) ||
-					x.namapasien.toLowerCase().includes(query) ||
+						.includes(queryLowerCase) ||
+					x.namapasien.toLowerCase().includes(queryLowerCase) ||
 					x.nik
 						.toString()
 						.toLowerCase()
-						.includes(query)
+						.includes(queryLowerCase)
 			);
 		} else if (keys === 'id') {
 			return data.filter((x) =>
 				x.id
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		} else if (keys === 'nama') {
-			return data.filter((x) => x.namapasien.toLowerCase().includes(query));
+			return data.filter((x) => x.namapasien.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'nik') {
 			return data.filter((x) =>
 				x.nik
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		}
 		return data;
@@ -243,27 +245,29 @@ const TambahJadwal = () => {
 
     //Search dokter
     const searchDokter = (data) => {
+        let queryLowerCase = query.toLowerCase()
+
 		if (keys === 'all') {
 			return data.filter(
 				(x) =>
 					x.srp
 						.toString()
 						.toLowerCase()
-						.includes(query) ||
-					x.namadokter.toLowerCase().includes(query) ||
-					x.spesialis.toLowerCase().includes(query)
+						.includes(queryLowerCase) ||
+					x.namadokter.toLowerCase().includes(queryLowerCase) ||
+					x.spesialis.toLowerCase().includes(queryLowerCase)
 			);
 		} else if (keys === 'srp') {
 			return data.filter((x) =>
 				x.srp
 					.toString()
 					.toLowerCase()
-					.includes(query)
+					.includes(queryLowerCase)
 			);
 		} else if (keys === 'namadokter') {
-			return data.filter((x) => x.namadokter.toLowerCase().includes(query));
+			return data.filter((x) => x.namadokter.toLowerCase().includes(queryLowerCase));
 		} else if (keys === 'spesialis') {
-			return data.filter((x) => x.spesialis.toLowerCase().includes(query));
+			return data.filter((x) => x.spesialis.toLowerCase().includes(queryLowerCase));
 		}
 	};
 
