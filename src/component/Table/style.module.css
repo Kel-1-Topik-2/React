@@ -77,3 +77,22 @@
 .pagination .active{
     color: #358C56;
 }
+
+.notfound_container{
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    row-gap: 2rem;
+
+    margin-top: 1rem;
+}
+
+.notfound_container img{
+    width: 320px;
+}
+
+.notfound_container p{
+    font-weight: 400;
+    font-size: 1.25rem;
+}

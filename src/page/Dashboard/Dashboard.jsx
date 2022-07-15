@@ -102,7 +102,7 @@ const Dashboard = () => {
           <Link to={"/kelola-jadwal"}>Lihat Selengkapnya</Link>
           <Table
             column={column}
-            data={jadwal}
+            data={jadwal.slice(0,8)}
             aksi={[]}
           />
         </div>
