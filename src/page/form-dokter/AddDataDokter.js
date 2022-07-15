@@ -59,6 +59,11 @@ export default function Form() {
         const respUser = await axios.post("/user", {
           username: data.username,
           password: data.password,
+        }, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
         });
         if (respUser.status === 200) {
           const respDokter = await axios.post("/dokter", {
@@ -66,6 +71,11 @@ export default function Form() {
             namadokter: data.namadokter,
             spesialis: data.spesialis,
             srp: data.srp,
+          }, {
+            headers: {
+              "content-type": "application/json",
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
           });
           if (respDokter.status === 200) {
             Swal.fire({
@@ -115,13 +125,13 @@ export default function Form() {
 
     if (!values.namadokter) {
       errors.namadokter = "nama dokter perlu dibutuhkan";
-    } else if (!/^[a-z., ]*$/.test(values.namadokter)) {
+    } else if (!/^[a-zA-Z., ]*$/.test(values.namadokter)) {
       errors.namadokter = "hanya mengandung huruf";
     }
 
     if (!values.spesialis) {
       errors.spesialis = "spesialis perlu dibutuhkan";
-    } else if (!/^[a-z., ]*$/.test(values.spesialis)) {
+    } else if (!/^[a-zA-Z., ]*$/.test(values.spesialis)) {
       errors.spesialis = "hanya mengandung huruf";
     }
 

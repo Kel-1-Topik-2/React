@@ -126,6 +126,13 @@ const DataDokter = () => {
 		}
 	};
 
+	const dataOption = [
+		{ value: 'all', label: 'Semua Kategori' },
+		{ value: 'srp', label: 'NPA IDI' },
+		{ value: 'namadokter', label: 'Nama Lengkap' },
+		{ value: 'spesialis', label: 'Spesialis' },
+	];
+
 	const column = [
 		{ field: 'srp', header: 'NPA IDI' },
 		{ field: 'namadokter', header: 'Nama Lengkap' },
@@ -142,13 +149,6 @@ const DataDokter = () => {
 			click: (id) => handleDelete(id),
 			icon: deleteIcon,
 		},
-	];
-
-	const dataOption = [
-		{ value: 'all', label: 'Semua Kategori' },
-		{ value: 'srp', label: 'NPA IDI' },
-		{ value: 'namadokter', label: 'Nama Lengkap' },
-		{ value: 'spesialis', label: 'Spesialis' },
 	];
 
 	return (

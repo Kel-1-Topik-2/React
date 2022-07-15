@@ -15,7 +15,6 @@ import deleteIcon from '../../assets/img/delete_icon.svg';
 const DataPasien = () => {
 	const endPoint = 'pasien';
 	const [dataPasien, setDataPasien] = useState([]);
-	const [query, setQuery] = useState('');
 	const navigate = useNavigate();
 
 	useEffect(() => {
@@ -90,6 +89,7 @@ const DataPasien = () => {
 	};
 
 	const [keys, setKey] = useState('all');
+	const [query, setQuery] = useState('');
 
 	const search = (data) => {
 		if (keys === 'all') {
@@ -122,9 +122,15 @@ const DataPasien = () => {
 					.includes(query)
 			);
 		}
-		console.log(keys);
 		return data;
 	};
+
+	const dataOption = [
+		{ value: 'all', label: 'Semua Kategori' },
+		{ value: 'id', label: 'ID' },
+		{ value: 'nama', label: 'Nama Lengkap' },
+		{ value: 'nik', label: 'NIK' },
+	];
 
 	const column = [
 		{ field: 'id', header: 'ID' },
@@ -143,17 +149,6 @@ const DataPasien = () => {
 			icon: deleteIcon,
 		},
 	];
-
-	const dataOption = [
-		{ value: 'all', label: 'Semua Kategori' },
-		{ value: 'id', label: 'ID' },
-		{ value: 'nama', label: 'Nama Lengkap' },
-		{ value: 'nik', label: 'NIK' },
-	];
-
-	useEffect(() => {
-		console.log(keys);
-	}, []);
 
 	return (
 		<div>

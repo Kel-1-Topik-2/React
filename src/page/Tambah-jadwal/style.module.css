@@ -40,6 +40,14 @@
     align-items: center;
 }
 
+.search_container{
+    display: flex;
+    justify-content: flex-end;
+
+    margin-top: 8rem;
+    margin-bottom: 3rem;
+}
+
 .form_container form{
     display: flex;
     justify-content: center;
