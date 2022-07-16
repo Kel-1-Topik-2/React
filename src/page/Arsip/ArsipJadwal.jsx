@@ -38,7 +38,7 @@ const ArsipJadwal = () => {
 			}
 		}).then((res) => {
 			setLoading(false)
-			const newData = res.data;
+			const newData = res.data.data;
 
 			newData.forEach((jadwal) => {
 				jadwal.idpasien = jadwal.pasien.id

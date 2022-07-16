@@ -45,7 +45,7 @@ const KelolaJadwal = () => {
         }
       }).then((res) => {
         setLoading(false)
-        const newData = res.data
+        const newData = res.data.data
         const today = moment().format("YYYY-MM-DD")
   
         newData.forEach((jadwal) => {
