@@ -36,7 +36,7 @@ const Dashboard = () => {
     .then((res) => {
       setLoading(false)
       
-      const newData = res.data
+      const newData = res.data.data
       const today = moment().format("YYYY-MM-DD")
 
       newData.forEach((jadwal) => {
@@ -50,6 +50,7 @@ const Dashboard = () => {
     })
     .catch((err) => {
       setLoading(false)
+      console.log(err)
       if(err.response.status === 403){
         Swal.fire({
           icon: 'warning',

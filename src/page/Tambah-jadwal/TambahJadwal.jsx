@@ -62,7 +62,7 @@ const TambahJadwal = () => {
                 'Authorization': `Bearer ${localStorage.getItem("token")}`
             }
         }).then((res) => {
-            setDataPasien(res.data);
+            setDataPasien(res.data.data);
         }).catch((err) => {
             setLoading(false)
             if(err.response.status === 403){
@@ -88,7 +88,7 @@ const TambahJadwal = () => {
             }
         }).then((res) => {
             setLoading(false)
-            const newData = res.data
+            const newData = res.data.data
 
             newData.forEach((dokter) => {
                 dokter.username = dokter.user.username
@@ -122,7 +122,7 @@ const TambahJadwal = () => {
             }
         })
         .then((res) => {
-            const pickedDate = res.data.filter((item) => item.tanggal === jadwal.tanggal) 
+            const pickedDate = res.data.data.filter((item) => item.tanggal === jadwal.tanggal) 
             
             setJadwal({...jadwal, nourut: pickedDate.length + 1})
         })

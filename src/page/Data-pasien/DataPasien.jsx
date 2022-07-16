@@ -43,7 +43,7 @@ const DataPasien = () => {
 			}
 		}).then((res) => {
 			setLoading(false)
-			setDataPasien(res.data);
+			setDataPasien(res.data.data);
 		}).catch((err) => {
 			setLoading(false)
 			if(err.response.status === 403){

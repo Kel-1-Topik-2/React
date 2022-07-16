@@ -89,6 +89,17 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 					<p>{handleNotFoundText(location.pathname)}</p>
 				</div>
 			)}
+			{/* {data.length !== 0 && (
+				<div className={style.showdata_container}>
+					<p>Jumlah data yang ditampilkan</p>
+					<select>
+						<option value="all">All</option>
+						<option value="5">5</option>
+						<option value="10">10</option>
+						<option value="20">20</option>
+					</select>
+				</div>
+			)} */}
 			{pageCount > 1 && (
 				<ReactPaginate
 					breakLabel="..."
