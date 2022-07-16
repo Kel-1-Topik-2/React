@@ -9,7 +9,9 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 	const [currentItems, setCurrentItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
 	const [itemOffset, setItemOffset] = useState(0);
-	const itemsPerPage = 10;
+	const [itemsPerPage, setItemsPerPage] = useState(5)
+
+	const [pageNumber, setPageNumber] = useState(0)
 
 	const location = useLocation()
 
@@ -19,10 +21,30 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 		setPageCount(Math.ceil(data.length / itemsPerPage));
 	}, [itemOffset, itemsPerPage, data]);
 
+	useEffect(() => {
+		setItemOffset(0)
+		setPageNumber(0)
+	}, [data.length])
+
 	const handlePageClick = (event) => {
 		const newOffset = (event.selected * itemsPerPage) % data.length;
 		setItemOffset(newOffset);
+		setPageNumber(event.selected)
 	};
+	
+	const handleShowChange = (e) => {
+		const newItemsPerPage = e.target.value
+		
+		if(newItemsPerPage === "All"){
+			setItemsPerPage(data.length)
+		}
+		else{
+			setItemsPerPage(parseInt(newItemsPerPage))
+		}
+
+		setItemOffset(0)
+		setPageNumber(0)
+	}
 
 	const handleNotFoundText = (path) => {
 		if(path === "/"){
@@ -89,17 +111,20 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 					<p>{handleNotFoundText(location.pathname)}</p>
 				</div>
 			)}
-			{/* {data.length !== 0 && (
+			{data.length !== 0 && (
 				<div className={style.showdata_container}>
 					<p>Jumlah data yang ditampilkan</p>
-					<select>
-						<option value="all">All</option>
+					<select onChange={
+							(e) => handleShowChange(e)
+							
+						}>
 						<option value="5">5</option>
 						<option value="10">10</option>
 						<option value="20">20</option>
+						<option value="All">All</option>
 					</select>
 				</div>
-			)} */}
+			)}
 			{pageCount > 1 && (
 				<ReactPaginate
 					breakLabel="..."
@@ -114,6 +139,7 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 					previousLinkClassName={style.pageNum}
 					nextLinkClassName={style.pageNum}
 					activeClassName={style.active}
+					forcePage={pageNumber}
 				/>
 			)}
 		</div>
