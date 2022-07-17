@@ -48,6 +48,7 @@ const DataDokter = () => {
 		}).then((res) => {
 			setLoading(false)
 			const newData = res.data.data;
+			console.log(newData)
 
 			newData.forEach((dokter) => {
 				dokter.username = dokter.user.username;
