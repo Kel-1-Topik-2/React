@@ -13,12 +13,14 @@ import image from '../../assets/sideFoto/foto-dokter.png';
 import FormInput from '../../component/formInput/FormInput';
 import { useNavigate, useLocation } from 'react-router-dom';
 import axios from '../../API/api';
-import Modal from '../../component/ModalNew/Modal';
+import Swal from "sweetalert2";
+import BackdropLoading from '../../component/BackdropLoading/BackdropLoading';
 
 export default function Form() {
 	let navigate = useNavigate();
 
 	const location = useLocation();
+	const [loading, setLoading] = useState(false)
 
 	const [editDataDokter, setEditDataDokter] = useState({
 		namadokter: location.state.namadokter,
@@ -31,8 +33,7 @@ export default function Form() {
 	const [editPassword, setEditPassword] = useState('');
 	const [confirmPassword, setConfirmPassword] = useState('');
 	const [dataError, setDataError] = useState({});
-	const [popup, setPopup] = useState({ show: false });
-
+	
 	useEffect(() => {
 		const status = localStorage.getItem('token');
 
@@ -80,10 +81,10 @@ export default function Form() {
 					);
 				} else if (editPassword !== '') {
 					respUser = await axios.put(
-						`/user/${location.state.user.id}`,
+						`/api/auth/updateuser/${location.state.user.id}`,
 						{
-							username: editDataDokter.username,
-							password: editPassword,
+							new_username: editDataDokter.username,
+							new_password: editPassword,
 						},
 						{
 							headers: {
@@ -110,16 +111,29 @@ export default function Form() {
 						}
 					);
 					if (respDokter.status === 200) {
-						setPopup({
-							show: true,
-						});
+						setLoading(false)
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses...',
+              text: 'Data telah berhasil disimpan',
+            }).then(
+							navigate(-1)
+						)
 					} else {
 						return false;
 					}
 				} else {
 					return false;
 				}
-			} catch (error) {}
+			} catch (error) {
+				setLoading(false)
+        console.log(error);
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Terjadi kesalahan',
+        })
+			}
 		}
 	};
 
@@ -132,17 +146,18 @@ export default function Form() {
 			errors.username = 'username perlu 8 digit';
 		}
 
-		if (!values.password) {
-      errors.password = "Kata Sandi perlu dibutuhkan";
-    } else if (values.password.length < 8) {
-      errors.password = "Kata Sandi perlu 8 digit";
-    }
+		// if (!values.password) {
+		//   errors.password = "Kata Sandi perlu dibutuhkan";
+		// } else if (values.password.length < 8) {
+		//   errors.password = "Kata Sandi perlu 8 digit";
+		// }
 
-    if (!values.confirmpassword) {
-      errors.confirmpassword = "Kata sandi perlu dibutuhkan";
-    } else if (values.confirmpassword !== values.password) {
-      errors.confirmpassword = "Konfirmasi Kata sandi tidak sama";
-    }
+		// if (!values.confirmpassword) {
+		//   errors.confirmpassword = "Kata sandi perlu dibutuhkan";
+		// } else if (values.confirmpassword !== values.password) {
+		//   errors.confirmpassword = "Konfirmasi Kata sandi tidak sama";
+		// }
+
 		if (!values.namadokter) {
 			errors.namadokter = 'nama dokter perlu dibutuhkan';
 		} else if (!/^[a-zA-Z., ]*$/.test(values.namadokter)) {
@@ -173,12 +188,12 @@ export default function Form() {
 		return validated;
 	};
 
-	const handleOk = () => {
-		setPopup({
-			show: false,
-		});
-		navigate(-1);
-	};
+	// const handleOk = () => {
+	// 	setPopup({
+	// 		show: false,
+	// 	});
+	// 	navigate(-1);
+	// };
 
 	const paperStyle = {
 		padding: '30px 30px',
@@ -194,6 +209,7 @@ export default function Form() {
 
 	return (
 		<Grid container component="main" sx={{ height: '100vh' }}>
+			{loading && (<BackdropLoading/>)}
 			<Grid
 				item
 				xs={false}
@@ -372,12 +388,7 @@ export default function Form() {
 									</Button>
 								</Grid>
 							</Grid>
-							{popup.show && (
-								<Modal
-									title={'Data Dokter Berhasil diubah!'}
-									handleCancel={handleOk}
-								/>
-							)}
+							
 						</Box>
 					</Paper>
 				</Box>
