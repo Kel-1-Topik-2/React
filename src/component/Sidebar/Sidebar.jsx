@@ -20,7 +20,8 @@ const Sidebar = () => {
   const navigate = useNavigate()
 
   const activeStyle = {
-    filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)"
+    filter: "invert(43%) sepia(49%) saturate(487%) hue-rotate(90deg) brightness(95%) contrast(92%)",
+    fontWeight: "700"
   }
 
   const logoutClick = () => {

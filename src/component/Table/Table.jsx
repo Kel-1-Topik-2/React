@@ -111,37 +111,38 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 					<p>{handleNotFoundText(location.pathname)}</p>
 				</div>
 			)}
-			{data.length !== 0 && (
-				<div className={style.showdata_container}>
-					<p>Jumlah data yang ditampilkan</p>
-					<select onChange={
-							(e) => handleShowChange(e)
-							
-						}>
-						<option value="5">5</option>
-						<option value="10">10</option>
-						<option value="20">20</option>
-						<option value="All">All</option>
-					</select>
-				</div>
-			)}
-			{pageCount > 1 && (
-				<ReactPaginate
-					breakLabel="..."
-					nextLabel=">"
-					previousLabel="<"
-					renderOnZeroPageCount={null}
-					pageRangeDisplayed={3}
-					pageCount={pageCount}
-					onPageChange={handlePageClick}
-					containerClassName={style.pagination}
-					pageLinkClassName={style.pageNum}
-					previousLinkClassName={style.pageNum}
-					nextLinkClassName={style.pageNum}
-					activeClassName={style.active}
-					forcePage={pageNumber}
-				/>
-			)}
+			<div className={style.bottom_container}>
+				{data.length !== 0 && (
+					<div className={style.showdata_container}>
+						<p>Jumlah data yang ditampilkan</p>
+						<select onChange={(e) => handleShowChange(e)}>
+							<option value="5">5</option>
+							<option value="10">10</option>
+							<option value="20">20</option>
+							<option value="All">All</option>
+						</select>
+					</div>
+				)}
+				{pageCount > 1 && (
+					<div className={style.paginate_container}>
+						<ReactPaginate
+							breakLabel="..."
+							nextLabel=">"
+							previousLabel="<"
+							renderOnZeroPageCount={null}
+							pageRangeDisplayed={3}
+							pageCount={pageCount}
+							onPageChange={handlePageClick}
+							containerClassName={style.pagination}
+							pageLinkClassName={style.pageNum}
+							previousLinkClassName={style.pageNum}
+							nextLinkClassName={style.pageNum}
+							activeClassName={style.active}
+							forcePage={pageNumber}
+						/>
+					</div>
+				)}
+			</div>
 		</div>
 	);
 };
