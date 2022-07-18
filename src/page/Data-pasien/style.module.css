@@ -4,5 +4,13 @@
 
 .button {
 	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	margin-bottom: 32px;
+	margin-top: 50px;
+}
+
+.searchbar {
+	display: flex;
 	justify-content: flex-end;
 }

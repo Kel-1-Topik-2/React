@@ -1,0 +1,80 @@
+.searchbar {
+	width: 513px;
+	height: 40px;
+	box-sizing: border-box;
+	border-radius: 15px;
+	overflow: hidden;
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	background-color: white;
+	box-shadow: 0px 0px 13px 1px rgba(0, 0, 0, 0.116);
+}
+
+.containerDropdown {
+	margin: 0;
+	background-color: white;
+	padding: 0 22px;
+	color: black;
+	font-weight: 400;
+	line-height: 18px;
+	font-size: 12px;
+	width: 207px;
+	height: 100%;
+	border: none;
+	outline: 0;
+	appearance: none;
+	background-image: url('../../assets/img/filter_icon.svg');
+	background-repeat: no-repeat;
+	background-position: 94.5% center;
+	box-sizing: border-box;
+	font-family: 'Poppins', sans-serif;
+}
+
+.dropdown {
+	background-color: white;
+	color: #53cd81;
+	font-size: 18px;
+	font-weight: 400;
+	padding: 15px 0;
+	padding-left: 24px;
+	padding-left: 42px;
+}
+
+.containerSearch {
+	height: 100%;
+	width: 80%;
+	display: flex;
+	align-items: center;
+	position: relative;
+	box-sizing: border-box;
+}
+.search {
+	font-family: 'Poppins', sans-serif;
+	font-weight: 600;
+	color: #6f6f6f;
+	border: none;
+	outline: 0;
+	background-color: transparent;
+	padding-left: 24px;
+}
+
+.icon {
+	height: 90%;
+	width: 1px;
+	background-color: #4ca9ee;
+	position: absolute;
+	left: 0;
+	border-radius: 2px;
+}
+
+.iconSearch {
+	background-color: #358c56;
+	position: absolute;
+	justify-content: center;
+	width: 48px;
+	right: 0;
+	height: 100%;
+	display: flex;
+	align-items: center;
+}

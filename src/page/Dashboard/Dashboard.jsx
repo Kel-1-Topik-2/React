@@ -1,95 +1,171 @@
 import React, { useState, useEffect } from "react";
 
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 
-import axios from "../../dummy-api/api";
+import moment from "moment";
 
+import Swal from "sweetalert2";
+
+import axios from "../../API/api";
 import style from "./style.module.css";
 
 import Sidebar from "../../component/Sidebar/Sidebar";
 import OverviewCard from "../../component/OverviewCard/OverviewCard";
 import Table from "../../component/Table/Table";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 
 import pasien_icon from "../../assets/img/pasien_icon.svg";
 import dokter_icon from "../../assets/img/dokter_icon.svg";
-import suster_icon from "../../assets/img/suster_icon.svg";
 import pertemuan_icon from "../../assets/img/pertemuan_icon.svg";
-import detailIcon from "../../assets/img/detail_icon.svg";
-import deleteIcon from "../../assets/img/delete_icon.svg";
 
 const Dashboard = () => {
-  const navigate = useNavigate();
 
-  const endPoint = "Pasien";
-  const [dataPasien, setDataPasien] = useState([]);
+  const navigate = useNavigate()
 
-  useEffect(() => {
-    axios.get(endPoint).then((res) => {
-      setDataPasien(res.data);
+  const [jadwal, setJadwal] = useState([]);
+  const [dataPasien, setDataPasien] = useState([])
+  const [dataDokter, setDataDokter] = useState([])
+  const [loading, setLoading] = useState(false)
+
+  const getDataPasien = () => {
+		setLoading(true)
+		
+    const endPoint = "pasien";
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
+			setLoading(false)
+			setDataPasien(res.data.data);
+		}).catch((err) => {
+			setLoading(false)
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
+		});
+	}
+
+  const getDataDokter = () => {
+		setLoading(true)
+
+    const endPoint = "dokter"
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
+			setLoading(false)
+			setDataDokter(res.data.data);
+		}).catch((err) => {
+			setLoading(false)
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
+		});
+	};
+
+  const getJadwal = () => {
+    setLoading(true)
+
+    const endPoint = "jadwal"
+    axios.get(endPoint, {
+      headers: {
+        "content-type": "application/json",
+        'Authorization': `Bearer ${localStorage.getItem("token")}`
+      }
+    })
+    .then((res) => {
+      setLoading(false)
+      
+      const newData = res.data.data
+      const today = moment().format("YYYY-MM-DD")
+
+      newData.forEach((jadwal) => {
+        jadwal.namapasien = jadwal.pasien.namapasien
+        jadwal.namadokter = jadwal.dokter.namadokter
+      })
+      
+      const todayJadwal = newData.filter((jadwal) => jadwal.tanggal === today)
+      
+      setJadwal(todayJadwal)
+    })
+    .catch((err) => {
+      setLoading(false)
+      console.log(err)
+      if(err.response.status === 403){
+        Swal.fire({
+          icon: 'warning',
+          title: 'Oops',
+          text: 'Sesi anda sudah berakhir, silahkan login kembali',
+        }).then(() => {
+          localStorage.removeItem("token")
+          navigate("/login")
+        })
+      }
     });
+  }
+console.log(dataPasien)
+  useEffect(() => {
+    const status = localStorage.getItem("token")
+  
+    if(status === null){
+      navigate("/login", {replace: true})
+    }
+    else{
+      getDataPasien()
+      getDataDokter()
+      getJadwal()
+    }
   }, []);
 
-  const handleDelete = (idPasien) => {
-    const answer = window.confirm("Anda yakin untuk menghapus data?");
-
-    if (answer) {
-      axios
-        .delete(endPoint + `/${idPasien}`)
-        .then((res) => {
-          alert("Data berhasil dihapus!");
-          navigate(0);
-        })
-        .catch((err) => console.log(err));
-    }
-  };
-
-  const detailClick = (idPasien) => {
-    navigate(`/detail-data-pasien/${idPasien}`);
-  };
-
   const column = [
-    { field: "idPasien", header: "ID" },
-    { field: "nama", header: "Nama Lengkap" },
-    { field: "nik", header: "NIK" },
-    { field: "usia", header: "Usia" },
+    { field: "tanggal", header: "Tanggal" },
+    { field: "nourut", header: "Antrian" },
+    { field: "namapasien", header: "Nama Pasien" },
+    { field: "namadokter", header: "Nama Dokter" },
+    { field: "jp", header: "Jenis Perawatan" },
   ];
-
-  const aksi = [
-    {
-      click: (idPasien) => detailClick(idPasien),
-      icon: detailIcon
-    },
-    {
-      click: (idPasien) => handleDelete(idPasien),
-      icon: deleteIcon
-    }
-  ]
 
   return (
     <div>
+      {loading && (<BackdropLoading/>)}
       <Sidebar />
       <div className={style.container}>
         <div className={style.overview_container}>
           <p className={style.header}>Overview</p>
           <div className={style.overview}>
-            <OverviewCard amount={478} type={"Pasien"} icon={pasien_icon} />
-            <OverviewCard amount={272} type={"Dokter"} icon={dokter_icon} />
-            <OverviewCard amount={67} type={"Suster"} icon={suster_icon} />
-            <OverviewCard
-              amount={78}
-              type={"Pertemuan hari ini"}
-              icon={pertemuan_icon}
-            />
+            <OverviewCard amount={dataPasien.length} type={"Pasien"} icon={pasien_icon} />
+            <OverviewCard amount={dataDokter.length} type={"Dokter"} icon={dokter_icon} />
+            <OverviewCard amount={jadwal.length} type={"Pertemuan hari ini"} icon={pertemuan_icon}/>
           </div>
         </div>
 
-        <p className={style.header}>Data Pasien Terkini</p>
-        <Table
-          column={column}
-          data={dataPasien.slice(0, 9)}
-          primaryKey={"idPasien"}
-          aksi={aksi}
-        />
+        <div className={style.table_container}>
+          <p className={style.header}>Jadwal Pasien Hari Ini</p>
+          <Link to={"/kelola-jadwal"}>Lihat Selengkapnya</Link>
+          <Table
+            column={column}
+            data={jadwal.slice(0,8)}
+            aksi={[]}
+          />
+        </div>
       </div>
     </div>
   );

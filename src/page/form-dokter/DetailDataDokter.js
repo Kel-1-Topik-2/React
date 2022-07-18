@@ -8,35 +8,67 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useLinkClickHandler, useNavigate } from "react-router-dom";
 import EditIcon from "@mui/icons-material/Edit";
 import { useParams } from "react-router-dom";
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 export default function DetailData() {
   let navigate = useNavigate();
   const [detailDokter, setDetailDokter] = useState([]);
+  const [userDokter, setUserDokter] = useState([]);
+
+  const [loading, setLoading] = useState(false)
 
   const params = useParams();
 
   const handleEdit = useLinkClickHandler(
-    `/detail-data-dokter/edit-data-dokter/${detailDokter.idDokter}`,
+    `/detail-data-dokter/edit-data-dokter/${detailDokter.id}`,
     {
       state: detailDokter,
     }
   );
-  const endPoint = `Dokter/${params.id}`;
+  const endPoint = `dokter/${params.id}`;
 
   useEffect(() => {
-    axios.get(endPoint).then((res) => {
-      setDetailDokter(res.data);
-    });
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+    else{
+      setLoading(true)
+
+      axios.get(endPoint, {
+        headers: {
+          "content-type": "application/json",
+          'Authorization': `Bearer ${localStorage.getItem("token")}`
+        }
+      }).then((res) => {
+        setLoading(false)
+        setDetailDokter(res.data.data);
+        setUserDokter(res.data.data.user);
+      }).catch((err) => {
+        setLoading(false)
+        if(err.response.status === 403){
+          Swal.fire({
+            icon: 'warning',
+            title: 'Oops',
+            text: 'Sesi anda sudah berakhir, silahkan login kembali',
+          }).then(() => {
+            localStorage.removeItem("token")
+              navigate("/login")
+          })
+        }
+      });
+    }
   }, []);
 
-  console.log(detailDokter);
   const handleBack = () => {
     navigate(-1);
   };
@@ -55,6 +87,7 @@ export default function DetailData() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}
@@ -69,7 +102,7 @@ export default function DetailData() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -123,42 +156,34 @@ export default function DetailData() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormInput
-                    title="Nama lengkap"
+                    title="Nama lengkap*"
                     type="text"
                     disable
-                    value={detailDokter.nama}
+                    value={detailDokter.namadokter}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="NPA IDI"
+                    title="NPA IDI*"
                     type="text"
                     disable
-                    value={detailDokter.npa}
+                    value={detailDokter.srp}
                   />
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="Spesialis"
+                    title="Spesialis*"
                     type="text"
                     disable
                     value={detailDokter.spesialis}
                   />
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <FormInput
-                    title="Username"
+                    title="Username*"
                     type="text"
                     disable
-                    value={detailDokter.userName}
-                  />
-                </Grid>
-                <Grid item xs={6}>
-                  <FormInput
-                    title="Password"
-                    type="text"
-                    disable
-                    value={detailDokter.password}
+                    value={userDokter.username}
                   />
                 </Grid>
               </Grid>

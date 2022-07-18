@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -13,17 +13,20 @@ import {
   RadioGroup,
   Radio,
 } from "@mui/material";
+import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "../../dummy-api/api";
+// import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 export default function Form() {
   const formData = {
-    nama: "",
+    namapasien: "",
     nik: "",
-    usia: 0,
+    umur: 0,
     telp: "",
     alamat: "",
   };
@@ -31,41 +34,124 @@ export default function Form() {
   let navigate = useNavigate();
 
   const [data, setData] = useState(formData);
-  const [radio, setRadio] = useState("");
+  const [dataError, setDataError] = useState({});
+  const [radio, setRadio] = useState("Laki laki");
+
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+  }, [])
 
   const handleBack = () => {
     navigate(-1);
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate("/data-pasien");
   };
 
-  const endPoint = `Pasien`;
+  const endPoint = "pasien";
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
+  const handleChangeRadio = (e) => {
+    setRadio(e.target.value);
+  };
+
   const handleSubmit = (e) => {
     e.preventDefault();
-    axios
-      .post(endPoint, {
-        nama: data.nama,
-        nik: data.nik,
-        usia: data.usia,
-        jk: radio,
-        telp: data.telp,
-        alamat: data.alamat,
-      })
-      .then((res) => {
-        alert("Data telah ditambah");
-        navigate(0);
-      })
-      .catch((error) => {
-        console.log(error);
-      });
+    console.log(dataError);
+    validate(data);
+    if (validate(data) === true) {
+      setLoading(true)
+
+      axios
+        .post(
+          endPoint,
+          {
+            namapasien: data.namapasien,
+            nik: data.nik,
+            umur: data.umur,
+            jeniskelamin: radio,
+            telp: data.telp,
+            alamat: data.alamat,
+          },
+          {
+            headers: {
+              "content-type": "application/json",
+              Authorization: `Bearer ${localStorage.getItem("token")}`,
+            },
+          }
+        )
+        .then((res) => {
+          setLoading(false)
+          Swal.fire({
+            icon: 'success',
+            title: 'Sukses...',
+            text: 'Data telah berhasil disimpan',
+          }).then(() => {
+            navigate("/data-pasien")
+          })
+        })
+        .catch((error) => {
+          setLoading(false)
+          console.log(error);
+          Swal.fire({
+						icon: 'error',
+						title: 'Error!',
+						text: 'Terjadi kesalahan',
+					})
+        });
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.namapasien) {
+      errors.namapasien = "nama pasien perlu dibutuhkan";
+    } else if (!/^[a-zA-Z., ]*$/.test(values.namapasien)) {
+      errors.namapasien = "hanya mengandung huruf";
+    }
+
+    if (!values.nik) {
+      errors.nik = "nik perlu dibutuhkan";
+    } else if (values.nik.length < 16) {
+      errors.nik = "nik perlu 16 digit";
+    } else if (!/^[0-9]*$/.test(values.nik)) {
+      errors.nik = "nik harus berupa angka";
+    }
+
+    if (values.umur <= 0) {
+      errors.umur = "umur tidak sesuai";
+    }
+
+    if (!values.telp) {
+      errors.telp = "nomor telpon perlu dibutuhkan";
+    } else if (!/^[0-9]*$/.test(values.telp)) {
+      errors.telp = "nomor telpon harus berupa angka";
+    }
+
+    if (!values.alamat) {
+      errors.alamat = "alamat perlu dibutuhkan";
+    }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const paperStyle = {
@@ -82,6 +168,7 @@ export default function Form() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}
@@ -96,7 +183,7 @@ export default function Form() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -136,10 +223,17 @@ export default function Form() {
                   <FormInput
                     title="Nama lengkap*"
                     type="text"
-                    value={data.nama}
-                    name="nama"
+                    value={data.namapasien}
+                    name="namapasien"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.namapasien}
+                  </Typography>
                 </Grid>
                 <Grid item xs={5}>
                   <FormInput
@@ -149,6 +243,13 @@ export default function Form() {
                     name="telp"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.telp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -158,15 +259,29 @@ export default function Form() {
                     name="nik"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.nik}
+                  </Typography>
                 </Grid>
                 <Grid item xs={2}>
                   <FormInput
                     title="Usia*"
                     type="number"
-                    value={data.usia}
-                    name="usia"
+                    value={data.umur}
+                    name="umur"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.umur}
+                  </Typography>
                 </Grid>
                 {/* Radio */}
                 <Grid item xs={4}>
@@ -181,22 +296,18 @@ export default function Form() {
                       row
                       aria-labelledby="demo-row-radio-buttons-group-label"
                       name="row-radio-buttons-group"
+                      value={radio}
+                      onChange={handleChangeRadio}
                     >
                       <FormControlLabel
-                        value="Laki-Laki"
+                        value="Laki laki"
                         control={<Radio />}
                         label="L"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                       <FormControlLabel
                         value="Perempuan"
                         control={<Radio />}
                         label="P"
-                        onChange={(e) => {
-                          setRadio(e.target.value);
-                        }}
                       />
                     </RadioGroup>
                   </FormControl>
@@ -211,6 +322,13 @@ export default function Form() {
                     name="alamat"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.alamat}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid

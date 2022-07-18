@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Box,
   Button,
@@ -8,57 +8,155 @@ import {
   Tooltip,
   Typography,
 } from "@mui/material";
+import Swal from "sweetalert2";
+import BackdropLoading from "../../component/BackdropLoading/BackdropLoading";
 import ArrowBackIcon from "@mui/icons-material/ArrowBack";
 import image from "../../assets/sideFoto/foto-dokter.png";
 import FormInput from "../../component/formInput/FormInput";
 import { useNavigate } from "react-router-dom";
-import axios from "../../dummy-api/api";
+import axios from "../../API/api";
 
 export default function Form() {
   const formData = {
     username: "",
     password: "",
-    nama: "",
+    confirmpassword: "",
+    namadokter: "",
     spesialis: "",
-    npa: "",
+    srp: "",
   };
 
   let navigate = useNavigate();
 
   const [data, setData] = useState(formData);
+  const [dataError, setDataError] = useState({});
+  const [loading, setLoading] = useState(false)
+
+  useEffect(() => {
+    const status = localStorage.getItem("token")
+  
+		if(status === null){
+			navigate("/login", {replace: true})
+		}
+  }, [])
 
   const handleBack = () => {
     navigate(-1);
   };
 
   const handleCancel = () => {
-    navigate("/");
+    navigate(-1);
   };
-
-  const endPoint = `Dokter`;
 
   const handleChange = (e) => {
     const { name, value } = e.target;
     setData({ ...data, [name]: value });
   };
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
-    axios
-      .post(endPoint, {
-        userName: data.username,
-        password: data.password,
-        nama: data.nama,
-        spesialis: data.spesialis,
-        npa: data.npa,
-      })
-      .then((res) => {
-        alert("Data telah ditambah");
-        navigate("/data-dokter");
-      })
-      .catch((error) => {
+    validate(data);
+    if (validate(data) === true) {
+      try {
+        setLoading(true)
+
+        const respUser = await axios.post("/api/auth/register", {
+          username: data.username,
+          password: data.password,
+        }, {
+          headers: {
+            "content-type": "application/json",
+            'Authorization': `Bearer ${localStorage.getItem("token")}`
+          }
+        });
+        if (respUser.status === 200) {
+          const respDokter = await axios.post("/dokter", {
+            user_id: respUser.data.data.id,
+            namadokter: data.namadokter,
+            spesialis: data.spesialis,
+            srp: data.srp,
+          }, {
+            headers: {
+              "content-type": "application/json",
+              'Authorization': `Bearer ${localStorage.getItem("token")}`
+            }
+          });
+          if (respDokter.status === 200) {
+            setLoading(false)
+            Swal.fire({
+              icon: 'success',
+              title: 'Sukses...',
+              text: 'Data telah berhasil disimpan',
+            }).then(() => {
+              navigate("/data-dokter")
+            })
+          } else {
+            return false;
+          }
+        } else {
+          return false;
+        }
+      } catch (error) {
+        setLoading(false)
         console.log(error);
-      });
+        Swal.fire({
+          icon: 'error',
+          title: 'Error!',
+          text: 'Terjadi kesalahan',
+        })
+      }
+    }
+  };
+
+  const validate = (values) => {
+    const errors = {};
+    let validated = false;
+    if (!values.username) {
+      errors.username = "username perlu dibutuhkan";
+    } else if (values.username.length < 8) {
+      errors.username = "username perlu 8 digit";
+    }
+
+    if (!values.password) {
+      errors.password = "Kata Sandi perlu dibutuhkan";
+    } else if (values.password.length < 8) {
+      errors.password = "Kata Sandi perlu 8 digit";
+    }
+
+    if (!values.confirmpassword) {
+      errors.confirmpassword = "Kata sandi perlu dibutuhkan";
+    } else if (values.confirmpassword !== values.password) {
+      errors.confirmpassword = "Konfirmasi Kata sandi tidak sama";
+    }
+
+    if (!values.namadokter) {
+      errors.namadokter = "nama dokter perlu dibutuhkan";
+    } else if (!/^[a-zA-Z., ]*$/.test(values.namadokter)) {
+      errors.namadokter = "hanya mengandung huruf";
+    }
+
+    if (!values.spesialis) {
+      errors.spesialis = "spesialis perlu dibutuhkan";
+    } else if (!/^[a-zA-Z., ]*$/.test(values.spesialis)) {
+      errors.spesialis = "hanya mengandung huruf";
+    }
+
+    if (!values.srp) {
+      errors.srp = "NPA IDI perlu dibutuhkan";
+    } else if (values.srp.length < 6) {
+      errors.srp = "NPA IDI minimal 6 karakter";
+    } else if (!/^[0-9]*$/.test(values.srp)) {
+      errors.srp = "NPA IDI harus berupa angka";
+    }
+
+    console.log(errors);
+    if (Object.keys(errors).length !== 0) {
+      validated = false;
+    } else {
+      validated = true;
+    }
+    setDataError(errors);
+    return validated;
   };
 
   const paperStyle = {
@@ -75,6 +173,7 @@ export default function Form() {
 
   return (
     <Grid container component="main" sx={{ height: "100vh" }}>
+      {loading && (<BackdropLoading/>)}
       <Grid
         item
         xs={false}
@@ -89,7 +188,7 @@ export default function Form() {
           <Tooltip title="back">
             <IconButton>
               <ArrowBackIcon
-                sx={{ fontSize: 60, color: "#000000" }}
+                sx={{ fontSize: 38, color: "#000000" }}
                 onClick={handleBack}
               />
             </IconButton>
@@ -129,19 +228,33 @@ export default function Form() {
                   <FormInput
                     title="Nama lengkap*"
                     type="text"
-                    value={data.nama}
-                    name="nama"
+                    value={data.namadokter}
+                    name="namadokter"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.namadokter}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
                     title="NPA IDI*"
                     type="text"
-                    value={data.npa}
-                    name="npa"
+                    value={data.srp}
+                    name="srp"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.srp}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
@@ -151,8 +264,15 @@ export default function Form() {
                     name="spesialis"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.spesialis}
+                  </Typography>
                 </Grid>
-                <Grid item xs={6}>
+                <Grid item xs={12}>
                   <FormInput
                     title="Username*"
                     type="text"
@@ -160,15 +280,45 @@ export default function Form() {
                     name="username"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.username}
+                  </Typography>
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="Password*"
+                    title="Kata Sandi*"
                     type="text"
                     value={data.password}
                     name="password"
                     onChange={handleChange}
                   />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.password}
+                  </Typography>
+                </Grid>
+                <Grid item xs={6}>
+                  <FormInput
+                    title="Konfirmasi Kata Sandi*"
+                    type="text"
+                    value={data.confirmpassword}
+                    name="confirmpassword"
+                    onChange={handleChange}
+                  />
+                  <Typography
+                    component="div"
+                    color={"red"}
+                    sx={{ marginLeft: 1 }}
+                  >
+                    {dataError.confirmpassword}
+                  </Typography>
                 </Grid>
               </Grid>
               <Grid

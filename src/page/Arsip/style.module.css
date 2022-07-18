@@ -1,0 +1,10 @@
+.container {
+	padding: 3rem 3rem 3rem 28rem;
+}
+
+.search {
+	display: flex;
+	justify-content: flex-start;
+	margin-bottom: 32px;
+	margin-top: 50px;
+}

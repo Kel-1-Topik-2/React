@@ -1,6 +1,9 @@
 .container {
+	background-color: #FFFFFF;
 	width: 100%;
 	display: flex;
+
+	overflow-y: hidden;
 }
 
 .banner {
@@ -12,23 +15,10 @@
 	object-fit: cover;
 }
 
-.containerDropdown {
-	background-color: #53cd81;
-	width: 435px;
-	height: 50px;
-	font-size: 18px;
-	border-radius: 20px;
-	margin-bottom: 48px;
-}
-
-.dropdown {
-	background-color: white;
-}
-
 .title {
-	margin-top: 50px;
+	margin-top: 7rem;
 	text-align: center;
-	margin-bottom: 70px;
+	margin-bottom: 5rem;
 }
 
 .title p {
@@ -45,7 +35,7 @@
 	max-width: 435px;
 }
 
-input {
+.input {
 	height: 50px;
 	width: 435px;
 	outline: 0;
@@ -73,6 +63,6 @@ input {
 	position: relative;
 }
 
-input:focus {
+.input:focus {
 	border: 3px solid #4b00ff;
 }
