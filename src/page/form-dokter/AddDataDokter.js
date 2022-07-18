@@ -60,7 +60,7 @@ export default function Form() {
       try {
         setLoading(true)
 
-        const respUser = await axios.post("/user", {
+        const respUser = await axios.post("/api/auth/register", {
           username: data.username,
           password: data.password,
         }, {
