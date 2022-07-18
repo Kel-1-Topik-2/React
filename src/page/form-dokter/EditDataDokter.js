@@ -67,6 +67,7 @@ export default function Form() {
 		if (validate(editDataDokter) === true) {
 			try {
 				if (editDataDokter.newPassword === '') {
+					setLoading(true)
 					respUser = await axios.put(
 						`/user/${location.state.user.id}`,
 						{
@@ -81,6 +82,7 @@ export default function Form() {
 						}
 					);
 				} else if (editDataDokter.newPassword !== '') {
+					setLoading(true)
 					respUser = await axios.put(
 						`/api/auth/updateuser/${location.state.user.id}`,
 						{
@@ -113,13 +115,13 @@ export default function Form() {
 					);
 					if (respDokter.status === 200) {
 						setLoading(false)
-            Swal.fire({
-              icon: 'success',
-              title: 'Sukses...',
-              text: 'Data telah berhasil disimpan',
-            }).then(
-							navigate(-1)
-						)
+							Swal.fire({
+								icon: 'success',
+								title: 'Sukses...',
+								text: 'Data telah berhasil diedit',
+							}).then(() => {
+								navigate(-1)
+							})
 					} else {
 						return false;
 					}
@@ -128,12 +130,12 @@ export default function Form() {
 				}
 			} catch (error) {
 				setLoading(false)
-        console.log(error);
-        Swal.fire({
-          icon: 'error',
-          title: 'Error!',
-          text: 'Terjadi kesalahan',
-        })
+				console.log(error);
+				Swal.fire({
+					icon: 'error',
+					title: 'Error!',
+					text: 'Terjadi kesalahan',
+				})
 			}
 		}
 	};
