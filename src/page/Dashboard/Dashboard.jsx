@@ -22,11 +22,69 @@ const Dashboard = () => {
 
   const navigate = useNavigate()
 
-  const endPoint = "jadwal";
   const [jadwal, setJadwal] = useState([]);
+  const [dataPasien, setDataPasien] = useState([])
+  const [dataDokter, setDataDokter] = useState([])
   const [loading, setLoading] = useState(false)
 
+  const getDataPasien = () => {
+		setLoading(true)
+		
+    const endPoint = "pasien";
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
+			setLoading(false)
+			setDataPasien(res.data.data);
+		}).catch((err) => {
+			setLoading(false)
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
+		});
+	}
+
+  const getDataDokter = () => {
+		setLoading(true)
+
+    const endPoint = "dokter"
+		axios.get(endPoint, {
+			headers: {
+				"content-type": "application/json",
+				'Authorization': `Bearer ${localStorage.getItem("token")}`
+			}
+		}).then((res) => {
+			setLoading(false)
+			setDataDokter(res.data.data);
+		}).catch((err) => {
+			setLoading(false)
+			if(err.response.status === 403){
+				Swal.fire({
+				  icon: 'warning',
+				  title: 'Oops',
+				  text: 'Sesi anda sudah berakhir, silahkan login kembali',
+				}).then(() => {
+					localStorage.removeItem("token")
+				  	navigate("/login")
+				})
+			}
+		});
+	};
+
   const getJadwal = () => {
+    setLoading(true)
+
+    const endPoint = "jadwal"
     axios.get(endPoint, {
       headers: {
         "content-type": "application/json",
@@ -63,7 +121,7 @@ const Dashboard = () => {
       }
     });
   }
-
+console.log(dataPasien)
   useEffect(() => {
     const status = localStorage.getItem("token")
   
@@ -71,7 +129,8 @@ const Dashboard = () => {
       navigate("/login", {replace: true})
     }
     else{
-      setLoading(true)
+      getDataPasien()
+      getDataDokter()
       getJadwal()
     }
   }, []);
@@ -92,9 +151,9 @@ const Dashboard = () => {
         <div className={style.overview_container}>
           <p className={style.header}>Overview</p>
           <div className={style.overview}>
-            <OverviewCard amount={478} type={"Pasien"} icon={pasien_icon} />
-            <OverviewCard amount={272} type={"Dokter"} icon={dokter_icon} />
-            <OverviewCard amount={78} type={"Pertemuan hari ini"} icon={pertemuan_icon}/>
+            <OverviewCard amount={dataPasien.length} type={"Pasien"} icon={pasien_icon} />
+            <OverviewCard amount={dataDokter.length} type={"Dokter"} icon={dokter_icon} />
+            <OverviewCard amount={jadwal.length} type={"Pertemuan hari ini"} icon={pertemuan_icon}/>
           </div>
         </div>
 
