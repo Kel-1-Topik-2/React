@@ -21,6 +21,9 @@ export default function Form() {
 
 	const location = useLocation();
 	const [loading, setLoading] = useState(false)
+	// const [editPassword, setEditPassword] = useState('');
+	// const [confirmPassword, setConfirmPassword] = useState('');
+	const [dataError, setDataError] = useState({});
 
 	const [editDataDokter, setEditDataDokter] = useState({
 		namadokter: location.state.namadokter,
@@ -28,12 +31,12 @@ export default function Form() {
 		spesialis: location.state.spesialis,
 		username: location.state.user.username,
 		password: location.state.user.password,
+		newPassword: '',
+		confirmPassword: ''
 	});
-
-	const [editPassword, setEditPassword] = useState('');
-	const [confirmPassword, setConfirmPassword] = useState('');
-	const [dataError, setDataError] = useState({});
 	
+	console.log(editDataDokter)
+
 	useEffect(() => {
 		const status = localStorage.getItem('token');
 
@@ -65,7 +68,7 @@ export default function Form() {
 		validate(editDataDokter);
 		if (validate(editDataDokter) === true) {
 			try {
-				if (editPassword === '') {
+				if (editDataDokter.newPassword === '') {
 					respUser = await axios.put(
 						`/user/${location.state.user.id}`,
 						{
@@ -79,12 +82,12 @@ export default function Form() {
 							},
 						}
 					);
-				} else if (editPassword !== '') {
+				} else if (editDataDokter.newPassword !== '') {
 					respUser = await axios.put(
 						`/api/auth/updateuser/${location.state.user.id}`,
 						{
 							new_username: editDataDokter.username,
-							new_password: editPassword,
+							new_password: editDataDokter.newPassword,
 						},
 						{
 							headers: {
@@ -146,18 +149,14 @@ export default function Form() {
 			errors.username = 'username perlu 8 digit';
 		}
 
-		// if (!values.password) {
-		//   errors.password = "Kata Sandi perlu dibutuhkan";
-		// } else if (values.password.length < 8) {
-		//   errors.password = "Kata Sandi perlu 8 digit";
-		// }
-
-		// if (!values.confirmpassword) {
-		//   errors.confirmpassword = "Kata sandi perlu dibutuhkan";
-		// } else if (values.confirmpassword !== values.password) {
-		//   errors.confirmpassword = "Konfirmasi Kata sandi tidak sama";
-		// }
-
+		if (values.newPassword !== '') {
+			if(values.newPassword.length < 8) {
+				errors.newPassword = "Kata Sandi perlu 8 digit"
+			} else if (values.confirmPassword !== values.newPassword) {
+				errors.confirmPassword = "Konfirmasi Kata sandi tidak sama"
+			}
+		}
+		
 		if (!values.namadokter) {
 			errors.namadokter = 'nama dokter perlu dibutuhkan';
 		} else if (!/^[a-zA-Z., ]*$/.test(values.namadokter)) {
@@ -324,32 +323,32 @@ export default function Form() {
 									<FormInput
 										title="Kata Sandi Baru*"
 										type="text"
-										name="password"
-										value={editPassword}
-										onChange={(e) => setEditPassword(e.target.value)}
+										name="newPassword"
+										value={editDataDokter.newPassword}
+										onChange={handleChange}
 									/>
 									<Typography
 										component="div"
 										color={'red'}
 										sx={{ marginLeft: 1 }}
 									>
-										{dataError.password}
+										{dataError.newPassword}
 									</Typography>
 								</Grid>
 								<Grid item xs={6}>
 									<FormInput
 										title="Konfirmasi Kata Sandi Baru*"
 										type="text"
-										value={confirmPassword}
+										value={editDataDokter.confirmPassword}
 										name="confirmPassword"
-										onChange={(e) => setConfirmPassword(e.target.value)}
+										onChange={handleChange}
 									/>
 									<Typography
 										component="div"
 										color={'red'}
 										sx={{ marginLeft: 1 }}
 									>
-										{dataError.confirmpassword}
+										{dataError.confirmPassword}
 									</Typography>
 								</Grid>
 							</Grid>
