@@ -21,8 +21,6 @@ export default function Form() {
 
 	const location = useLocation();
 	const [loading, setLoading] = useState(false)
-	// const [editPassword, setEditPassword] = useState('');
-	// const [confirmPassword, setConfirmPassword] = useState('');
 	const [dataError, setDataError] = useState({});
 
 	const [editDataDokter, setEditDataDokter] = useState({

@@ -13,14 +13,18 @@ const TextForm = ({
   required,
 }) => {
   return (
-    <FormControl fullWidth disabled={disable}>
+    <FormControl fullWidth >
       <FormLabel sx={{ color: "#358C56" }}>
         <strong>{title}</strong>
       </FormLabel>
-      <OutlinedInput
+      <OutlinedInput disabled={disable}
         sx={{
           borderRadius: "20px",
           backgroundColor: "#EEEEEE",
+          color: '#000000',
+          fontWeight: '400',
+          fontSize: '20px',
+          fontFamily: 'Poppins'
         }}
         type={type}
         multiline={multiline}

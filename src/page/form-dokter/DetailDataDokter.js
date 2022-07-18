@@ -156,7 +156,7 @@ export default function DetailData() {
               <Grid container spacing={2}>
                 <Grid item xs={12}>
                   <FormInput
-                    title="Nama lengkap"
+                    title="Nama lengkap*"
                     type="text"
                     disable
                     value={detailDokter.namadokter}
@@ -164,7 +164,7 @@ export default function DetailData() {
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="NPA IDI"
+                    title="NPA IDI*"
                     type="text"
                     disable
                     value={detailDokter.srp}
@@ -172,7 +172,7 @@ export default function DetailData() {
                 </Grid>
                 <Grid item xs={6}>
                   <FormInput
-                    title="Spesialis"
+                    title="Spesialis*"
                     type="text"
                     disable
                     value={detailDokter.spesialis}
@@ -180,7 +180,7 @@ export default function DetailData() {
                 </Grid>
                 <Grid item xs={12}>
                   <FormInput
-                    title="Username"
+                    title="Username*"
                     type="text"
                     disable
                     value={userDokter.username}
