@@ -1,19 +1,19 @@
 import style from './style.module.css';
 import React, { useEffect, useState } from 'react';
 import ReactPaginate from 'react-paginate';
-import {useLocation} from "react-router-dom";
+import { useLocation } from 'react-router-dom';
 
-import notFoundIcon from "../../assets/img/404_error.svg"
+import notFoundIcon from '../../assets/img/404_error.svg';
 
 const Table = ({ column, data, primaryKey, aksi }) => {
 	const [currentItems, setCurrentItems] = useState([]);
 	const [pageCount, setPageCount] = useState(0);
 	const [itemOffset, setItemOffset] = useState(0);
-	const [itemsPerPage, setItemsPerPage] = useState(5)
+	const [itemsPerPage, setItemsPerPage] = useState(5);
 
-	const [pageNumber, setPageNumber] = useState(0)
+	const [pageNumber, setPageNumber] = useState(0);
 
-	const location = useLocation()
+	const location = useLocation();
 
 	useEffect(() => {
 		const endOffset = itemOffset + itemsPerPage;
@@ -22,50 +22,44 @@ const Table = ({ column, data, primaryKey, aksi }) => {
 	}, [itemOffset, itemsPerPage, data]);
 
 	useEffect(() => {
-		setItemOffset(0)
-		setPageNumber(0)
-	}, [data.length])
+		setItemOffset(0);
+		setPageNumber(0);
+	}, [data.length]);
 
 	const handlePageClick = (event) => {
 		const newOffset = (event.selected * itemsPerPage) % data.length;
 		setItemOffset(newOffset);
-		setPageNumber(event.selected)
+		setPageNumber(event.selected);
 	};
-	
+
 	const handleShowChange = (e) => {
-		const newItemsPerPage = e.target.value
-		
-		if(newItemsPerPage === "All"){
-			setItemsPerPage(data.length)
-		}
-		else{
-			setItemsPerPage(parseInt(newItemsPerPage))
+		const newItemsPerPage = e.target.value;
+
+		if (newItemsPerPage === 'All') {
+			setItemsPerPage(data.length);
+		} else {
+			setItemsPerPage(parseInt(newItemsPerPage));
 		}
 
-		setItemOffset(0)
-		setPageNumber(0)
-	}
+		setItemOffset(0);
+		setPageNumber(0);
+	};
 
 	const handleNotFoundText = (path) => {
-		if(path === "/"){
-			return "Jadwal pasien hari ini belum ada."
+		if (path === '/') {
+			return 'Jadwal pasien hari ini belum ada.';
+		} else if (path === '/data-pasien') {
+			return 'Hasil pencarian data pasien tidak dapat ditemukan';
+		} else if (path === '/data-dokter') {
+			return 'Hasil pencarian data dokter tidak dapat ditemukan';
+		} else if (path === '/kelola-jadwal') {
+			return 'Hasil pencarian jadwal hari ini tidak dapat ditemukan';
+		} else if (path === '/arsip-jadwal') {
+			return 'Hasil pencarian data jadwal tidak dapat ditemukan';
+		} else {
+			return 'Hasil pencarian data tidak dapat ditemukan';
 		}
-		else if(path === "/data-pasien"){
-			return "Hasil pencarian data pasien tidak dapat ditemukan, silahkan coba lagi."
-		}
-		else if(path === "/data-dokter"){
-			return "Hasil pencarian data dokter tidak dapat ditemukan, silahkan coba lagi."
-		}
-		else if(path === "/kelola-jadwal"){
-			return "Hasil pencarian jadwal hari ini tidak dapat ditemukan, silahkan coba lagi."
-		}
-		else if(path === "/arsip-jadwal"){
-			return "Hasil pencarian data jadwal tidak dapat ditemukan, silahkan coba lagi."
-		}
-		else{
-			return "Hasil pencarian data tidak dapat ditemukan, silahkan coba lagi."
-		}
-	}
+	};
 
 	return (
 		<div className={style.container}>
